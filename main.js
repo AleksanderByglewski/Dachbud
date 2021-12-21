@@ -8,9 +8,19 @@ class General_object{
  show_me_desire(){
   alert("Hello")}
 
+
+
 }
+
+
+//Helper variables
+var depth=10;
+var width=20;
+var height=5;
+
 class Foundation extends General_object{
-  
+
+
   constructor(width, depth){
   super();
   this.components=[];
@@ -43,7 +53,94 @@ class Garage_block extends General_object{
   }
 }
 
+//This is basically the template for the front wall right now
+class Garage_walls extends General_object{
+  
+  constructor(x, y,translate_x=0,translate_y=0, translate_z=0, rotation=0){
+  super();
+  this.components=[];
+  this.width=x;
+  this.depth=y;
+  this.rotation=0;
+  this.geometry=new THREE.PlaneGeometry( x, y );
+  this.geometry.rotateY(rotation)
+  this.geometry.translate(translate_x,translate_y,translate_z );
+  const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
+  this.object = new THREE.Mesh(this.geometry, material);
+    }
 
+
+  add_components_to_scene(scene){
+   
+    //this.geometry = new THREE.PlaneGeometry( width, height );
+    //this.geometry.translate(0,height/2,depth/2);
+    const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
+    //const torus = new THREE.Mesh(this.geometry, material);
+    scene.add(this.object);
+  }
+}
+
+class Roof_walls extends General_object{
+  
+  constructor(x, y,translate_x=0,translate_y=0, translate_z=0, rotation=0){
+  super();
+  this.components=[];
+  this.width=x;
+  this.depth=y;
+  this.rotation=0;
+  
+  const a=new THREE.Vector3(0,-x/2,0);
+  const b= new THREE.Vector3(0, x/2, 0);
+  const c=new THREE.Vector3(0, x/2,y/2);
+  this.geometry=new THREE.PlaneGeometry( x, y );
+
+
+
+  this.geometry.rotateY(rotation)
+  this.geometry.translate(translate_x,translate_y,translate_z );
+  const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
+  this.object = new THREE.Mesh(this.geometry, material);
+    }
+
+
+  add_components_to_scene(scene){
+   
+    //this.geometry = new THREE.PlaneGeometry( width, height );
+    //this.geometry.translate(0,height/2,depth/2);
+    const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
+    //const torus = new THREE.Mesh(this.geometry, material);
+    scene.add(this.object);
+  }
+}
+
+
+
+
+
+
+class Front_wall extends Garage_walls{
+  constructor(){
+    super();
+  }
+  add_components_to_scene(scene){
+    const geometry = new THREE.PlaneGeometry( width, height );
+    const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
+    const torus = new THREE.Mesh(geometry, material);
+
+    geometry.translate(0,height/2,depth/2);
+    scene.add(torus);
+  }
+}
+
+
+class Controller{
+
+  constructor(width, height, ){
+
+  }
+
+
+}
 
 function main(){
 const scene = new THREE.Scene();
@@ -51,9 +148,31 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
 });
-let flat_ground=new Foundation(7.5,14)
+
+
+
+
+let flat_ground=new Foundation(depth,width)
+//width_of_a_plane,height_of_a_plane, translation_x,translation_y, translation_z; 
+//in left and right walls we rotate around the y axis so the width becomes the depth height remains the so we have
+//depth, height, half of width of building, half of height, and rotation by 90 deg
+let wall_front=new Garage_walls(20,5,0,2.5,5)
+let wall_back=new Garage_walls(20,5,0,2.5,-5)
+let wall_left=new Garage_walls(10,5,-10,2.5,0,Math.PI/2)
+let wall_right=new Garage_walls(10,5,+10,2.5,0,Math.PI/2)
+
+wall_front.add_components_to_scene(scene)
+wall_back.add_components_to_scene(scene)
+wall_left.add_components_to_scene(scene)
+wall_right.add_components_to_scene(scene)
 flat_ground.add_components_to_scene(scene)
 
+
+let roof_front=new Roof_walls(20,5,0,2.5,5)
+let roof_back=new Garage_walls(20,5,0,2.5,-5)
+
+roof_front.add_components_to_scene(scene)
+roof_back.add_components_to_scene(scene)
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -62,6 +181,16 @@ camera.position.setY(20);
 camera.rotateX(0.75)
 
 renderer.render(scene, camera);
+
+//Plane
+
+const geometry_plane = new THREE.PlaneGeometry( width, depth );
+geometry_plane.rotateX(Math.PI/2)
+const material_plane = new THREE.MeshBasicMaterial( {color: 0xff6347, side: THREE.DoubleSide} );
+const plane = new THREE.Mesh( geometry_plane, material_plane );
+scene.add( plane );
+
+
 
 // Torus
 
@@ -72,13 +201,6 @@ scene.add(torus);
 
 
 
-//Plane
-
-const geometry_plane = new THREE.PlaneGeometry( 14, 8 );
-geometry_plane.rotateX(Math.PI/2)
-const material_plane = new THREE.MeshBasicMaterial( {color: 0xff6347, side: THREE.DoubleSide} );
-const plane = new THREE.Mesh( geometry_plane, material_plane );
-scene.add( plane );
 
 
 // Lights
