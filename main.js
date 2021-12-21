@@ -94,6 +94,16 @@ class Roof_walls extends General_object{
   const c=new THREE.Vector3(0, x/2,y/2);
   this.geometry=new THREE.PlaneGeometry( x, y );
 
+  const shape = new THREE.Shape();
+
+  
+  shape.moveTo(-x/2, -y/2);
+  shape.lineTo(x/2,-y/2);
+  shape.lineTo(x/2, y/2);
+  
+  this.geometry = new THREE.ShapeGeometry(shape);
+
+
 
 
   this.geometry.rotateY(rotation)
@@ -112,8 +122,60 @@ class Roof_walls extends General_object{
     scene.add(this.object);
   }
 }
+class Roof_walls_square extends General_object{
+  
+  constructor(x, y,translate_x=0,translate_y=0, translate_z=0, rotation=0){
+  super();
+  this.components=[];
+  this.width=x;
+  this.depth=y;
+  this.rotation=0;
+ 
+  this.geometry=new THREE.PlaneGeometry( x, y );
+  this.geometry.rotateY(rotation)
+  this.geometry.translate(translate_x,translate_y,translate_z );
+  const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
+  this.object = new THREE.Mesh(this.geometry, material);
+    }
 
 
+  add_components_to_scene(scene){
+   
+    //this.geometry = new THREE.PlaneGeometry( width, height );
+    //this.geometry.translate(0,height/2,depth/2);
+    const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
+    //const torus = new THREE.Mesh(this.geometry, material);
+    scene.add(this.object);
+  }
+}
+class Roof extends General_object{
+  
+  
+  constructor(x, y,translate_x=0,translate_y=0, translate_z=0, rotation=0,roof_height=1){
+    super();
+    this.components=[];
+    this.width=x;
+    this.depth=y;
+    this.rotation=0;
+    this.geometry=new THREE.PlaneGeometry( Math.sqrt(x*x+roof_height*roof_height),10 );
+    this.geometry.rotateX(Math.PI/2);
+    this.geometry.rotateZ(Math.atan(roof_height/x));
+    
+    this.geometry.translate(translate_x,translate_y,translate_z );
+    const material = new THREE.MeshBasicMaterial( {color: 0xff0000, side: THREE.DoubleSide} );
+    this.object = new THREE.Mesh(this.geometry, material);
+      }
+  
+  
+    add_components_to_scene(scene){
+     
+      //this.geometry = new THREE.PlaneGeometry( width, height );
+      //this.geometry.translate(0,height/2,depth/2);
+      const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
+      //const torus = new THREE.Mesh(this.geometry, material);
+      scene.add(this.object);
+    }
+}
 
 
 
@@ -126,8 +188,6 @@ class Front_wall extends Garage_walls{
     const geometry = new THREE.PlaneGeometry( width, height );
     const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
     const torus = new THREE.Mesh(geometry, material);
-
-    geometry.translate(0,height/2,depth/2);
     scene.add(torus);
   }
 }
@@ -165,14 +225,22 @@ wall_front.add_components_to_scene(scene)
 wall_back.add_components_to_scene(scene)
 wall_left.add_components_to_scene(scene)
 wall_right.add_components_to_scene(scene)
-flat_ground.add_components_to_scene(scene)
+//flat_ground.add_components_to_scene(scene)
+
+//width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z; 
+let roof_front=new Roof_walls(20,5,0,5+2.5,5)
+let roof_back=new Roof_walls(20,5,0,5+2.5,-5)
+let roof_right=new Roof_walls_square(10,5,+10,5+2.5,0,Math.PI/2)
+//width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
+let roof=new Roof(20,10,0,5+2.5,0,0, 5)
 
 
-let roof_front=new Roof_walls(20,5,0,2.5,5)
-let roof_back=new Garage_walls(20,5,0,2.5,-5)
 
 roof_front.add_components_to_scene(scene)
 roof_back.add_components_to_scene(scene)
+roof_right.add_components_to_scene(scene)
+roof.add_components_to_scene(scene)
+
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -197,7 +265,7 @@ scene.add( plane );
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
 const material = new THREE.MeshStandardMaterial({ color: 0xff6347,wireframe: true });
 const torus = new THREE.Mesh(geometry, material);
-scene.add(torus);
+//scene.add(torus);
 
 
 
@@ -284,4 +352,4 @@ function secondary_main() {
   renderer.render(scene, camera);
 }
 
-secondary_main();
+//secondary_main();
