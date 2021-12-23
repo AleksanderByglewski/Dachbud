@@ -5,10 +5,8 @@ import './style.css';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 
-
-
 //import './style.css';
-//import * as three from 'https://cdn.skypack.dev/pin/three@v0.135.0-pjGUcRG9Xt70OdXl97VF/mode=imports,min/optimized/three.js';
+import * as three from 'https://cdn.skypack.dev/pin/three@v0.135.0-pjGUcRG9Xt70OdXl97VF/mode=imports,min/optimized/three.js';
 //import * as three from 'https://unpkg.com/three@0.124.0/build/three.module.js';
 //<script src="https://threejs.org/build/three.js"></script> 
 //import { OrbitControls } from 'https://unpkg.com/three/examples/jsm/controls/OrbitControls.js';
@@ -440,7 +438,7 @@ class Roof extends General_object{
     this.width=x;
     this.depth=y;
     this.rotation=0;
-    this.geometry=new THREE.PlaneGeometry( Math.sqrt(x*x+roof_height*roof_height),y );
+    this.geometry=new THREE.PlaneGeometry( Math.sqrt(x*x+roof_height*roof_height),10 );
     this.geometry.rotateX(Math.PI/2);
     this.geometry.rotateZ(Math.atan(roof_height/x));
     
@@ -568,20 +566,10 @@ let flat_ground=new Foundation(depth,width)
 //width_of_a_plane,height_of_a_plane, translation_x,translation_y, translation_z; 
 //in left and right walls we rotate around the y axis so the width becomes the depth height remains the so we have
 //depth, height, half of width of building, half of height, and rotation by 90 deg
-
-let constructor_width=20;
-let constructor_depth=20;
-let constructor_height=5;
-
-let roof_width=20;
-let roof_depth=10;
-let roof_height=5;
-
-
-let wall_front=new Garage_walls(constructor_width,constructor_height,0,constructor_height/2,constructor_depth/2)
-let wall_back=new Garage_walls(constructor_width,constructor_height,0,constructor_height/2,-constructor_depth/2)
-let wall_left=new Garage_walls(constructor_depth,constructor_height,-constructor_width/2,constructor_height/2,0,Math.PI/2)
-let wall_right=new Garage_walls(constructor_depth,constructor_height,constructor_width/2,constructor_height/2,0,Math.PI/2)
+let wall_front=new Garage_walls(20,5,0,2.5,5)
+let wall_back=new Garage_walls(20,5,0,2.5,-5)
+let wall_left=new Garage_walls(10,5,-10,2.5,0,Math.PI/2)
+let wall_right=new Garage_walls(10,5,+10,2.5,0,Math.PI/2)
 
 wall_front.add_components_to_scene(scene)
 wall_back.add_components_to_scene(scene)
@@ -590,13 +578,11 @@ wall_right.add_components_to_scene(scene)
 //flat_ground.add_components_to_scene(scene)
 
 //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z; 
-
-
- roof_front=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,constructor_depth/2)
- roof_back=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,-constructor_depth/2)
- roof_right=new Roof_walls_square(roof_depth,roof_height,roof_width/2,constructor_height+roof_height/2,0,Math.PI/2)
+ roof_front=new Roof_walls(20,5,0,5+2.5,5)
+ roof_back=new Roof_walls(20,5,0,5+2.5,-5)
+ roof_right=new Roof_walls_square(10,5,+10,5+2.5,0,Math.PI/2)
 //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
-roof=new Roof(roof_width,roof_depth,0,5+2.5,0,0, 5)
+roof=new Roof(20,10,0,5+2.5,0,0, 5)
 
 
 
