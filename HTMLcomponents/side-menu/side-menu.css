@@ -1,0 +1,51 @@
+body{
+    margin:0;
+    padding:0;
+}
+.side-menu{
+    width: 40vw;
+    position: absolute;
+    right: 0;
+    display: grid;
+    background-color: rgba(64,64,64);
+    min-height: 100vh;
+}
+
+.menu-elem{  
+    position: relative;
+    background-color: rgba(0,0,0,0.75);
+    color:white;
+    display: grid;
+    align-content: start;
+  
+}
+
+.menu-elem-heading{
+    display:grid;
+    grid-template-columns:1fr 16px;
+    justify-content: center;
+    padding:10px;
+    background-color:rgba(128,128,128,0.25);
+    background-image: linear-gradient( rgba(0,0,0,0.25),rgba(0,0,0,0.75) 35%, rgba(0,0,0,0.25));
+   
+}
+
+.menu-elem-heading-title{
+    position: relative;
+    text-align: center;
+    text-indent:16px;
+}
+
+.menu-elem-heading-button{
+    filter: brightness(0) invert(1);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.menu-elem-content{
+    display: grid;
+    justify-content: center;
+    padding:10px;
+}
