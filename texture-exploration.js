@@ -357,7 +357,7 @@ class Roof_walls extends General_object{
     //const torus = new THREE.Mesh(this.geometry, material);
     scene.add(this.object);
   }
-  
+
 }
 
 class Roof_walls_square extends General_object{
@@ -545,48 +545,300 @@ class Front_wall extends Garage_walls{
 }
 
 
-class Controller{
 
-  constructor(width, height, ){
-
-  }
-
-
-}
 
 function main(){
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+window.addEventListener( 'resize', onWindowResize, false );
+
+function onWindowResize() {
+  
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
+
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
 });
 
 
+class Creation_controller{
+constructor(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene){
+  
+  this.constructor_width=constructor_width;
+  this.constructor_depth= constructor_depth;
+  this.constructor_height=constructor_height;  
+  this.roof_width=roof_width;
+  this.roof_depth=roof_depth;
+  this.roof_height=roof_height;
+  
+  this.wall_front=null;
+  this.wall_back=null;
+  this.wall_left=null;
+  this.wall_right=null;
+ 
+  this.roof_front=null;
+  this.roof_back=null;
+  this.roof_right=null;
+  this.roof=null;
+
+  this.roof_front2=new Garage_walls(0,0,0,0,0);
+  this.roof_back2=new Garage_walls(0,0,0,0,0);
+  this.roof_right2=new Garage_walls(0,0,0,0,0);
+  this.roof2=new Garage_walls(0,0,0,0,0);
+
+  this.scene=scene;
+  
+  this.rebuild_walls();
+  
+  this.rebuild_roofs(6);
+  this.add_to_scene();
+
+}
+
+rebuild_walls(constructor_width=this.constructor_width, constructor_depth=this.constructor_depth, constructor_height=this.constructor_height, 
+  roof_width=this.roof_width,roof_depth=this.roof_depth,roof_height=this.roof_height) {
+  //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z;   
+  this.wall_front=new Garage_walls(constructor_width,constructor_height,0,constructor_height/2,constructor_depth/2)
+  this.wall_back=new Garage_walls(constructor_width,constructor_height,0,constructor_height/2,-constructor_depth/2)
+  this.wall_left=new Garage_walls(constructor_depth,constructor_height,-constructor_width/2,constructor_height/2,0,Math.PI/2)
+  this.wall_right=new Garage_walls(constructor_depth,constructor_height,constructor_width/2,constructor_height/2,0,Math.PI/2)
+ 
+  //this.roof_front=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,constructor_depth/2)
+  //this.roof_back=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,-constructor_depth/2)
+  //this.roof_right=new Roof_walls_square(roof_depth,roof_height,roof_width/2,constructor_height+roof_height/2,0,Math.PI/2)
+ //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
+ // this.roof=new Roof(roof_width,roof_depth,0,constructor_height+roof_height/2,0,0,roof_height )
+ //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z; 
+}
 
 
+rebuild_roofs(roof_instance=0,constructor_width=this.constructor_width, constructor_depth=this.constructor_depth, constructor_height=this.constructor_height, 
+  roof_width=this.roof_width,roof_depth=this.roof_depth,roof_height=this.roof_height){
+  switch (roof_instance) {
+    case 0:{
+  //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z;   
+  this.roof_front=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,constructor_depth/2)
+  this.roof_back=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,-constructor_depth/2)
+  this.roof_right=new Roof_walls_square(roof_depth,roof_height,roof_width/2,constructor_height+roof_height/2,0,Math.PI/2)
+ //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
+  this.roof=new Roof(roof_width,roof_depth,0,constructor_height+roof_height/2,0,0,roof_height )
+ //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z; 
+  break;
+    }
+ case 2:{
+      //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z;   
+      this.roof_front=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,constructor_depth/2)
+      this.roof_back=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,-constructor_depth/2)
+      this.roof_right=new Roof_walls_square(roof_depth,roof_height,roof_width/2,constructor_height+roof_height/2,0,Math.PI/2)
+     //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
+      this.roof=new Roof(roof_width,roof_depth,0,constructor_height+roof_height/2,0,0,roof_height )
+     //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z; 
+      this.roof_front.object.geometry.rotateY(Math.PI/2*roof_instance)  
+      this.roof_back.object.geometry.rotateY(Math.PI/2*roof_instance)  
+      this.roof_right.object.geometry.rotateY(Math.PI/2*roof_instance)  
+      this.roof.object.geometry.rotateY(Math.PI/2*roof_instance)  
+      break;
+ }
+  case 1:{
+    //We are rotating but we just need to switch the width and depth
+    let x=roof_width;
+    roof_width =roof_depth;
+    roof_depth =x;
+    constructor_depth=constructor_width;
+    this.roof_front=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,constructor_depth/2)
+    this.roof_back=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,-constructor_depth/2)
+    this.roof_right=new Roof_walls_square(roof_depth,roof_height,roof_width/2,constructor_height+roof_height/2,0,Math.PI/2)
+   //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
+    this.roof=new Roof(roof_width,roof_depth,0,constructor_height+roof_height/2,0,0,roof_height )
+   //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z; 
+   this.roof_front.object.geometry.rotateY(Math.PI/2*roof_instance)  
+   this.roof_back.object.geometry.rotateY(Math.PI/2*roof_instance)  
+   this.roof_right.object.geometry.rotateY(Math.PI/2*roof_instance)  
+   this.roof.object.geometry.rotateY(Math.PI/2*roof_instance)  
+   console.log('1')
+  break;
+  }
+    case 3:{
+      let x=roof_width;
+      roof_width =roof_depth;
+      roof_depth =x;
+      constructor_depth=constructor_width;
+    this.roof_front=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,constructor_depth/2)
+    this.roof_back=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,-constructor_depth/2)
+    this.roof_right=new Roof_walls_square(roof_depth,roof_height,roof_width/2,constructor_height+roof_height/2,0,Math.PI/2)
+   //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
+    this.roof=new Roof(roof_width,roof_depth,0,constructor_height+roof_height/2,0,0,roof_height )
+   //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z; 
+    this.roof_front.object.geometry.rotateY(Math.PI/2*roof_instance)  
+    this.roof_back.object.geometry.rotateY(Math.PI/2*roof_instance)  
+    this.roof_right.object.geometry.rotateY(Math.PI/2*roof_instance)  
+    this.roof.object.geometry.rotateY(Math.PI/2*roof_instance)  
+    
+    break;
+    }
+
+    case 5:{
+
+      //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z;   
+      this.roof_front=new Roof_walls(roof_width/2,roof_height,-roof_width/4,constructor_height+roof_height/2,constructor_depth/2)
+      this.roof_back=new Roof_walls(roof_width/2,roof_height,-roof_width/4,constructor_height+roof_height/2,-constructor_depth/2)
+      this.roof_right=new Roof_walls_square(roof_depth,roof_height,0,constructor_height+roof_height/2,0,Math.PI/2)
+     //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
+      this.roof=new Roof(roof_width/2,roof_depth,-roof_width/4,constructor_height+roof_height/2,0,0,roof_height )
+     //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z; 
+   
+   
+     this.roof_front2=new Roof_walls(roof_width/2,roof_height,-roof_width/4,constructor_height+roof_height/2,constructor_depth/2)
+     this.roof_back2=new Roof_walls(roof_width/2,roof_height,-roof_width/4,constructor_height+roof_height/2,-constructor_depth/2)
+     this.roof_right2=new Roof_walls_square(roof_depth,roof_height,0,constructor_height+roof_height/2,0,Math.PI/2)
+    //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
+     this.roof2=new Roof(roof_width/2,roof_depth,-roof_width/4,constructor_height+roof_height/2,0,0,roof_height )
+  
+    this.roof_front2.object.geometry.rotateY(Math.PI)  
+    this.roof_back2.object.geometry.rotateY(Math.PI)  
+    this.roof_right2.object.geometry.rotateY(Math.PI)  
+    this.roof2.object.geometry.rotateY(Math.PI)  
+  
+   
+    this.roof_front2.add_components_to_scene(this.scene)
+    this.roof_back2.add_components_to_scene(this.scene)
+    this.roof_right2.add_components_to_scene(this.scene)
+    this.roof2.add_components_to_scene(this.scene)
+
+     break;
+      
+    }
+    case 6:{
+            let x=roof_width;
+            roof_width =roof_depth;
+            roof_depth =x;
+            constructor_depth=constructor_width;
+            //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z;   
+            this.roof_front=new Roof_walls(roof_width/2,roof_height,-roof_width/4,constructor_height+roof_height/2,constructor_depth/2)
+            this.roof_back=new Roof_walls(roof_width/2,roof_height,-roof_width/4,constructor_height+roof_height/2,-constructor_depth/2)
+            this.roof_right=new Roof_walls_square(roof_depth,roof_height,0,constructor_height+roof_height/2,0,Math.PI/2)
+           //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
+            this.roof=new Roof(roof_width/2,roof_depth,-roof_width/4,constructor_height+roof_height/2,0,0,roof_height )
+           //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z; 
+         
+         
+           this.roof_front2=new Roof_walls(roof_width/2,roof_height,-roof_width/4,constructor_height+roof_height/2,constructor_depth/2)
+           this.roof_back2=new Roof_walls(roof_width/2,roof_height,-roof_width/4,constructor_height+roof_height/2,-constructor_depth/2)
+           this.roof_right2=new Roof_walls_square(roof_depth,roof_height,0,constructor_height+roof_height/2,0,Math.PI/2)
+          //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
+           this.roof2=new Roof(roof_width/2,roof_depth,-roof_width/4,constructor_height+roof_height/2,0,0,roof_height )
+        
+          this.roof_front2.object.geometry.rotateY(Math.PI)  
+          this.roof_back2.object.geometry.rotateY(Math.PI)  
+          this.roof_right2.object.geometry.rotateY(Math.PI)  
+          this.roof2.object.geometry.rotateY(Math.PI)  
+        
+         
+                  
+          this.roof_front.object.geometry.rotateY(Math.PI/2)  
+          this.roof_back.object.geometry.rotateY(Math.PI/2)  
+          this.roof_right.object.geometry.rotateY(Math.PI/2)  
+          this.roof.object.geometry.rotateY(Math.PI/2)  
+        
+                  
+          this.roof_front2.object.geometry.rotateY(Math.PI/2)  
+          this.roof_back2.object.geometry.rotateY(Math.PI/2)  
+          this.roof_right2.object.geometry.rotateY(Math.PI/2)  
+          this.roof2.object.geometry.rotateY(Math.PI/2)  
+        
+
+          this.roof_front2.add_components_to_scene(this.scene)
+          this.roof_back2.add_components_to_scene(this.scene)
+          this.roof_right2.add_components_to_scene(this.scene)
+          this.roof2.add_components_to_scene(this.scene)
+      
+           break;
+               
+    }
+  }
+
+}
+
+
+
+ release(){
+  scene.remove(this.wall_front.object)
+  scene.remove(this.wall_back.object)
+  scene.remove(this.wall_left.object)
+  scene.remove(this.wall_right.object)
+
+  scene.remove(this.roof_front.object)
+  scene.remove(this.roof_back.object)
+  scene.remove(this.roof_right.object)
+  scene.remove(this.roof.object)
+ }
+
+add_to_scene(){
+
+
+  //scene.add(this.wall_front)
+  //scene.add(this.wall_back)
+  //scene.add(this.wall_left)
+  //scene.add(this.wall_right)
+  //The correct syntax is scene.add('object')
+ 
+ this.wall_front.add_components_to_scene(this.scene)
+ this.wall_back.add_components_to_scene(this.scene)
+ this.wall_left.add_components_to_scene(this.scene)
+ this.wall_right.add_components_to_scene(this.scene)
+
+
+
+  this.roof_front.add_components_to_scene(this.scene)
+  this.roof_back.add_components_to_scene(this.scene)
+  this.roof_right.add_components_to_scene(this.scene)
+  this.roof.add_components_to_scene(this.scene)
+
+}
+
+ 
+}
+
+//main_house=new Creation_controller(40,40,3,40,40,5,scene);
 let flat_ground=new Foundation(depth,width)
 //width_of_a_plane,height_of_a_plane, translation_x,translation_y, translation_z; 
 //in left and right walls we rotate around the y axis so the width becomes the depth height remains the so we have
 //depth, height, half of width of building, half of height, and rotation by 90 deg
 
-let constructor_width=20;
+//@TODO construct all 6 roofs 4 throught rotation the two part one manually + rotation
+
+let constructor_width=27;
 let constructor_depth=20;
 let constructor_height=5;
 
-let roof_width=20;
-let roof_depth=10;
+let roof_width=27;
+let roof_depth=20;
 let roof_height=5;
-
+let main_house=new Creation_controller(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene);
+//main_house.release();
+//main_house=new Creation_controller(constructor_width+10, constructor_depth+10, constructor_height, roof_width+10, roof_depth+10, roof_height, scene);
 
 let wall_front=new Garage_walls(constructor_width,constructor_height,0,constructor_height/2,constructor_depth/2)
 let wall_back=new Garage_walls(constructor_width,constructor_height,0,constructor_height/2,-constructor_depth/2)
 let wall_left=new Garage_walls(constructor_depth,constructor_height,-constructor_width/2,constructor_height/2,0,Math.PI/2)
 let wall_right=new Garage_walls(constructor_depth,constructor_height,constructor_width/2,constructor_height/2,0,Math.PI/2)
 
-wall_front.add_components_to_scene(scene)
-wall_back.add_components_to_scene(scene)
-wall_left.add_components_to_scene(scene)
-wall_right.add_components_to_scene(scene)
+
+
+
+//wall_front.add_components_to_scene(scene)
+//scene.remove(wall_front)
+
+//wall_front.add(scene)
+//wall_back.add_components_to_scene(scene)
+//wall_left.add_components_to_scene(scene)
+//wall_right.add_components_to_scene(scene)
 //flat_ground.add_components_to_scene(scene)
 
 //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z; 
@@ -594,16 +846,16 @@ wall_right.add_components_to_scene(scene)
 
  roof_front=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,constructor_depth/2)
  roof_back=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,-constructor_depth/2)
- roof_right=new Roof_walls_square(roof_depth,roof_height,roof_width/2,constructor_height+roof_height/2,0,Math.PI/2)
+ roof_right=new Roof_walls_square(roof_width,roof_height,roof_width/2,constructor_height+roof_height/2,0,Math.PI/2)
 //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
-roof=new Roof(roof_width,roof_depth,0,5+2.5,0,0, 5)
+//roof=new Roof(roof_width,roof_depth,0,constructor_height+roof_height/2,0,0,roof_height )
 
 
 
-roof_front.add_components_to_scene(scene)
-roof_back.add_components_to_scene(scene)
-roof_right.add_components_to_scene(scene)
-roof.add_components_to_scene(scene)
+//roof_front.add_components_to_scene(scene)
+//roof_back.add_components_to_scene(scene)
+//roof_right.add_components_to_scene(scene)
+//roof.add_components_to_scene(scene)
 
 
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -652,6 +904,8 @@ scene.add(pointLight, ambientLight);
  const controls = new OrbitControls(camera, renderer.domElement);
 
 
+
+
 // Background
 
 // Scroll Animation
@@ -673,6 +927,8 @@ function animate() {
 animate();
 }
 main()
+
+
 
 
 
@@ -698,6 +954,8 @@ function secondary_main() {
   const far = 5;
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   camera.position.z = 2;
+
+
 
   
 
