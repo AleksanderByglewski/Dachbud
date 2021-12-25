@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="side-menu.css">
+    <title>Document</title>
+</head>
+<body>
+<div id="page-container">
+    <div id="div-01">Here is div-01</div>
+    <div id="div-02">Here is div-02</div>
+
+    <div class="side-menu">
+        <div class="menu-elem">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Menu elem heading</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="./favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide"><div class="menu-elem-content-text">Menu elem conten<img src="https://dummyimage.com/600x400/ccc/fff">t</div></div>
+        </div>
+        <div class="menu-elem">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Menu elem heading</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="./favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide"><div class="menu-elem-content-text">Menu elem content</div></div>
+        </div>
+        <div class="menu-elem">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Menu elem heading</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="./favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide"><div class="menu-elem-content-text">Menu elem content</div></div>
+        </div>
+    </div>
+</div>
+   
+
+
+
+</body>
+<script src="side-menu.js"></script>
+<script type="text/javascript">
+    let el = document.getElementById('div-01').nextElementSibling;
+    console.log('Siblings of div-01:');
+    while (el) {
+      console.log(el.nodeName);
+      el = el.nextElementSibling;
+    }
+  </script>
+</html>
