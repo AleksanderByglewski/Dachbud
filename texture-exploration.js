@@ -203,6 +203,7 @@ class Foundation extends General_object{
     const geometry = new THREE.TorusGeometry(2, 0.5, 16, 100);
     const material = new THREE.MeshStandardMaterial({ color: 0xff6347,wireframe: true });
     const torus = new THREE.Mesh(geometry, material);
+    
     scene.add(torus);
   }
 }
@@ -599,6 +600,9 @@ constructor(constructor_width, constructor_depth, constructor_height, roof_width
   this.rebuild_roofs(6);
   this.add_to_scene();
 
+
+  
+
 }
 
 rebuild_walls(constructor_width=this.constructor_width, constructor_depth=this.constructor_depth, constructor_height=this.constructor_height, 
@@ -800,6 +804,7 @@ add_to_scene(){
   this.roof_right.add_components_to_scene(this.scene)
   this.roof.add_components_to_scene(this.scene)
 
+
 }
 
  
@@ -878,7 +883,7 @@ scene.add( plane );
 
 // Torus
 
-const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
+const geometry = new THREE.TorusGeometry(1, 0.3, 10, 20);
 const material = new THREE.MeshStandardMaterial({ color: 0xff6347,wireframe: true });
 const torus = new THREE.Mesh(geometry, material);
 //scene.add(torus);
