@@ -15,16 +15,6 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 //import {GUI} from 'https://cdn.jsdelivr.net/npm/lil-gui@0.15.0/dist/lil-gui.umd.min.js';
 
 
-class General_object{
- show_me_desire(){
-  alert("Hello")}
-
-
-
-}
-
-
-
 //Working with little GUI
 class StringToNumberHelper {
     constructor(obj, prop) {
@@ -83,12 +73,12 @@ gui.add(texture.center, 'x', -.5, 1.5, .01).name('texture.center.x');
 gui.add(texture.center, 'y', -.5, 1.5, .01).name('texture.center.y');
 gui.add(new DegRadHelper(texture, 'rotation'), 'value', -360, 360)
 .name('texture.rotation');
-
-
 let roof;
 let roof_front;
 let roof_back;
 let roof_right;
+const gui2 = new GUI();
+//gui2.add(texture.offset, 'y', 0, 255, 1).name('Red');
 class AxisGridHelper {
     constructor( units = 10) {
       //const axes = new THREE.AxesHelper();
@@ -125,7 +115,6 @@ class AxisGridHelper {
     gui.add(helper, 'visible').name(label);
     return helper;
   }
-
   const visibility_enabler=makeAxisGrid( 'Enable manual texture update ', 'Live update');
   let enable_texture_hearing=false;
 
@@ -166,11 +155,6 @@ class AxisGridHelper {
     }
   }
 
-  const gui2 = new GUI();
-  //gui2.add(texture.offset, 'y', 0, 255, 1).name('Red');
- // gui2.add(texture.center, 'x', 0, 255, 1).name('Green');
- // gui2.add(texture.center, 'y', 0, 255, 1).name('Blue');
-
   function makeColorHelper(node, label, units) {
     const helper = new ColorHelper(node, units);
     gui2.add(helper, 'visible').name(label);
@@ -183,12 +167,23 @@ class AxisGridHelper {
   const color_enabler=makeColorHelper( 'Enable manual texture update ', 'Live update');
   let enable_color_hearing=false;
   
-  
-
 //Helper variables
 var depth=10;
 var width=20;
 var height=5;
+
+
+class General_object{
+  show_me_desire(){
+   alert("Hello")}
+  set_position(x=0,y=0,z=0){
+    this.object.position.x=x;
+    this.object.position.y=y;
+    this.object.position.z=z;
+  }
+ 
+ 
+ }
 
 class Foundation extends General_object{
 
@@ -207,25 +202,6 @@ class Foundation extends General_object{
     scene.add(torus);
   }
 }
-
-
-
-class Garage_block extends General_object{
-  
-  constructor(width, depth){
-  super();
-  this.components=[];
-  this.width=width;
-  this.depth=depth;
-    }
-  add_components_to_scene(scene){
-    const geometry = new THREE.TorusGeometry(2, 0.5, 16, 100);
-    const material = new THREE.MeshStandardMaterial({ color: 0xff6347,wireframe: true });
-    const torus = new THREE.Mesh(geometry, material);
-    scene.add(torus);
-  }
-}
-
 //This is basically the template for the front wall right now
 class Garage_walls extends General_object{
   
@@ -238,10 +214,11 @@ class Garage_walls extends General_object{
   this.geometry=new THREE.PlaneGeometry( x, y );
   this.geometry.rotateY(rotation)
   this.geometry.translate(translate_x,translate_y,translate_z );
+ 
   const material = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide} );
   this.object = new THREE.Mesh(this.geometry, material);
-
-
+ 
+  
 
   const loader = new THREE.TextureLoader();
   var  texture = loader.load('wall.jpg');
@@ -254,7 +231,8 @@ this.material = new THREE.MeshBasicMaterial( { map: texture ,color: 'rgb(255,255
 let normalMap = new THREE.TextureLoader().load('NormalMap.png');
 material.normalMap = normalMap;//normal map
 this.object  = new THREE.Mesh( this.geometry, this.material );
-
+    
+    super.set_position(translate_x,0,0);
 
     }
 
@@ -268,7 +246,6 @@ this.object  = new THREE.Mesh( this.geometry, this.material );
     scene.add(this.object);
   }
 }
-
 class Roof_walls extends General_object{
   
   constructor(x, y,translate_x=0,translate_y=0, translate_z=0, rotation=0){
@@ -318,7 +295,6 @@ class Roof_walls extends General_object{
 
 
 
-  
   this.object  = new THREE.Mesh( this.geometry, this.material );
    //let material = new THREE.MeshPhongMaterial();
   
@@ -360,7 +336,6 @@ class Roof_walls extends General_object{
   }
 
 }
-
 class Roof_walls_square extends General_object{
   
   constructor(x, y,translate_x=0,translate_y=0, translate_z=0, rotation=0){
@@ -529,10 +504,6 @@ class Roof extends General_object{
       scene.add(this.object);
     }
 }
-
-
-
-
 class Front_wall extends Garage_walls{
   constructor(){
     super();
@@ -588,7 +559,7 @@ constructor(constructor_width, constructor_depth, constructor_height, roof_width
   this.roof_right=null;
   this.roof=null;
 
-  this.roof_front2=new Garage_walls(0,0,0,0,0);
+  this.roof_front2=new Garage_walls(0,0,10,0,0);
   this.roof_back2=new Garage_walls(0,0,0,0,0);
   this.roof_right2=new Garage_walls(0,0,0,0,0);
   this.roof2=new Garage_walls(0,0,0,0,0);
@@ -612,7 +583,55 @@ rebuild_walls(constructor_width=this.constructor_width, constructor_depth=this.c
   this.wall_back=new Garage_walls(constructor_width,constructor_height,0,constructor_height/2,-constructor_depth/2)
   this.wall_left=new Garage_walls(constructor_depth,constructor_height,-constructor_width/2,constructor_height/2,0,Math.PI/2)
   this.wall_right=new Garage_walls(constructor_depth,constructor_height,constructor_width/2,constructor_height/2,0,Math.PI/2)
- 
+
+  
+  const objects = [];
+
+  const radius = 1;
+  const widthSegments = 6;
+  const heightSegments = 6;
+  const sphereGeometry = new THREE.SphereGeometry(
+      radius, widthSegments, heightSegments);
+
+  const solarSystem = new THREE.Object3D();
+
+  //scene.add(solarSystem);
+  objects.push(solarSystem);
+  
+  const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xFFFF00});
+  const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
+  sunMesh.scale.set(5, 5, 5);
+  solarSystem.add(sunMesh);
+  objects.push(sunMesh);
+
+  //@TODO: attach this code to the proper objects and allow attaching addtional components to them such as doors handles and such
+  //remember to define proper release methods for releasing the resources
+   //Learn about textures and implement nice textures configure the objects to implement the textures
+  //Configure the menu so that the interaction may occur just through the menu items
+  //Write the presentation if you have enough time and enjoy life
+  this.wall_front.object.position.x=40;
+  this.wall_front.object.add(solarSystem)
+
+  const earthOrbit = new THREE.Object3D();
+  earthOrbit.position.x = 10;
+  solarSystem.add(earthOrbit);
+  objects.push(earthOrbit);
+  
+  const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
+  const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
+  earthOrbit.add(earthMesh);
+  objects.push(earthMesh);
+  
+  const moonOrbit = new THREE.Object3D();
+  moonOrbit.position.x = 2;
+  earthOrbit.add(moonOrbit);
+  
+  const moonMaterial = new THREE.MeshPhongMaterial({color: 0x888888, emissive: 0x222222});
+  const moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
+  moonMesh.scale.set(.5, .5, .5);
+  moonOrbit.add(moonMesh);
+  objects.push(moonMesh);
+
   //this.roof_front=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,constructor_depth/2)
   //this.roof_back=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,-constructor_depth/2)
   //this.roof_right=new Roof_walls_square(roof_depth,roof_height,roof_width/2,constructor_height+roof_height/2,0,Math.PI/2)
@@ -804,6 +823,16 @@ add_to_scene(){
   this.roof_right.add_components_to_scene(this.scene)
   this.roof.add_components_to_scene(this.scene)
 
+  
+  const objects = [];
+
+const radius = 1;
+const widthSegments = 6;
+const heightSegments = 6;
+const sphereGeometry = new THREE.SphereGeometry(
+    radius, widthSegments, heightSegments);
+
+
 
 }
 
@@ -816,7 +845,11 @@ let flat_ground=new Foundation(depth,width)
 //in left and right walls we rotate around the y axis so the width becomes the depth height remains the so we have
 //depth, height, half of width of building, half of height, and rotation by 90 deg
 
-//@TODO construct all 6 roofs 4 throught rotation the two part one manually + rotation
+
+
+
+
+
 
 let constructor_width=27;
 let constructor_depth=20;
