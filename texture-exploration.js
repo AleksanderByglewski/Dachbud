@@ -202,24 +202,47 @@ class Foundation extends General_object{
     scene.add(torus);
   }
 }
+
+class Bounding_Box{
+  constructor(x_begin, x_end,y_begin, y_end){
+    this.x_begin=x_begin;
+    this.x_end=x_end;
+    this.y_begin=y_begin;
+    this.y_end=y_end;
+  }
+  check_intersection(outer_element, inner_element){
+    if(!(outer_element.x_begin<inner_element.x_end && inner_element.x_end<outer_element.x_end))
+      return false;
+      
+    if(!(inner_element.x_begin<outer_element.x_end && outer.element.x_end<inner_inner_element.x_begin))
+    return false;
+
+    else {
+      return true;
+    }
+
+
+  }
+
+
+  }
 //This is basically the template for the front wall right now
 class Garage_walls extends General_object{
+//What is the logic of this class?
+//We have one main component mainly the wall that
+//takes care of it's subcomponents such as door
+
   
   constructor(x, y,translate_x=0,translate_y=0, translate_z=0, rotation=0){
   super();
+  this.boundingBoxInstance = new Bounding_Box(x,y)
+
   this.components=[];
   this.width=x;
   this.depth=y;
   this.rotation=0;
-  this.geometry=new THREE.PlaneGeometry( x, y );
-  this.geometry.rotateY(rotation)
-  this.geometry.translate(translate_x,translate_y,translate_z );
- 
   const material = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide} );
-  this.object = new THREE.Mesh(this.geometry, material);
- 
   
-
   const loader = new THREE.TextureLoader();
   var  texture = loader.load('wall.jpg');
   texture = loader.load('roof2.jpg');
@@ -227,22 +250,100 @@ class Garage_walls extends General_object{
   texture.wrapT =THREE.RepeatWrapping;
   texture.repeat.set( 5, 3.28 );
   texture.offset.set(1,0)
-this.material = new THREE.MeshBasicMaterial( { map: texture ,color: 'rgb(255,255,255)', side: THREE.DoubleSide} );
-let normalMap = new THREE.TextureLoader().load('NormalMap.png');
-material.normalMap = normalMap;//normal map
-this.object  = new THREE.Mesh( this.geometry, this.material );
+  this.material = new THREE.MeshBasicMaterial( { map: texture ,color: 'rgb(255,255,255)', side: THREE.DoubleSide} );
+  let normalMap = new THREE.TextureLoader().load('NormalMap.png');
+  material.normalMap = normalMap;//normal map
+  
+
+  this.geometry=new THREE.PlaneGeometry( x, y );
+  
+  
+  
+  this.object  = new THREE.Mesh( this.geometry, this.material );
+
+ 
+  const objects = [];
+
+  const radius = 1;
+  const widthSegments = 6;
+  const heightSegments = 6;
+  const sphereGeometry = new THREE.SphereGeometry(
+  radius, widthSegments, heightSegments);
+
+  const solarSystem = new THREE.Object3D();
+  objects.push(solarSystem);
+  const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xFFFF00});
+  const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
+  sunMesh.scale.set(5, 5, 5);
+  solarSystem.add(sunMesh);
+  objects.push(sunMesh);
+
+ 
+ 
     
-    super.set_position(translate_x,0,0);
+
+  const door_material = new THREE.MeshBasicMaterial({color: 0x44aa88});
+  const door_width = 6;  // ui: width
+  const door_height = 4;  // ui: height
+  const door_depth = 0.1;  // ui: depth
+  const door_geometry = new THREE.BoxGeometry(door_width, door_height, door_depth);
+  const door = new THREE.Mesh(door_geometry, door_material);
+  door.geometry.translate(-5,+door_height/2-5/2,0)
+  //TODO MAKE IT ROTATE BASED ON side it is in
+  door.geometry.rotateY(0*Math.PI/2)
+  
+  //@TODO: attach this code to the proper objects and allow attaching addtional components to them such as doors handles and such
+  //remember to define proper release methods for releasing the resources
+   //Learn about textures and implement nice textures configure the objects to implement the textures
+  //Configure the menu so that the interaction may occur just through the menu items,optionally do the presentation
+//run_array=[]
+
+
+//Now for the creation of components
+
+
+
+this.add_components(door)
+//this.remove_components()
+
+  //TODO Pt.1write a function that adds objects to garage wall objects,
+  //and write a function that removes object from garage wall (in the end based on a unique id)
+  
+  //ADDNOTATION Okay there is no other way as to make
+  //moving of the components relative to their rotation 
+  //sunMesh.geometry.translate(-1,0,0);  
+  //ADDNOTATION FOR THE CLEANUP ALL THAT IS NECESSARY IS THIS
+  //this.object.remove(solarSystem)
+  this.geometry.rotateY(rotation)
+  super.set_position(translate_x,translate_y,translate_z)
+ 
+  
+  
+ 
 
     }
 
+    
+ add_components(component){
+  console.log('Adding a component ')
+  this.object.add(component)
+ }
+ remove_components(){
+    let children=this.object.children
+    //console.log(parent_element.object.children)
+    for (const child of children){
+      this.object.remove(child)
+    }
+    //parent_element.object.remove(solarSystem)
+  }
+
+  //this.object.add(solarSystem)
+
+
 
   add_components_to_scene(scene){
-   
-    //this.geometry = new THREE.PlaneGeometry( width, height );
-    //this.geometry.translate(0,height/2,depth/2);
+
     const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
-    //const torus = new THREE.Mesh(this.geometry, material);
     scene.add(this.object);
   }
 }
@@ -609,29 +710,7 @@ rebuild_walls(constructor_width=this.constructor_width, constructor_depth=this.c
    //Learn about textures and implement nice textures configure the objects to implement the textures
   //Configure the menu so that the interaction may occur just through the menu items
   //Write the presentation if you have enough time and enjoy life
-  this.wall_front.object.position.x=40;
-  this.wall_front.object.add(solarSystem)
-
-  const earthOrbit = new THREE.Object3D();
-  earthOrbit.position.x = 10;
-  solarSystem.add(earthOrbit);
-  objects.push(earthOrbit);
-  
-  const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
-  const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
-  earthOrbit.add(earthMesh);
-  objects.push(earthMesh);
-  
-  const moonOrbit = new THREE.Object3D();
-  moonOrbit.position.x = 2;
-  earthOrbit.add(moonOrbit);
-  
-  const moonMaterial = new THREE.MeshPhongMaterial({color: 0x888888, emissive: 0x222222});
-  const moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
-  moonMesh.scale.set(.5, .5, .5);
-  moonOrbit.add(moonMesh);
-  objects.push(moonMesh);
-
+ 
   //this.roof_front=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,constructor_depth/2)
   //this.roof_back=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,-constructor_depth/2)
   //this.roof_right=new Roof_walls_square(roof_depth,roof_height,roof_width/2,constructor_height+roof_height/2,0,Math.PI/2)
@@ -859,6 +938,9 @@ let roof_width=27;
 let roof_depth=20;
 let roof_height=5;
 let main_house=new Creation_controller(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene);
+//ADDNOTATION
+//scene.remove(main_house.wall_front.object) works that is a really good sign
+
 //main_house.release();
 //main_house=new Creation_controller(constructor_width+10, constructor_depth+10, constructor_height, roof_width+10, roof_depth+10, roof_height, scene);
 
@@ -961,6 +1043,65 @@ function animate() {
   // controls.update();
 
   renderer.render(scene, camera);
+
+  {
+    const planeSize = 100;
+
+    const loader = new THREE.TextureLoader();
+    //const texture = loader.load('https://threejs.org/manual/examples/resources/images/checker.png');
+    //texture.wrapS = THREE.RepeatWrapping;
+    //texture.wrapT = THREE.RepeatWrapping;
+    //texture.magFilter = THREE.NearestFilter;
+    const repeats = planeSize / 2;
+    //texture.repeat.set(repeats, repeats);
+
+    const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
+    const planeMat = new THREE.MeshPhongMaterial({
+      color: 0xff6347,
+      side: THREE.DoubleSide
+    });
+    const mesh = new THREE.Mesh(planeGeo, planeMat);
+    mesh.receiveShadow = true;
+    mesh.rotation.x = Math.PI * -.5;
+    scene.add(mesh);
+  }
+  {
+    const sphereRadius = 5;
+    const sphereWidthDivisions = 32;
+    const sphereHeightDivisions = 16;
+    const sphereGeo = new THREE.SphereGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
+    const sphereMat = new THREE.MeshPhongMaterial({color: '#CA8'});
+    const mesh = new THREE.Mesh(sphereGeo, sphereMat);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    sphereGeo.translate(-20,0,0)
+    mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
+    scene.add(mesh);
+  }
+
+  {
+    const color = 0xFF0000;
+    const intensity = 1;
+    const light = new THREE.DirectionalLight(color, intensity);
+    light.castShadow = true;
+    light.position.set(-25, 20, 0);
+    light.target.position.set(-25, 0, -4);
+    scene.add(light);
+    scene.add(light.target);
+
+    const helper = new THREE.DirectionalLightHelper(light);
+    scene.add(helper);
+
+    const onChange = () => {
+      light.target.updateMatrixWorld();
+      helper.update();
+    };
+    onChange();
+
+    
+ 
+  }
+
 }
 animate();
 }
@@ -980,36 +1121,5 @@ function helper_fuction(){
 //helper_fuction();
 
 
-
-function secondary_main() {
-  
-  const canvas = document.querySelector('#c');
-  const renderer = new THREE.WebGLRenderer({canvas});
-
-  const fov = 75;
-  const aspect = 2;  // the canvas default
-  const near = 0.1;
-  const far = 5;
-  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.z = 2;
-
-
-
-  
-
-  const scene = new THREE.Scene();
-
-  const boxWidth = 1;
-  const boxHeight = 1;
-  const boxDepth = 1;
-  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
-  const material = new THREE.MeshBasicMaterial({color: 0x44aa88});  // greenish blue
-
-  const cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
-
-  renderer.render(scene, camera);
-}
 
 //secondary_main();
