@@ -76,13 +76,57 @@ body{
         position: absolute;
         bottom: unset;
         right:unset;
-        top:calc(100vh - 36px);
+        top:calc(100vh - 152px);
+        /*We can add a button that moves the menu up for the ease of access*/
+        /*transition:top 2s;*/
         left:unset;
         display: grid;
         background-color: rgba(64,64,64);
     }
+
 }
 
 
 
 /*Content of the menu styling*/
+div#roof-choice {
+    grid-template-columns: 1fr 1fr 1fr;  
+    text-align: center;
+    justify-content: space-around;
+}
+
+
+.menu-elem-content>div{
+    margin:1em 1em 1em 1em;
+    display: grid;
+    justify-content: center;
+}
+.menu-elem-content>div img{
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+
+
+
+div#roof-color {
+    grid-template-columns: repeat(6,1fr);  
+    text-align: center;
+    justify-content: space-around;
+}
+#roof-color .desc{
+    line-height: 1em;
+    height: 2em;
+    overflow: hidden;
+}
+#roof-color>div {
+    margin:1em 1em 0em 1em
+    
+}
+
+
+div#roof-material {
+    grid-template-columns: repeat(2,1fr);  
+    text-align: center;
+    justify-content: space-around;
+}

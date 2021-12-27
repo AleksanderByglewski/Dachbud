@@ -265,8 +265,6 @@ class Garage_walls extends General_object{
 //What is the logic of this class?
 //We have one main component mainly the wall that
 //takes care of it's subcomponents such as door
-  
-  
   constructor(x, y,translate_x=0,translate_y=0, translate_z=0, rotation=0){
   super();
   this.boundingBoxInstance = new Bounding_Box(x,y)
@@ -275,15 +273,20 @@ class Garage_walls extends General_object{
   this.width=x;
   this.depth=y;
   this.rotation=0;
-  const material = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide} );
-  
 
-  this.change_the_texture()
+  const loader = new THREE.TextureLoader();
+  this.texture = loader.load('roof2.jpg');
+  this.texture.wrapS =  THREE.ClampToEdgeWrapping;
+  this.texture.wrapT =THREE.RepeatWrapping;
+
+  this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} );
+  this.object = new THREE.Mesh(this.geometry, this.material);
+  this.change_the_texture(null, 255,0,0,0)  
 
   
   this.geometry=new THREE.PlaneGeometry( x, y );
   this.object  = new THREE.Mesh( this.geometry, this.material );
- 
+    
 
   const door_material = new THREE.MeshBasicMaterial({color: 0x44aa88});
   const door_width = 6;  // ui: width
@@ -292,32 +295,24 @@ class Garage_walls extends General_object{
   const door_geometry = new THREE.BoxGeometry(door_width, door_height, door_depth);
   const door = new THREE.Mesh(door_geometry, door_material);
   
+  door.geometry.translate(0,+door_height/2-5/2,0)
+  door.geometry.rotateY(0*Math.PI/2)
+  this.add_components(door)
   
+  door.name="alex"
+  console.log(door.id)
+  //this.remove_component(door.id)
+  this.geometry.rotateY(rotation)
+  super.set_position(translate_x,translate_y,translate_z)
+     
   //@TODO:
-  //Learn about textures and implement nice textures configure the objects to implement the textures
-  //Configure the menu so that the interaction may occur just through the menu items,optionally do the presentation
-  //run_array=[]
+  //You can just force the rebuilding of the walls in change the texture
 
 
-//Now for the creation of components
-
-
-
-//TODO MAKE IT ROTATE BASED ON side it is in
-door.geometry.translate(0,+door_height/2-5/2,0)
-door.geometry.rotateY(0*Math.PI/2)
-this.add_components(door)
-
-door.name="alex"
-console.log(door.id)
-//this.remove_component(door.id)
-this.geometry.rotateY(rotation)
-super.set_position(translate_x,translate_y,translate_z)
- 
   
 
 }
-  change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255){
+  change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255,rotation=0){
     const loader = new THREE.TextureLoader();
     this.texture = loader.load('wall.jpg');
     this.texture = loader.load('./resources/images/PWP.jpg');
@@ -325,11 +320,18 @@ super.set_position(translate_x,translate_y,translate_z)
     this.texture.wrapT =THREE.RepeatWrapping;
     this.texture.repeat.set( 5, 2.0 );
     this.texture.offset.set(1,0)
+    
     this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
     this.material.needsUpdate=true;
     let normalMap = new THREE.TextureLoader().load('NormalMap.png');
     material.normalMap = normalMap;//normal map
-    
+    console.log("Siul la ruin")
+   
+
+    //this.object  = new THREE.Mesh( this.geometry, this.material );
+    //this.object.material.update=true;
+    //this.object.material.needsUpdate=true;
+ 
   }
     
  add_components(component){
@@ -386,59 +388,48 @@ class Roof_walls extends General_object{
   shape.lineTo(x/2, y/2);
   
   this.geometry = new THREE.ShapeGeometry(shape);
-
   this.geometry.rotateY(rotation)
   this.geometry.translate(translate_x,translate_y,translate_z );
 
-    
-
-
+  
 
   const loader = new THREE.TextureLoader();
-  var  texture = loader.load('wall.jpg');
   this.texture = loader.load('roof2.jpg');
- 
   this.texture.wrapS =  THREE.ClampToEdgeWrapping;
   this.texture.wrapT =THREE.RepeatWrapping;
-  this.texture.repeat.set( 0, 0.6 );
+  this.texture.repeat.set( 0, 1 );
   this.texture.offset.set(0,0.5)
   this.texture.center.set(0.65,0)
 
 
-  this.texture.repeat.set( 0, 0.65 );
-  this.texture.offset.set(0,0.12)
+
   this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} );
-  let normalMap = new THREE.TextureLoader().load('NormalMap.png');
-  //material.normalMap = normalMap;//normal map
-  this.change_the_texture()
-  
+  this.object = new THREE.Mesh(this.geometry, this.material);
+  this.change_the_texture()  
 
 
-
-  this.object  = new THREE.Mesh( this.geometry, this.material );
-   //let material = new THREE.MeshPhongMaterial();
-  
-  
-  //const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
-
-
-  //this.object = new THREE.Mesh(this.geometry, material);
     }
     
-    change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255){
+    change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255,rotation=0){
       const loader = new THREE.TextureLoader();
       this.texture = loader.load('wall.jpg');
       this.texture = loader.load('roof2.jpg');
- 
       this.texture.wrapS =  THREE.ClampToEdgeWrapping;
       this.texture.wrapT =THREE.RepeatWrapping;
-      this.texture.repeat.set( 5, 2.0 );
-      this.texture.offset.set(1,0)
+      this.texture.repeat.set( 5,5.2 );
+      this.texture.offset.set(1,0);
+      this.texture.rotation=(rotation)
       this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
       this.material.needsUpdate=true;
       let normalMap = new THREE.TextureLoader().load('NormalMap.png');
-      material.normalMap = normalMap;//normal map
-    }
+      //material.normalMap = normalMap;//normal map
+
+
+      this.object.material=this.material;
+      this.object.material.needsUpdate = true;
+
+    }    
+
 
     reconstruct_material()
     {
@@ -480,31 +471,85 @@ class Roof_walls_square extends General_object{
   this.depth=y;
   this.rotation=0;
  
+
+  
   this.geometry=new THREE.PlaneGeometry( x, y );
   this.geometry.rotateY(rotation)
   this.geometry.translate(translate_x,translate_y,translate_z );
-  //const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
-  const material = new THREE.MeshBasicMaterial( { map: texture ,color: 0xffffff, side: THREE.DoubleSide} );
   
+
+
+  
+
+
   //const loader = new THREE.TextureLoader();
   //const material = new THREE.MeshBasicMaterial({
-  //  color: 0xFF8844,
-  //  map: loader.load('resources/images/wall.jpg'),
- // });
-
-this.change_the_texture()
+    const material = new THREE.MeshBasicMaterial( {color: 0xff0000, side: THREE.DoubleSide} );
+    //const loader = new THREE.TextureLoader();
+    //const material = new THREE.MeshBasicMaterial({
+    //  color: 0xFF8844,
+    //  map: loader.load('resources/images/wall.jpg'),
+    //  
+    //});
     
-  this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} );
-  let normalMap = new THREE.TextureLoader().load('NormalMap.png');
-  material.normalMap = normalMap;//normal map
-  this.object  = new THREE.Mesh( this.geometry, this.material );
+    this.object = new THREE.Mesh(this.geometry, material);
+
+
+
+    //var texture = new THREE.TextureLoader().load( 'https://threejs.org/examples/textures/uv_grid_opengl.jpg' );
+
+
+   // var texture = new THREE.TextureLoader().load( 'roof2.jpg' );
+   // texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+   // texture.repeat.set( 2, 4 );
+   // texture.rotation=THREE.MathUtils.degToRad(-90);
+  
+   const loader = new THREE.TextureLoader();
+   var  texture = loader.load('wall.jpg');
+   texture = loader.load('roof2.jpg');
+   texture.wrapS =  THREE.ClampToEdgeWrapping;
+   texture.wrapT =THREE.RepeatWrapping;
+   texture.repeat.set( 5, 3.28 );
+   texture.offset.set(1,0);
+    this.change_the_texture()
+    this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} );
+    let normalMap = new THREE.TextureLoader().load('NormalMap.png');
+    material.normalMap = normalMap;//normal map
+    this.object  = new THREE.Mesh( this.geometry, this.material );
+    //let material = new THREE.MeshPhongMaterial();
+    
+
 
 
 
 
 
     }
-    change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255){
+
+    change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255,rotation=0){
+      const loader = new THREE.TextureLoader();
+      this.texture = loader.load('wall.jpg');
+      this.texture = loader.load('roof2.jpg');
+      this.texture.wrapS =  THREE.ClampToEdgeWrapping;
+      this.texture.wrapT =THREE.RepeatWrapping;
+      this.texture.repeat.set( 5, 13.12 );
+      this.texture.offset.set(1,0);
+      this.texture.rotation=(rotation)
+      this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
+      this.material.needsUpdate=true;
+      let normalMap = new THREE.TextureLoader().load('NormalMap.png');
+      material.normalMap = normalMap;//normal map
+
+      this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
+      this.material.needsUpdate=true;
+      this.object.material=this.material;
+      this.object.material.needsUpdate = true;
+
+      
+
+    }   
+
+    change_the_texture2(texture_name="./resources/images/PWP.jpg",r=255,g=0,b=0,rotation=0){
 
       const loader = new THREE.TextureLoader();
       this.texture = loader.load('wall.jpg');
@@ -513,7 +558,7 @@ this.change_the_texture()
       this.texture.wrapT =THREE.RepeatWrapping;
       this.texture.repeat.set( 5, 3.28 );
       this.texture.offset.set(1,0)
-  
+      this.texture.rotation=(rotation)
       this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
       this.material.needsUpdate=true;
       let normalMap = new THREE.TextureLoader().load('NormalMap.png');
@@ -562,40 +607,22 @@ class Roof extends General_object{
     this.geometry=new THREE.PlaneGeometry( Math.sqrt(x*x+roof_height*roof_height),y );
     this.geometry.rotateX(Math.PI/2);
     this.geometry.rotateZ(Math.atan(roof_height/x));
-    
     this.geometry.translate(translate_x,translate_y,translate_z );
 
     
  
 
     const material = new THREE.MeshBasicMaterial( {color: 0xff0000, side: THREE.DoubleSide} );
-    //const loader = new THREE.TextureLoader();
-    //const material = new THREE.MeshBasicMaterial({
-    //  color: 0xFF8844,
-    //  map: loader.load('resources/images/wall.jpg'),
-    //  
-    //});
-    
     this.object = new THREE.Mesh(this.geometry, material);
-
-
-
-    //var texture = new THREE.TextureLoader().load( 'https://threejs.org/examples/textures/uv_grid_opengl.jpg' );
-
-
-   // var texture = new THREE.TextureLoader().load( 'roof2.jpg' );
-   // texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-   // texture.repeat.set( 2, 4 );
-   // texture.rotation=THREE.MathUtils.degToRad(-90);
-  
-   const loader = new THREE.TextureLoader();
-   var  texture = loader.load('wall.jpg');
-   texture = loader.load('roof2.jpg');
-   texture.wrapS =  THREE.ClampToEdgeWrapping;
-   texture.wrapT =THREE.RepeatWrapping;
-   texture.repeat.set( 5, 3.28 );
-   texture.offset.set(1,0)
-   this.change_the_texture()
+    
+    const loader = new THREE.TextureLoader();
+    var  texture = loader.load('wall.jpg');
+    texture = loader.load('roof2.jpg');
+    texture.wrapS =  THREE.ClampToEdgeWrapping;
+    texture.wrapT =THREE.RepeatWrapping;
+    texture.repeat.set( 5, 3.28 );
+    texture.offset.set(1,0);
+    this.change_the_texture()
     this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} );
     let normalMap = new THREE.TextureLoader().load('NormalMap.png');
     material.normalMap = normalMap;//normal map
@@ -615,20 +642,36 @@ class Roof extends General_object{
     
       }
   
-      change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255){
+      change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255,rotation=0){
         const loader = new THREE.TextureLoader();
         this.texture = loader.load('wall.jpg');
         this.texture = loader.load('roof2.jpg');
         this.texture.wrapS =  THREE.ClampToEdgeWrapping;
         this.texture.wrapT =THREE.RepeatWrapping;
         this.texture.repeat.set( 5, 13.12 );
-        this.texture.offset.set(1,0)
-        this.texture.rotation=(Math.PI/2)
+        this.texture.offset.set(1,0);
+        this.texture.rotation=(rotation)
         this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
         this.material.needsUpdate=true;
         let normalMap = new THREE.TextureLoader().load('NormalMap.png');
         material.normalMap = normalMap;//normal map
+
+        this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
+        this.material.needsUpdate=true;
+        this.object.material=this.material;
+        this.object.material.needsUpdate = true;
+
+        
+
       }    
+      rotate_the_texture(){
+        this.object.material=this.material;
+       
+        
+        this.material.needsUpdate=true;
+        this.object.material.needsUpdate = true;
+      }
+
 
     reconstruct_material()
     {
@@ -691,13 +734,9 @@ function onWindowResize() {
   renderer.setSize( window.innerWidth, window.innerHeight );
 
 }
-
-
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
 });
-
-
 class Creation_controller{
 constructor(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene){
   
@@ -726,7 +765,6 @@ constructor(constructor_width, constructor_depth, constructor_height, roof_width
   this.scene=scene;
   
   this.rebuild_walls()
-  
   this.rebuild_roofs(6);
   this.add_to_scene();
 
@@ -743,7 +781,7 @@ rebuild_walls(constructor_width=this.constructor_width, constructor_depth=this.c
   this.wall_left=new Garage_walls(constructor_depth,constructor_height,-constructor_width/2,constructor_height/2,0,Math.PI/2)
   this.wall_right=new Garage_walls(constructor_depth,constructor_height,constructor_width/2,constructor_height/2,0,Math.PI/2)
 
-  
+
   const objects = [];
 
   const radius = 1;
@@ -975,18 +1013,11 @@ const sphereGeometry = new THREE.SphereGeometry(
 
  
 }
-
 //main_house=new Creation_controller(40,40,3,40,40,5,scene);
 //let flat_ground=new Foundation(depth,width)
 //width_of_a_plane,height_of_a_plane, translation_x,translation_y, translation_z; 
 //in left and right walls we rotate around the y axis so the width becomes the depth height remains the so we have
 //depth, height, half of width of building, half of height, and rotation by 90 deg
-
-
-
-
-
-
 
 let constructor_width=27;
 let constructor_depth=20;
@@ -1001,6 +1032,8 @@ let main_house=new Creation_controller(constructor_width, constructor_depth, con
 
 //main_house.release();
 //main_house=new Creation_controller(constructor_width+10, constructor_depth+10, constructor_height, roof_width+10, roof_depth+10, roof_height, scene);
+
+
 
 let wall_front=new Garage_walls(constructor_width,constructor_height,0,constructor_height/2,constructor_depth/2)
 let wall_back=new Garage_walls(constructor_width,constructor_height,0,constructor_height/2,-constructor_depth/2)
@@ -1177,5 +1210,49 @@ function animate() {
 
 }
 animate();
+
+//Event listeners and interactivity with DOM this can be moved
+//outside of the function to lower the initial render time
+
+
+  let para=document.querySelector("#roof-color")
+  para.addEventListener('click', change_color_roof)
+  
+  function change_color_roof(event){
+  let element=event.target.closest('.color-container')
+  let color=element.dataset.colorindex;
+  let red,green,blue;
+  function color_decomposition(x){
+    let red=parseInt(x.substring(0,2),16)
+    let green=parseInt(x.substring(2,4),16)
+    let blue=parseInt(x.substring(4,6),16)
+    return [red,green,blue]
+  }
+
+
+  //@TODO call the controller class that will store data and construct objects based on 
+  //the stored model
+  [red,green,blue]=color_decomposition(color)
+
+  main_house.roof_back.change_the_texture(null,red,green,blue)
+  main_house.roof_front.change_the_texture(null,red,green,blue)
+  main_house.roof_right.change_the_texture(null,red,green,blue)
+  main_house.roof.change_the_texture(null,red,green,blue)
+  main_house.roof_back2.change_the_texture(null,red,green,blue)
+  main_house.roof_front2.change_the_texture(null,red,green,blue)
+  main_house.roof_right2.change_the_texture(null,red,green,blue)
+  main_house.roof2.change_the_texture(null,red,green,blue)
+
+
+  main_house.wall_front.change_the_texture("  ",0,0,0,0)
+  main_house.wall_right.change_the_texture(null,0,255,255,0)
+  main_house.wall_back.change_the_texture(null,0,255,255,0)
+  main_house.wall_left.change_the_texture(null,0,255,255,0)
+  //main_house.roof.rotate_the_texture()
+  //Todo pass the callbacks into the controller function that will handle all states
 }
+
+}
+
+
 main()
