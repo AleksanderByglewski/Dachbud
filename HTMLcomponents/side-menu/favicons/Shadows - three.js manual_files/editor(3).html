@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<!-- saved from url=(0125)https://threejs.org/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-gui.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body {
+    margin: 0;
+    font-family: sans-serif;
+    overflow: hidden;
+    height: 100vh;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+iframe {
+    display: block;
+    border: none;
+}
+.frame {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #444;
+    color: #AAA;
+}
+.tabs {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #666;
+}
+.panes {
+    display: flex;
+    flex: 1 1 auto;
+    height: 50%;  /* this is needed for firefox. It won't actually be 50% because the flex: 1 1 auto means stretch */
+}
+.panes>div {
+    display: none;
+    flex: 1 1 50%;
+    flex-direction: column;
+    min-width: 0;
+}
+.panes .code {
+    flex: 1 1 auto;
+    position: relative;
+    height: 100%;
+}
+.panes .code > div {
+    height: 100%;
+}
+.panes .files {
+    position: relative;
+}
+.panes .fileSelected {
+    color: white;
+    background: #666;
+}
+.panes .files > div {
+    border: 1px solid black;
+    font-family: monospace;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.panes>div.other {
+    display: block
+}
+.editor {
+    g-overflow: auto;
+}
+.result {
+    overflow: auto;
+}
+.result>iframe {
+    width: 100%;
+    height: 100%;
+    background: white;
+}
+.result .console .log {
+    white-space: pre-line;
+}
+.other>div,
+.other>div>div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    font-size: xx-large;
+}
+.other>div {
+    height: 100%;
+    flex-direction: column;
+}
+
+.other .loading {
+    height: 2em;
+    width: 2em;
+    animation: rotate 0.8s infinite linear;
+    border: 0.4em solid #fff;
+    border-right-color: transparent;
+    border-radius: 50%;
+}
+.dialog {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dialog>div {
+  background: #444;
+  color: white;
+  padding: 1em;
+  outline: none;
+  max-width: 90%;
+}
+.dialog p {
+  margin-left: 0.25em;
+}
+.dialog a {
+  color: lightseagreen;
+}
+.dialog a:hover {
+  color: orange;
+}
+/* ---- */
+.export .export-buttons {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.export .export-buttons button {
+  width: 8em;
+}
+/* ---- */
+.copy-dialog .copy-area {
+  height: 8em;
+  overflow: auto;
+  user-select: all;
+  background: #222;
+  padding: 0.5em;
+}
+/* ---- */
+@keyframes rotate {
+    0%    { transform: rotate(0deg); }
+    100%  { transform: rotate(360deg); }
+}
+
+.tabs>div {
+    padding: 0.125em;
+}
+button {
+    padding: 0.5em;
+    border: none;
+    background: #AAA;
+    border-bottom: 5px solid black;
+    margin: 0.25em;
+    width: 5em;
+    cursor: pointer;
+}
+button:hover {
+  background-color: orange;
+}
+button:focus {
+    outline: none;
+}
+.panelogo {
+    font-size: medium;
+}
+.panelogo>*>* {
+    vertical-align: middle;
+    display: inline-block;
+    color: #CCC;
+}
+.show {
+    background: #FFF !important;
+    border-bottom: none !important;
+    border-top: 5px solid #666 !important;
+}
+.button-result {
+    margin-left: 2em !important;
+}
+.panebuttons>.button-fullscreen {
+    background-image: url(editor-fullscreen-icon.svg);
+    background-size: 80% 80%;
+    background-position: center center;
+    background-repeat: no-repeat no-repeat;
+}
+.fullscreen .panebuttons>.button-fullscreen {
+    background-image: url(editor-unfullscreen-icon.svg) !important;
+}
+
+@media ( max-width: 950px ) {
+    .panebuttons>button, body {
+      font-size: x-small;
+    }
+}
+
+@media ( max-width: 740px ) {
+    .panelogo>div>a:nth-child(1) {
+        display: none;
+    }
+}
+
+@media ( max-width: 590px ) {
+    .tabs {
+        display: none;
+    }
+    .panes>div {
+        display: none !important;
+        height: auto;
+    }
+    .panes>.result {
+        display: block !important;
+    }
+}
+</style>
+<script async="async" type="text/javascript" src="./editor.main.js"></script><link rel="stylesheet" type="text/css" data-name="vs/editor/editor.main" href="./editor.main.css"><script async="async" type="text/javascript" src="./editor.main.nls.js"></script><style type="text/css" media="screen" class="monaco-colors">.monaco-editor .minimap-slider, .monaco-editor .minimap-slider .minimap-slider-horizontal { background: rgba(121, 121, 121, 0.2); }
+.monaco-editor .minimap-slider:hover, .monaco-editor .minimap-slider:hover .minimap-slider-horizontal { background: rgba(100, 100, 100, 0.35); }
+.monaco-editor .minimap-slider.active, .monaco-editor .minimap-slider.active .minimap-slider-horizontal { background: rgba(191, 191, 191, 0.2); }
+.monaco-editor .minimap-shadow-visible { box-shadow: #000000 -6px 0 6px -6px inset; }
+.monaco-editor .scroll-decoration { box-shadow: #000000 0 6px 6px -6px inset; }
+.monaco-editor .focused .selected-text { background-color: #264f78; }
+.monaco-editor .selected-text { background-color: #3a3d41; }
+.monaco-editor, .monaco-editor-background, .monaco-editor .inputarea.ime-input { background-color: #1e1e1e; }
+.monaco-editor, .monaco-editor .inputarea.ime-input { color: #d4d4d4; }
+.monaco-editor .margin { background-color: #1e1e1e; }
+.monaco-editor .rangeHighlight { background-color: rgba(255, 255, 255, 0.04); }
+.monaco-editor .symbolHighlight { background-color: rgba(234, 92, 0, 0.33); }
+.vs-whitespace { color: rgba(227, 228, 226, 0.16) !important; }
+.monaco-editor .view-overlays .current-line { border: 2px solid #282828; }
+.monaco-editor .margin-view-overlays .current-line-margin { border: 2px solid #282828; }
+.monaco-editor .lines-content .cigr { box-shadow: 1px 0 0 0 #404040 inset; }
+.monaco-editor .lines-content .cigra { box-shadow: 1px 0 0 0 #707070 inset; }
+.monaco-editor .line-numbers { color: #858585; }
+.monaco-editor .current-line ~ .line-numbers { color: #c6c6c6; }
+.monaco-editor .view-ruler { box-shadow: 1px 0 0 0 #5a5a5a inset; }
+.monaco-editor .cursor { background-color: #aeafad; border-color: #aeafad; color: #515052; }
+.monaco-editor.vs .valueSetReplacement { outline: solid 2px #888888; }
+.monaco-editor .squiggly-error { background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23f48771'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") repeat-x bottom left; }
+.monaco-editor .squiggly-warning { background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23cca700'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") repeat-x bottom left; }
+.monaco-editor .squiggly-info { background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%2375beff'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") repeat-x bottom left; }
+.monaco-editor .squiggly-hint { background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%223%22%20width%3D%2212%22%3E%3Cg%20fill%3D%22rgba(238%2C%20238%2C%20238%2C%200.7)%22%3E%3Ccircle%20cx%3D%221%22%20cy%3D%221%22%20r%3D%221%22%2F%3E%3Ccircle%20cx%3D%225%22%20cy%3D%221%22%20r%3D%221%22%2F%3E%3Ccircle%20cx%3D%229%22%20cy%3D%221%22%20r%3D%221%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat bottom left; }
+.monaco-editor.showUnused .squiggly-inline-unnecessary { opacity: 0.667; }
+.monaco-editor .squiggly-inline-deprecated { text-decoration: line-through; text-decoration-color: #d4d4d4}
+.monaco-diff-editor .diff-review-line-number { color: #858585; }
+.monaco-diff-editor .diff-review-shadow { box-shadow: #000000 0 -6px 6px -6px inset; }
+.monaco-editor .line-insert, .monaco-editor .char-insert { background-color: rgba(155, 185, 85, 0.2); }
+.monaco-diff-editor .line-insert, .monaco-diff-editor .char-insert { background-color: rgba(155, 185, 85, 0.2); }
+.monaco-editor .inline-added-margin-view-zone { background-color: rgba(155, 185, 85, 0.2); }
+.monaco-editor .line-delete, .monaco-editor .char-delete { background-color: rgba(255, 0, 0, 0.2); }
+.monaco-diff-editor .line-delete, .monaco-diff-editor .char-delete { background-color: rgba(255, 0, 0, 0.2); }
+.monaco-editor .inline-deleted-margin-view-zone { background-color: rgba(255, 0, 0, 0.2); }
+.monaco-diff-editor.side-by-side .editor.modified { box-shadow: -6px 0 5px -5px #000000; }
+.monaco-editor .bracket-match { background-color: rgba(0, 100, 0, 0.1); }
+.monaco-editor .bracket-match { border: 1px solid #888888; }
+
+		.monaco-editor .contentWidgets .codicon-lightbulb {
+			color: #ffcc00;
+		}
+
+		.monaco-editor .contentWidgets .codicon-lightbulb-autofix {
+			color: #75beff;
+		}
+.monaco-editor .codelens-decoration { color: #999999; }
+.monaco-editor .codelens-decoration .codicon { color: #999999; }
+.monaco-editor .codelens-decoration > a:hover { color: #4e94ce !important; }
+.monaco-editor .codelens-decoration > a:hover .codicon { color: #4e94ce !important; }
+.codicon-symbol-array { color: #cccccc !important; }
+.codicon-symbol-boolean { color: #cccccc !important; }
+.codicon-symbol-class { color: #ee9d28 !important; }
+.codicon-symbol-method { color: #b180d7 !important; }
+.codicon-symbol-color { color: #cccccc !important; }
+.codicon-symbol-constant { color: #cccccc !important; }
+.codicon-symbol-constructor { color: #b180d7 !important; }
+
+			.codicon-symbol-value,.codicon-symbol-enum { color: #ee9d28 !important; }
+.codicon-symbol-enum-member { color: #75beff !important; }
+.codicon-symbol-event { color: #ee9d28 !important; }
+.codicon-symbol-field { color: #75beff !important; }
+.codicon-symbol-file { color: #cccccc !important; }
+.codicon-symbol-folder { color: #cccccc !important; }
+.codicon-symbol-function { color: #b180d7 !important; }
+.codicon-symbol-interface { color: #75beff !important; }
+.codicon-symbol-key { color: #cccccc !important; }
+.codicon-symbol-keyword { color: #cccccc !important; }
+.codicon-symbol-module { color: #cccccc !important; }
+.codicon-symbol-namespace { color: #cccccc !important; }
+.codicon-symbol-null { color: #cccccc !important; }
+.codicon-symbol-number { color: #cccccc !important; }
+.codicon-symbol-object { color: #cccccc !important; }
+.codicon-symbol-operator { color: #cccccc !important; }
+.codicon-symbol-package { color: #cccccc !important; }
+.codicon-symbol-property { color: #cccccc !important; }
+.codicon-symbol-reference { color: #cccccc !important; }
+.codicon-symbol-snippet { color: #cccccc !important; }
+.codicon-symbol-string { color: #cccccc !important; }
+.codicon-symbol-struct { color: #cccccc !important; }
+.codicon-symbol-text { color: #cccccc !important; }
+.codicon-symbol-type-parameter { color: #cccccc !important; }
+.codicon-symbol-unit { color: #cccccc !important; }
+.codicon-symbol-variable { color: #75beff !important; }
+.monaco-editor .findOptionsWidget { background-color: #252526; }
+.monaco-editor .findOptionsWidget { color: #cccccc; }
+.monaco-editor .findOptionsWidget { box-shadow: 0 2px 8px #000000; }
+.monaco-editor .findMatch { background-color: rgba(234, 92, 0, 0.33); }
+.monaco-editor .currentFindMatch { background-color: #515c6a; }
+.monaco-editor .findScope { background-color: rgba(58, 61, 65, 0.4); }
+.monaco-editor .find-widget { background-color: #252526; }
+.monaco-editor .find-widget { box-shadow: 0 2px 8px #000000; }
+.monaco-editor .find-widget { color: #cccccc; }
+.monaco-editor .find-widget.no-results .matchesCount { color: #f48771; }
+.monaco-editor .find-widget .monaco-sash { background-color: #454545; width: 3px !important; margin-left: -4px;}
+.monaco-editor .find-widget .monaco-inputbox.synthetic-focus { outline-color: rgba(14, 99, 156, 0.8); }
+.monaco-editor .folded-background { background-color: rgba(38, 79, 120, 0.3); }
+.monaco-editor .detected-link-active { color: #4e94ce !important; }
+.monaco-editor .monaco-editor-overlaymessage .anchor { border-top-color: #007acc; }
+.monaco-editor .monaco-editor-overlaymessage .message { border: 1px solid #007acc; }
+.monaco-editor .monaco-editor-overlaymessage .message { background-color: #063b49; }
+.monaco-editor .parameter-hints-widget { border: 1px solid #454545; }
+.monaco-editor .parameter-hints-widget.multiple .body { border-left: 1px solid rgba(69, 69, 69, 0.5); }
+.monaco-editor .parameter-hints-widget .signature.has-docs { border-bottom: 1px solid rgba(69, 69, 69, 0.5); }
+.monaco-editor .parameter-hints-widget { background-color: #252526; }
+.monaco-editor .parameter-hints-widget a { color: #3794ff; }
+.monaco-editor .parameter-hints-widget { color: #cccccc; }
+.monaco-editor .parameter-hints-widget code { background-color: rgba(10, 10, 10, 0.4); }
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row .monaco-highlighted-label .highlight { color: #0097fb; }
+.monaco-editor .suggest-widget { color: #d4d4d4; }
+.monaco-editor .suggest-widget a { color: #3794ff; }
+.monaco-editor .suggest-widget code { background-color: rgba(10, 10, 10, 0.4); }
+.monaco-editor .focused .selectionHighlight { background-color: rgba(173, 214, 255, 0.15); }
+.monaco-editor .selectionHighlight { background-color: rgba(173, 214, 255, 0.07); }
+.monaco-editor .wordHighlight { background-color: rgba(87, 87, 87, 0.72); }
+.monaco-editor .wordHighlightStrong { background-color: rgba(0, 73, 114, 0.72); }
+.monaco-editor .accessibilityHelpWidget { background-color: #252526; }
+.monaco-editor .accessibilityHelpWidget { color: #cccccc; }
+.monaco-editor .accessibilityHelpWidget { box-shadow: 0 2px 8px #000000; }
+.monaco-editor .tokens-inspect-widget { border: 1px solid #454545; }
+.monaco-editor .tokens-inspect-widget .tokens-inspect-separator { background-color: #454545; }
+.monaco-editor .tokens-inspect-widget { background-color: #252526; }
+.monaco-editor .tokens-inspect-widget { color: #cccccc; }
+.monaco-editor .reference-zone-widget .ref-tree .referenceMatch .highlight { background-color: rgba(234, 92, 0, 0.3); }
+.monaco-editor .reference-zone-widget .preview .reference-decoration { background-color: rgba(255, 143, 0, 0.6); }
+.monaco-editor .reference-zone-widget .ref-tree { background-color: #252526; }
+.monaco-editor .reference-zone-widget .ref-tree { color: #bbbbbb; }
+.monaco-editor .reference-zone-widget .ref-tree .reference-file { color: #ffffff; }
+.monaco-editor .reference-zone-widget .ref-tree .monaco-list:focus .monaco-list-rows > .monaco-list-row.selected:not(.highlighted) { background-color: rgba(51, 153, 255, 0.2); }
+.monaco-editor .reference-zone-widget .ref-tree .monaco-list:focus .monaco-list-rows > .monaco-list-row.selected:not(.highlighted) { color: #ffffff !important; }
+.monaco-editor .reference-zone-widget .preview .monaco-editor .monaco-editor-background,.monaco-editor .reference-zone-widget .preview .monaco-editor .inputarea.ime-input {	background-color: #001f33;}
+.monaco-editor .reference-zone-widget .preview .monaco-editor .margin {	background-color: #001f33;}
+.monaco-editor .goto-definition-link { color: #4e94ce !important; }
+
+			.monaco-editor .zone-widget .codicon-error,
+			.markers-panel .marker-icon.codicon-error,
+			.extensions-viewlet > .extensions .codicon-error,
+			.monaco-dialog-box .dialog-message-row .codicon-error {
+				color: #f48771;
+			}
+		
+
+			.monaco-editor .zone-widget .codicon-warning,
+			.markers-panel .marker-icon.codicon-warning,
+			.extensions-viewlet > .extensions .codicon-warning,
+			.extension-editor .codicon-warning,
+			.monaco-dialog-box .dialog-message-row .codicon-warning {
+				color: #cca700;
+			}
+		
+
+			.monaco-editor .zone-widget .codicon-info,
+			.markers-panel .marker-icon.codicon-info,
+			.extensions-viewlet > .extensions .codicon-info,
+			.extension-editor .codicon-info,
+			.monaco-dialog-box .dialog-message-row .codicon-info {
+				color: #75beff;
+			}
+		
+.monaco-editor .marker-widget a { color: #3794ff; }
+.monaco-editor .marker-widget a.code-link span:hover { color: #3794ff; }
+.monaco-editor-hover .hover-contents a.code-link span:hover { color: #3794ff; }
+.monaco-editor .hoverHighlight { background-color: rgba(38, 79, 120, 0.25); }
+.monaco-editor .monaco-editor-hover { background-color: #252526; }
+.monaco-editor .monaco-editor-hover { border: 1px solid #454545; }
+.monaco-editor .monaco-editor-hover .hover-row:not(:first-child):not(:empty) { border-top: 1px solid rgba(69, 69, 69, 0.5); }
+.monaco-editor .monaco-editor-hover hr { border-top: 1px solid rgba(69, 69, 69, 0.5); }
+.monaco-editor .monaco-editor-hover hr { border-bottom: 0px solid rgba(69, 69, 69, 0.5); }
+.monaco-editor .monaco-editor-hover a { color: #3794ff; }
+.monaco-editor .monaco-editor-hover { color: #cccccc; }
+.monaco-editor .monaco-editor-hover .hover-row .actions { background-color: #2c2c2d; }
+.monaco-editor .monaco-editor-hover code { background-color: rgba(10, 10, 10, 0.4); }
+.monaco-editor .snippet-placeholder { background-color: rgba(124, 124, 124, 0.3); outline-color: transparent; }
+.monaco-editor .finish-snippet-placeholder { background-color: transparent; outline-color: #525252; }
+
+.mtk1 { color: #d4d4d4; }
+.mtk2 { color: #1e1e1e; }
+.mtk3 { color: #cc6666; }
+.mtk4 { color: #9cdcfe; }
+.mtk5 { color: #ce9178; }
+.mtk6 { color: #b5cea8; }
+.mtk7 { color: #608b4e; }
+.mtk8 { color: #569cd6; }
+.mtk9 { color: #dcdcdc; }
+.mtk10 { color: #808080; }
+.mtk11 { color: #f44747; }
+.mtk12 { color: #c586c0; }
+.mtk13 { color: #a79873; }
+.mtk14 { color: #dd6a6f; }
+.mtk15 { color: #5bb498; }
+.mtk16 { color: #909090; }
+.mtk17 { color: #778899; }
+.mtk18 { color: #ff00ff; }
+.mtk19 { color: #b46695; }
+.mtk20 { color: #ff0000; }
+.mtk21 { color: #4f76ac; }
+.mtk22 { color: #3dc9b0; }
+.mtk23 { color: #74b0df; }
+.mtk24 { color: #4864aa; }
+.mtki { font-style: italic; }
+.mtkb { font-weight: bold; }
+.mtku { text-decoration: underline; text-underline-position: under; }</style><style type="text/css" media="screen">
+		.monaco-editor .codelens-decoration.ee1f61 { height: 21px; line-height: 19px; font-size: 13px; padding-right: 6px;}
+		.monaco-editor .codelens-decoration.ee1f61 > a > .codicon { line-height: 19px; font-size: 13px; }
+		</style><script async="async" type="text/javascript" src="./tsMode.js"></script><script async="async" type="text/javascript" src="./javascript.js"></script><style type="text/css" media="screen">
+		.monaco-editor .codelens-decoration.ee1f62 { height: 21px; line-height: 19px; font-size: 13px; padding-right: 6px;}
+		.monaco-editor .codelens-decoration.ee1f62 > a > .codicon { line-height: 19px; font-size: 13px; }
+		</style><script async="async" type="text/javascript" src="./cssMode.js"></script><script async="async" type="text/javascript" src="./css.js"></script><style type="text/css" media="screen">
+		.monaco-editor .codelens-decoration.ee1f63 { height: 21px; line-height: 19px; font-size: 13px; padding-right: 6px;}
+		.monaco-editor .codelens-decoration.ee1f63 > a > .codicon { line-height: 19px; font-size: 13px; }
+		</style><script async="async" type="text/javascript" src="./htmlMode.js"></script><script async="async" type="text/javascript" src="./html.js"></script></head>
+<body>
+<div class="frame notranslate">
+    <div class="tabs">
+        <div class="panebuttons">
+            <button class="button-js show">JS</button>
+            <button class="button-html">HTML</button>
+            <button class="button-css">CSS</button>
+            <button class="button-export">Export</button>
+            <button class="button-result show">Result</button>
+            <button class="button-run">Run</button>
+            <button class="button-fullscreen">&nbsp;</button>
+        </div>
+        <div class="panelogo">
+          <div><a href="https://threejs.org/"><span data-subst="textContent|name">three.js</span>&nbsp;</a><a href="https://threejs.org/"><img data-subst="src|icon" width="32" height="32" src="./icon.svg"></a></div>
+        </div>
+    </div>
+    <div class="panes">
+        <div class="js" style="display: flex;"><div class="files"></div><div class="code"><div data-keybinding-context="1" data-mode-id="javascript"><div class="monaco-editor no-user-select  showUnused vs-dark focused" data-uri="inmemory://model/1" style="width: 780px; height: 842px;"><div data-mprt="3" class="overflow-guard" style="width: 780px; height: 842px;"><div class="margin" role="presentation" aria-hidden="true" style="position: absolute; transform: translate3d(0px, 0px, 0px); contain: strict; top: -1665px; height: 3776px; width: 68px;"><div class="glyph-margin" style="left: 0px; width: 0px; height: 3776px;"></div><div class="margin-view-zones" role="presentation" aria-hidden="true" style="position: absolute;"></div><div class="margin-view-overlays focused" role="presentation" aria-hidden="true" style="position: absolute; width: 68px; font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px; height: 3776px;"><div style="position:absolute;top:1800px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">94</div></div><div style="position:absolute;top:1819px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">95</div></div><div style="position:absolute;top:1838px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">96</div></div><div style="position:absolute;top:1857px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">97</div></div><div style="position:absolute;top:1876px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">98</div></div><div style="position:absolute;top:1895px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">99</div></div><div style="position:absolute;top:1914px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">100</div></div><div style="position:absolute;top:1933px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">101</div></div><div style="position:absolute;top:1952px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">102</div></div><div style="position:absolute;top:1971px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">103</div></div><div style="position:absolute;top:1990px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">104</div></div><div style="position:absolute;top:2009px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">105</div></div><div style="position:absolute;top:2028px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">106</div></div><div style="position:absolute;top:2047px;width:100%;height:19px;"><div class="cldr codicon codicon-chevron-down" style="left:42px;width:26px;"></div><div class="line-numbers lh-odd" style="left:0px;width:42px;">107</div></div><div style="position:absolute;top:2066px;width:100%;height:19px;"><div class="cldr codicon codicon-chevron-down" style="left:42px;width:26px;"></div><div class="line-numbers lh-odd" style="left:0px;width:42px;">108</div></div><div style="position:absolute;top:2085px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">109</div></div><div style="position:absolute;top:2104px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">110</div></div><div style="position:absolute;top:2123px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">111</div></div><div style="position:absolute;top:2142px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">112</div></div><div style="position:absolute;top:2161px;width:100%;height:19px;"><div class="cldr codicon codicon-chevron-down" style="left:42px;width:26px;"></div><div class="line-numbers lh-odd" style="left:0px;width:42px;">113</div></div><div style="position:absolute;top:2180px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">114</div></div><div style="position:absolute;top:2199px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">115</div></div><div style="position:absolute;top:2218px;width:100%;height:19px;"><div class="cldr codicon codicon-chevron-down" style="left:42px;width:26px;"></div><div class="line-numbers lh-odd" style="left:0px;width:42px;">116</div></div><div style="position:absolute;top:2237px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">117</div></div><div style="position:absolute;top:2256px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">118</div></div><div style="position:absolute;top:2275px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">119</div></div><div style="position:absolute;top:2294px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">120</div></div><div style="position:absolute;top:2313px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">121</div></div><div style="position:absolute;top:2332px;width:100%;height:19px;"><div class="cldr codicon codicon-chevron-down" style="left:42px;width:26px;"></div><div class="line-numbers lh-odd" style="left:0px;width:42px;">122</div></div><div style="position:absolute;top:2351px;width:100%;height:19px;"><div class="cldr codicon codicon-chevron-down" style="left:42px;width:26px;"></div><div class="line-numbers lh-odd" style="left:0px;width:42px;">123</div></div><div style="position:absolute;top:2370px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">124</div></div><div style="position:absolute;top:1781px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">93</div></div><div style="position:absolute;top:1743px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">91</div></div><div style="position:absolute;top:1762px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">92</div></div><div style="position:absolute;top:1686px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">88</div></div><div style="position:absolute;top:1705px;width:100%;height:19px;"><div class="cldr codicon codicon-chevron-down" style="left:42px;width:26px;"></div><div class="line-numbers lh-odd" style="left:0px;width:42px;">89</div></div><div style="position:absolute;top:1724px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">90</div></div><div style="position:absolute;top:1667px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">87</div></div><div style="position:absolute;top:1648px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">86</div></div><div style="position:absolute;top:2389px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">125</div></div><div style="position:absolute;top:2408px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">126</div></div><div style="position:absolute;top:2427px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">127</div></div><div style="position:absolute;top:2446px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">128</div></div><div style="position:absolute;top:2465px;width:100%;height:19px;"><div class="cldr codicon codicon-chevron-down" style="left:42px;width:26px;"></div><div class="line-numbers lh-odd" style="left:0px;width:42px;">129</div></div><div style="position:absolute;top:2484px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">130</div></div><div style="position:absolute;top:2503px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">131</div></div></div></div><div class="monaco-scrollable-element editor-scrollable vs-dark" role="presentation" data-mprt="5" style="position: absolute; overflow: hidden; left: 68px; height: 842px; width: 712px;"><div class="lines-content monaco-editor-background" style="position: absolute; overflow: hidden; width: 1e+06px; height: 1e+06px; transform: translate3d(0px, 0px, 0px); contain: strict; top: -1665px; left: 0px;"><div class="view-overlays focused" role="presentation" aria-hidden="true" style="position: absolute; height: 0px; width: 712px;"><div style="position:absolute;top:1800px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cdr findMatch" style="left:34px;width:42px;height:19px;"></div></div><div style="position:absolute;top:1819px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cdr findMatch" style="left:34px;width:42px;height:19px;"></div></div><div style="position:absolute;top:1838px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cdr findMatch" style="left:118px;width:42px;height:19px;"></div></div><div style="position:absolute;top:1857px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cdr findMatch" style="left:118px;width:42px;height:19px;"></div></div><div style="position:absolute;top:1876px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:1895px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cdr findMatch" style="left:405px;width:42px;height:19px;"></div></div><div style="position:absolute;top:1914px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:1933px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:1952px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cdr findMatch" style="left:337px;width:42px;height:19px;"></div><div class="cdr findMatch" style="left:438px;width:43px;height:19px;"></div></div><div style="position:absolute;top:1971px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:1990px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2009px;width:100%;height:19px;"><div class="current-line" style="width:712px; height:19px;"></div><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2028px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2047px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2066px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2085px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div><div class="cigr" style="left:50.578125px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2104px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div><div class="cigr" style="left:50.578125px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2123px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div><div class="cigr" style="left:50.578125px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2142px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2161px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2180px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div><div class="cigr" style="left:50.578125px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2199px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2218px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2237px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div><div class="cigr" style="left:50.578125px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2256px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div><div class="cigr" style="left:50.578125px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2275px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2294px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2313px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2332px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2351px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2370px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div><div class="cigr" style="left:50.578125px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:1781px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cdr findMatch" style="left:34px;width:42px;height:19px;"></div></div><div style="position:absolute;top:1743px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:1762px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cdr findMatch" style="left:84px;width:42px;height:19px;"></div><div class="cdr findMatch" style="left:329px;width:42px;height:19px;"></div></div><div style="position:absolute;top:1686px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:1705px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cdr bracket-match" style="left:17px;width:8px;height:19px;"></div></div><div style="position:absolute;top:1724px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:1667px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:1648px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigr" style="left:16.859375px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2389px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div><div class="cigr" style="left:50.578125px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2408px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div><div class="cigr" style="left:50.578125px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2427px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div><div class="cigr" style="left:50.578125px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2446px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2465px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2484px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div><div class="cigr" style="left:50.578125px;height:19px;width:16.859375px"></div></div><div style="position:absolute;top:2503px;width:100%;height:19px;"><div class="cigr" style="left:0px;height:19px;width:16.859375px"></div><div class="cigra" style="left:16.859375px;height:19px;width:16.859375px"></div><div class="cigr" style="left:33.71875px;height:19px;width:16.859375px"></div></div></div><div role="presentation" aria-hidden="true" class="view-rulers"></div><div class="view-zones" role="presentation" aria-hidden="true" style="position: absolute;"><div class="dock-find-viewzone" monaco-view-zone="b1" style="position: absolute; width: 100%; display: none; top: 0px; height: 0px;"></div></div><div class="view-lines" role="presentation" aria-hidden="true" data-mprt="7" style="position: absolute; font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px; width: 712px; height: 3786px;"><div style="top:1800px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;light</span><span class="mtk9">.</span><span class="mtk1">position</span><span class="mtk9">.</span><span class="mtk8">set</span><span class="mtk9">(</span><span class="mtk6">0</span><span class="mtk9">,</span><span class="mtk1">&nbsp;</span><span class="mtk6">10</span><span class="mtk9">,</span><span class="mtk1">&nbsp;</span><span class="mtk6">0</span><span class="mtk9">);</span></span></div><div style="top:1819px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;light</span><span class="mtk9">.</span><span class="mtk1">target</span><span class="mtk9">.</span><span class="mtk1">position</span><span class="mtk9">.</span><span class="mtk8">set</span><span class="mtk9">(-</span><span class="mtk6">4</span><span class="mtk9">,</span><span class="mtk1">&nbsp;</span><span class="mtk6">0</span><span class="mtk9">,</span><span class="mtk1">&nbsp;</span><span class="mtk9">-</span><span class="mtk6">4</span><span class="mtk9">);</span></span></div><div style="top:1838px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;scene</span><span class="mtk9">.</span><span class="mtk1">add</span><span class="mtk9">(</span><span class="mtk1">light</span><span class="mtk9">);</span></span></div><div style="top:1857px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;scene</span><span class="mtk9">.</span><span class="mtk1">add</span><span class="mtk9">(</span><span class="mtk1">light</span><span class="mtk9">.</span><span class="mtk1">target</span><span class="mtk9">);</span></span></div><div style="top:1876px;height:19px;" class="view-line"><span><span>&nbsp;</span></span></div><div style="top:1895px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">const</span><span class="mtk1">&nbsp;cameraHelper&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;</span><span class="mtk8">new</span><span class="mtk1">&nbsp;</span><span class="mtk22">THREE</span><span class="mtk9">.</span><span class="mtk22">CameraHelper</span><span class="mtk9">(</span><span class="mtk1">light</span><span class="mtk9">.</span><span class="mtk1">shadow</span><span class="mtk9">.</span><span class="mtk1">camera</span><span class="mtk9">);</span></span></div><div style="top:1914px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;scene</span><span class="mtk9">.</span><span class="mtk1">add</span><span class="mtk9">(</span><span class="mtk1">cameraHelper</span><span class="mtk9">);</span></span></div><div style="top:1933px;height:19px;" class="view-line"><span><span>&nbsp;</span></span></div><div style="top:1952px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">const</span><span class="mtk1">&nbsp;helper&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;</span><span class="mtk8">new</span><span class="mtk1">&nbsp;</span><span class="mtk22">THREE</span><span class="mtk9">.</span><span class="mtk22">DirectionalLightHelper</span><span class="mtk9">(</span><span class="mtk1">light</span><span class="mtk9">);</span></span></div><div style="top:1971px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;scene</span><span class="mtk9">.</span><span class="mtk1">add</span><span class="mtk9">(</span><span class="mtk1">helper</span><span class="mtk9">);</span></span></div><div style="top:1990px;height:19px;" class="view-line"><span><span>&nbsp;</span></span></div><div style="top:2009px;height:19px;" class="view-line"><span><span>&nbsp;</span></span></div><div style="top: 2028px; height: 19px;" class="view-line"><span><span>&nbsp;</span></span></div><div style="top: 2047px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">class</span><span class="mtk1">&nbsp;</span><span class="mtk22">DimensionGUIHelper</span><span class="mtk1">&nbsp;</span><span class="mtk9">{</span></span></div><div style="top: 2066px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">constructor</span><span class="mtk9">(</span><span class="mtk1">obj</span><span class="mtk9">,</span><span class="mtk1">&nbsp;minProp</span><span class="mtk9">,</span><span class="mtk1">&nbsp;maxProp</span><span class="mtk9">)</span><span class="mtk1">&nbsp;</span><span class="mtk9">{</span></span></div><div style="top: 2085px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">obj&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;obj</span><span class="mtk9">;</span></span></div><div style="top: 2104px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">minProp&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;minProp</span><span class="mtk9">;</span></span></div><div style="top: 2123px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">maxProp&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;maxProp</span><span class="mtk9">;</span></span></div><div style="top: 2142px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk9">}</span></span></div><div style="top: 2161px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">get</span><span class="mtk1">&nbsp;value</span><span class="mtk9">()</span><span class="mtk1">&nbsp;</span><span class="mtk9">{</span></span></div><div style="top: 2180px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">return</span><span class="mtk1">&nbsp;</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">obj</span><span class="mtk9">[</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">maxProp</span><span class="mtk9">]</span><span class="mtk1">&nbsp;</span><span class="mtk9">*</span><span class="mtk1">&nbsp;</span><span class="mtk6">2</span><span class="mtk9">;</span></span></div><div style="top: 2199px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk9">}</span></span></div><div style="top: 2218px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">set</span><span class="mtk1">&nbsp;value</span><span class="mtk9">(</span><span class="mtk1">v</span><span class="mtk9">)</span><span class="mtk1">&nbsp;</span><span class="mtk9">{</span></span></div><div style="top: 2237px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">obj</span><span class="mtk9">[</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">maxProp</span><span class="mtk9">]</span><span class="mtk1">&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;v&nbsp;</span><span class="mtk9">/</span><span class="mtk1">&nbsp;&nbsp;</span><span class="mtk6">2</span><span class="mtk9">;</span></span></div><div style="top: 2256px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">obj</span><span class="mtk9">[</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">minProp</span><span class="mtk9">]</span><span class="mtk1">&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;v&nbsp;</span><span class="mtk9">/</span><span class="mtk1">&nbsp;</span><span class="mtk9">-</span><span class="mtk6">2</span><span class="mtk9">;</span></span></div><div style="top: 2275px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk9">}</span></span></div><div style="top: 2294px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk9">}</span></span></div><div style="top: 2313px; height: 19px;" class="view-line"><span><span>&nbsp;</span></span></div><div style="top: 2332px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">class</span><span class="mtk1">&nbsp;</span><span class="mtk22">MinMaxGUIHelper</span><span class="mtk1">&nbsp;</span><span class="mtk9">{</span></span></div><div style="top: 2351px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">constructor</span><span class="mtk9">(</span><span class="mtk1">obj</span><span class="mtk9">,</span><span class="mtk1">&nbsp;minProp</span><span class="mtk9">,</span><span class="mtk1">&nbsp;maxProp</span><span class="mtk9">,</span><span class="mtk1">&nbsp;minDif</span><span class="mtk9">)</span><span class="mtk1">&nbsp;</span><span class="mtk9">{</span></span></div><div style="top: 2370px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">obj&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;obj</span><span class="mtk9">;</span></span></div><div style="top:1781px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;light</span><span class="mtk9">.</span><span class="mtk1">castShadow&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;</span><span class="mtk8">true</span><span class="mtk9">;</span></span></div><div style="top:1743px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">const</span><span class="mtk1">&nbsp;intensity&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;</span><span class="mtk6">1</span><span class="mtk9">;</span></span></div><div style="top:1762px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">const</span><span class="mtk1">&nbsp;light&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;</span><span class="mtk8">new</span><span class="mtk1">&nbsp;</span><span class="mtk22">THREE</span><span class="mtk9">.</span><span class="mtk22">DirectionalLight</span><span class="mtk9">(</span><span class="mtk1">color</span><span class="mtk9">,</span><span class="mtk1">&nbsp;intensity</span><span class="mtk9">);</span></span></div><div style="top:1686px;height:19px;" class="view-line"><span><span>&nbsp;</span></span></div><div style="top:1705px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;</span><span class="mtk9">{</span></span></div><div style="top:1724px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">const</span><span class="mtk1">&nbsp;color&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;</span><span class="mtk15">0xFFFFFF</span><span class="mtk9">;</span></span></div><div style="top:1667px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;</span><span class="mtk9">}</span></span></div><div style="top:1648px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk7">//&nbsp;folder.open();</span></span></div><div style="top: 2389px; height: 19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">minProp&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;minProp</span><span class="mtk9">;</span></span></div><div style="top:2408px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">maxProp&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;maxProp</span><span class="mtk9">;</span></span></div><div style="top:2427px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">minDif&nbsp;</span><span class="mtk9">=</span><span class="mtk1">&nbsp;minDif</span><span class="mtk9">;</span></span></div><div style="top:2446px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk9">}</span></span></div><div style="top:2465px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">get</span><span class="mtk1">&nbsp;min</span><span class="mtk9">()</span><span class="mtk1">&nbsp;</span><span class="mtk9">{</span></span></div><div style="top:2484px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk8">return</span><span class="mtk1">&nbsp;</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">obj</span><span class="mtk9">[</span><span class="mtk8">this</span><span class="mtk9">.</span><span class="mtk1">minProp</span><span class="mtk9">];</span></span></div><div style="top:2503px;height:19px;" class="view-line"><span><span class="mtk1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="mtk9">}</span></span></div></div><div data-mprt="1" class="contentWidgets" style="position: absolute; top: 0px;"><div class="codicon codicon-lightbulb" widgetid="LightBulbWidget" title="Show Fixes (Ctrl+.)" style="position: absolute; visibility: hidden;"></div></div><div role="presentation" aria-hidden="true" class="cursors-layer cursor-line-style cursor-solid"><div class="cursor " style="height: 19px; top: 2009px; left: 0px; font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px; display: block; visibility: inherit; width: 2px;"></div></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal" style="position: absolute; width: 698px; height: 10px; left: 0px; bottom: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict; width: 698px;"></div></div><canvas class="decorationsOverviewRuler" aria-hidden="true" width="14" height="842" style="position: absolute; transform: translate3d(0px, 0px, 0px); contain: strict; top: 0px; right: 0px; width: 14px; height: 842px;"></canvas><div role="presentation" aria-hidden="true" class="visible scrollbar vertical" style="position: absolute; width: 14px; height: 842px; right: 0px; top: 0px;"><div class="slider" style="position: absolute; top: 372px; left: 0px; width: 14px; transform: translate3d(0px, 0px, 0px); contain: strict; height: 187px;"></div></div></div><div role="presentation" aria-hidden="true" style="width: 780px;" class="scroll-decoration"></div><textarea data-mprt="6" class="inputarea" wrap="off" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" aria-label="Editor content;Press Alt+F1 for Accessibility Options." role="textbox" aria-multiline="true" aria-haspopup="false" aria-autocomplete="both" style="font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px; top: 344px; left: 68px; width: 1px; height: 1px;"></textarea><div class="monaco-editor-background textAreaCover line-numbers" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px;"></div><div data-mprt="4" class="overlayWidgets" style="width: 780px;"><div class="accessibilityHelpWidget" role="dialog" aria-hidden="true" widgetid="editor.contrib.accessibilityHelpWidget" style="display: none; position: absolute;"><div role="document"></div></div><div class="monaco-editor-hover hidden" aria-hidden="true" role="presentation" widgetid="editor.contrib.modesGlyphHoverWidget" style="position: absolute;"></div><div class="editor-widget find-widget visible" aria-hidden="false" widgetid="editor.contrib.findWidget" style="width: 419px; height: 33px; position: absolute; max-width: 737px; top: 0px; right: 28px;"><div title="Toggle Replace mode" tabindex="0" class="button codicon toggle left codicon-chevron-right" role="button" aria-label="Toggle Replace mode" aria-expanded="false" aria-disabled="false"></div><div class="find-part"><div class="monaco-findInput"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="monaco-inputbox idle" data-keybinding-context="2" style="overflow: hidden; background-color: rgb(60, 60, 60); color: rgb(204, 204, 204);"><div class="wrapper"><textarea class="input" autocorrect="off" autocapitalize="off" spellcheck="false" wrap="off" aria-label="Find" placeholder="Find" title="Find" style="width: calc(100% - 66px); height: 23px; background-color: rgb(60, 60, 60); color: rgb(204, 204, 204);"></textarea><div class="mirror" style="white-space: pre; overflow-wrap: initial; padding-right: 66px;">light</div></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal" style="position: absolute; width: 0px; height: 10px; left: 0px; bottom: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict; width: 0px;"></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical" style="position: absolute; width: 10px; height: 23px; right: 0px; top: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px; transform: translate3d(0px, 0px, 0px); contain: strict; height: 23px;"></div></div><div class="shadow"></div><div class="shadow"></div><div class="shadow top-left-corner"></div></div><div class="controls" style="display: block;"><div title="Match Case (Alt+C)" class="monaco-custom-checkbox codicon codicon-case-sensitive unchecked" role="checkbox" aria-checked="false" aria-label="Match Case (Alt+C)" aria-disabled="false" tabindex="0" style="border-color: transparent; background-color: transparent;"></div><div title="Match Whole Word (Alt+W)" class="monaco-custom-checkbox codicon codicon-whole-word unchecked" role="checkbox" aria-checked="false" aria-label="Match Whole Word (Alt+W)" aria-disabled="false" tabindex="0" style="border-color: transparent; background-color: transparent;"></div><div title="Use Regular Expression (Alt+R)" class="monaco-custom-checkbox codicon codicon-regex unchecked" role="checkbox" aria-checked="false" aria-label="Use Regular Expression (Alt+R)" aria-disabled="false" tabindex="0" style="border-color: transparent; background-color: transparent;"></div></div></div><div class="find-actions"><div class="matchesCount" title="" style="min-width: 69px;">1 of 18</div><div title="Previous match (Shift+Enter)" tabindex="0" class="button codicon codicon-arrow-up" role="button" aria-label="Previous match (Shift+Enter)" aria-disabled="false"></div><div title="Next match (Enter)" tabindex="0" class="button codicon codicon-arrow-down" role="button" aria-label="Next match (Enter)" aria-disabled="false"></div><div title="Find in selection (Alt+L)" class="monaco-custom-checkbox codicon codicon-selection unchecked" role="checkbox" aria-checked="false" aria-label="Find in selection (Alt+L)" aria-disabled="true" style="border-color: transparent; background-color: transparent;"></div><div title="Close (Escape)" tabindex="0" class="button codicon codicon-close" role="button" aria-label="Close (Escape)" aria-disabled="false"></div></div></div><div class="replace-part"><div class="monaco-findInput disabled"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="monaco-inputbox idle" data-keybinding-context="3" style="overflow: hidden; background-color: rgb(60, 60, 60); color: rgb(204, 204, 204);"><div class="wrapper"><textarea class="input empty" autocorrect="off" autocapitalize="off" spellcheck="false" wrap="off" aria-label="Replace" placeholder="Replace" title="Replace" disabled="" style="background-color: rgb(60, 60, 60); color: rgb(204, 204, 204); height: 0px;"></textarea><div class="mirror" style="white-space: pre; overflow-wrap: initial;">&nbsp;</div></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div class="shadow"></div><div class="shadow"></div><div class="shadow top-left-corner"></div></div><div class="controls" style="display: block;"><div title="Preserve Case" class="monaco-custom-checkbox codicon codicon-preserve-case unchecked" role="checkbox" aria-checked="false" aria-label="Preserve Case" aria-disabled="true" style="border-color: transparent; background-color: transparent;"></div></div></div><div class="replace-actions"><div title="Replace (Enter)" tabindex="-1" class="button codicon codicon-replace disabled" role="button" aria-label="Replace (Enter)" aria-disabled="true"></div><div title="Replace All (Ctrl+Alt+Enter)" tabindex="-1" class="button codicon codicon-replace-all disabled" role="button" aria-label="Replace All (Ctrl+Alt+Enter)" aria-disabled="true"></div></div></div><div class="monaco-sash vertical"></div></div><div class="findOptionsWidget" role="presentation" aria-hidden="true" widgetid="editor.contrib.findOptionsWidget" style="display: none; top: 0px; position: absolute; right: 28px;"><div title="Match Case (Alt+C)" class="monaco-custom-checkbox codicon codicon-case-sensitive unchecked" tabindex="0" role="checkbox" aria-checked="false" aria-label="Match Case (Alt+C)" style="border-color: transparent; background-color: transparent;"></div><div title="Match Whole Word (Alt+W)" class="monaco-custom-checkbox codicon codicon-whole-word unchecked" tabindex="0" role="checkbox" aria-checked="false" aria-label="Match Whole Word (Alt+W)" style="border-color: transparent; background-color: transparent;"></div><div title="Use Regular Expression (Alt+R)" class="monaco-custom-checkbox codicon codicon-regex unchecked" tabindex="0" role="checkbox" aria-checked="false" aria-label="Use Regular Expression (Alt+R)" style="border-color: transparent; background-color: transparent;"></div></div></div><div data-mprt="8" class="minimap slider-mouseover" role="presentation" aria-hidden="true" style="position: absolute; left: 0px; width: 0px; height: 842px;"><div class="minimap-shadow-hidden" style="height: 842px;"></div><canvas width="0" height="842" style="position: absolute; left: 0px; width: 0px; height: 842px;"></canvas><canvas class="minimap-decorations-layer" width="0" height="842" style="position: absolute; left: 0px; width: 0px; height: 842px;"></canvas><div class="minimap-slider" style="position: absolute; transform: translate3d(0px, 0px, 0px); contain: strict; width: 0px;"><div class="minimap-slider-horizontal" style="position: absolute; width: 0px; height: 0px;"></div></div></div></div><div data-mprt="2" class="overflowingContentWidgets"><div class="monaco-editor-hover hidden" tabindex="0" widgetid="editor.contrib.modesContentHoverWidget" style="position: absolute; visibility: hidden; max-width: 652px; top: 30px; left: 144px;"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="monaco-editor-hover-content" style="overflow: hidden; font-size: 14px; line-height: 19px; max-height: 250px; max-width: 514.8px;"><div class="hover-row markdown-hover"><div class="hover-contents code-hover-contents"><div><div class="code" data-code="id#1" style="font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px;"><span style="font-family: &#39;Droid Sans Mono&#39;, &#39;monospace&#39;, monospace, &#39;Droid Sans Fallback&#39;"><div class="monaco-tokenized-source"><span class="mtk8">function</span><span class="mtk1"> main</span><span class="mtk9">():</span><span class="mtk1"> </span><span class="mtk8">void</span></div></span></div></div></div></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal" style="position: absolute; width: 170px; height: 10px; left: 0px; bottom: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict; width: 170px;"></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical" style="position: absolute; width: 10px; height: 46px; right: 0px; top: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px; transform: translate3d(0px, 0px, 0px); contain: strict; height: 46px;"></div></div><div class="shadow"></div><div class="shadow"></div><div class="shadow top-left-corner"></div></div></div><div class="monaco-editor rename-box" widgetid="__renameInputWidget" style="background-color: rgb(37, 37, 38); box-shadow: rgb(0, 0, 0) 0px 2px 8px; color: rgb(204, 204, 204); position: absolute; visibility: hidden; max-width: 528px;"><input class="rename-input" type="text" aria-label="Rename input. Type new name and press Enter to commit." style="font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; background-color: rgb(60, 60, 60); border-width: 0px; border-style: none;"><div class="rename-label" style="font-size: 11.2px;">Enter to Rename, Shift+Enter to Preview</div></div><div class="editor-widget suggest-widget" widgetid="editor.widget.suggestWidget" style="position: absolute; visibility: hidden; max-width: 1560px; top: 10px; left: 68px;"><div class="message" aria-hidden="true" style="display: none; background-color: rgb(37, 37, 38); border-color: rgb(69, 69, 69);"></div><div class="tree" aria-hidden="true" style="display: none; background-color: rgb(37, 37, 38); border-color: rgb(69, 69, 69);"><div class="monaco-list list_id_1" tabindex="0" role="tree"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="monaco-list-rows" style="transform: translate3d(0px, 0px, 0px); overflow: hidden;"></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div></div><style type="text/css" media="screen">.monaco-list.list_id_1:focus .monaco-list-row.focused { background-color: #062f4a; }
+.monaco-list.list_id_1:focus .monaco-list-row.focused:hover { background-color: #062f4a; }
+.monaco-list.list_id_1:focus .monaco-list-row.selected { background-color: #084066; }
+.monaco-list.list_id_1:focus .monaco-list-row.selected:hover { background-color: #084066; }
+.monaco-list.list_id_1:focus .monaco-list-row.selected { color: #ffffff; }
+
+				.monaco-drag-image,
+				.monaco-list.list_id_1:focus .monaco-list-row.selected.focused { background-color: #094771; }
+			
+
+				.monaco-drag-image,
+				.monaco-list.list_id_1:focus .monaco-list-row.selected.focused { color: #ffffff; }
+			
+.monaco-list.list_id_1 .monaco-list-row.focused { background-color:  #062f4a; }
+.monaco-list.list_id_1 .monaco-list-row.focused:hover { background-color:  #062f4a; }
+.monaco-list.list_id_1 .monaco-list-row.selected { background-color:  #37373d; }
+.monaco-list.list_id_1 .monaco-list-row.selected:hover { background-color:  #37373d; }
+.monaco-list.list_id_1:not(.drop-target) .monaco-list-row:hover:not(.selected):not(.focused) { background-color:  #2a2d2e; }
+
+				.monaco-list.list_id_1.drop-target,
+				.monaco-list.list_id_1 .monaco-list-rows.drop-target,
+				.monaco-list.list_id_1 .monaco-list-row.drop-target { background-color: #062f4a !important; color: inherit !important; }
+			
+.monaco-list-type-filter { background-color: #653723 }
+.monaco-list-type-filter { border: 1px solid rgba(0, 0, 0, 0); }
+.monaco-list-type-filter.no-matches { border: 1px solid #be1100; }
+.monaco-list-type-filter { box-shadow: 1px 1px 1px #000000; }</style></div></div><div class="suggest-status-bar" aria-hidden="true" style="display: none; background-color: rgb(37, 37, 38); border-color: rgb(69, 69, 69);"><span></span><span></span></div><div class="details" aria-hidden="true" style="font-size: 14px; font-weight: normal; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; display: none; background-color: rgb(37, 37, 38); border-color: rgb(69, 69, 69);"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="body" style="overflow: hidden;"><div class="header"><span class="codicon codicon-close" title="Read less...Ctrl+Space" style="height: 19px; width: 19px;"></span><p class="type" style="font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;;"></p></div><p class="docs"></p></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div class="shadow"></div><div class="shadow"></div><div class="shadow top-left-corner"></div></div></div></div></div><div class="context-view" aria-hidden="true" style="display: none;"></div></div></div></div></div>
+        <div class="html" style="display: none;"><div class="files"></div><div class="code"><div data-keybinding-context="1" data-mode-id="html"><div class="monaco-editor no-user-select  showUnused vs-dark" data-uri="inmemory://model/3" style="width: 5px; height: 5px;"><div data-mprt="3" class="overflow-guard" style="width: 5px; height: 5px;"><div class="margin" role="presentation" aria-hidden="true" style="position: absolute; transform: translate3d(0px, 0px, 0px); contain: strict; top: 0px; height: 48px; width: 68px;"><div class="glyph-margin" style="left: 0px; width: 0px; height: 48px;"></div><div class="margin-view-zones" role="presentation" aria-hidden="true" style="position: absolute;"></div><div class="margin-view-overlays" role="presentation" aria-hidden="true" style="position: absolute; width: 68px; font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px; height: 48px;"><div style="position:absolute;top:0px;width:100%;height:19px;"><div class="line-numbers lh-odd" style="left:0px;width:42px;">1</div></div></div></div><div class="monaco-scrollable-element editor-scrollable vs-dark" role="presentation" data-mprt="5" style="position: absolute; overflow: hidden; left: 68px; height: 5px;"><div class="lines-content monaco-editor-background" style="position: absolute; overflow: hidden; width: 1e+06px; height: 1e+06px; transform: translate3d(0px, 0px, 0px); contain: strict; top: 0px; left: 0px;"><div class="view-overlays" role="presentation" aria-hidden="true" style="position: absolute; height: 0px; width: 43px;"><div style="position:absolute;top:0px;width:100%;height:19px;"></div></div><div role="presentation" aria-hidden="true" class="view-rulers"></div><div class="view-zones" role="presentation" aria-hidden="true" style="position: absolute;"></div><div class="view-lines" role="presentation" aria-hidden="true" data-mprt="7" style="position: absolute; font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px; width: 43px; height: 48px;"><div style="top:0px;height:19px;" class="view-line"><span><span class="mtk10">&lt;</span><span class="mtk8">canvas</span><span class="mtk1">&nbsp;</span><span class="mtk4">id</span><span class="mtk10">=</span><span class="mtk5">"c"</span><span class="mtk10">&gt;&lt;/</span><span class="mtk8">canvas</span><span class="mtk10">&gt;</span></span></div></div><div data-mprt="1" class="contentWidgets" style="position: absolute; top: 0px;"></div><div role="presentation" aria-hidden="true" class="cursors-layer cursor-line-style cursor-solid"><div class="cursor" style="height: 19px; top: 0px; left: 0px; font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px; display: none; visibility: hidden;"></div></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal fade" style="position: absolute; width: 0px; height: 10px; left: 0px; bottom: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict; width: 20px;"></div></div><canvas class="decorationsOverviewRuler" aria-hidden="true" width="14" height="5" style="position: absolute; transform: translate3d(0px, 0px, 0px); contain: strict; top: 0px; right: 0px; width: 14px; height: 5px;"></canvas><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical fade" style="position: absolute; width: 14px; height: 5px; right: 0px; top: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 14px; transform: translate3d(0px, 0px, 0px); contain: strict; height: 20px;"></div></div></div><div role="presentation" aria-hidden="true" style="width: 5px;"></div><textarea data-mprt="6" class="inputarea" wrap="off" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" aria-label="Editor content;Press Alt+F1 for Accessibility Options." role="textbox" aria-multiline="true" aria-haspopup="false" aria-autocomplete="both" style="font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px; top: 0px; left: 0px; width: 1px; height: 1px;"></textarea><div class="monaco-editor-background textAreaCover line-numbers" style="position: absolute; top: 0px; left: 0px; width: 1px; height: 1px;"></div><div data-mprt="4" class="overlayWidgets" style="width: 5px;"><div class="accessibilityHelpWidget" role="dialog" aria-hidden="true" widgetid="editor.contrib.accessibilityHelpWidget" style="display: none; position: absolute;"><div role="document"></div></div><div class="monaco-editor-hover hidden" aria-hidden="true" role="presentation" widgetid="editor.contrib.modesGlyphHoverWidget" style="position: absolute;"></div></div><div data-mprt="8" class="minimap slider-mouseover" role="presentation" aria-hidden="true" style="position: absolute; left: 0px; width: 0px; height: 5px;"><div class="minimap-shadow-hidden" style="height: 5px;"></div><canvas width="0" height="5" style="position: absolute; left: 0px; width: 0px; height: 5px;"></canvas><canvas class="minimap-decorations-layer" width="0" height="5" style="position: absolute; left: 0px; width: 0px; height: 5px;"></canvas><div class="minimap-slider" style="position: absolute; transform: translate3d(0px, 0px, 0px); contain: strict; width: 0px;"><div class="minimap-slider-horizontal" style="position: absolute; width: 0px; height: 0px;"></div></div></div></div><div data-mprt="2" class="overflowingContentWidgets"><div class="monaco-editor-hover hidden" tabindex="0" widgetid="editor.contrib.modesContentHoverWidget" style="position: absolute; visibility: hidden; max-width: 528px;"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="monaco-editor-hover-content" style="overflow: hidden; font-size: 14px; line-height: 19px; max-height: 250px; max-width: 500px;"></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div class="shadow"></div><div class="shadow"></div><div class="shadow top-left-corner"></div></div></div><div class="monaco-editor rename-box" widgetid="__renameInputWidget" style="background-color: rgb(37, 37, 38); box-shadow: rgb(0, 0, 0) 0px 2px 8px; color: rgb(204, 204, 204); position: absolute; visibility: hidden; max-width: 528px;"><input class="rename-input" type="text" aria-label="Rename input. Type new name and press Enter to commit." style="font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; background-color: rgb(60, 60, 60); border-width: 0px; border-style: none;"><div class="rename-label" style="font-size: 11.2px;">Enter to Rename, Shift+Enter to Preview</div></div><div class="editor-widget suggest-widget" widgetid="editor.widget.suggestWidget" style="position: absolute; visibility: hidden; max-width: 528px;"><div class="message" aria-hidden="true" style="display: none; background-color: rgb(37, 37, 38); border-color: rgb(69, 69, 69);"></div><div class="tree" aria-hidden="true" style="display: none; background-color: rgb(37, 37, 38); border-color: rgb(69, 69, 69);"><div class="monaco-list list_id_3" tabindex="0" role="tree"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="monaco-list-rows" style="transform: translate3d(0px, 0px, 0px); overflow: hidden;"></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div></div><style type="text/css" media="screen">.monaco-list.list_id_3:focus .monaco-list-row.focused { background-color: #062f4a; }
+.monaco-list.list_id_3:focus .monaco-list-row.focused:hover { background-color: #062f4a; }
+.monaco-list.list_id_3:focus .monaco-list-row.selected { background-color: #084066; }
+.monaco-list.list_id_3:focus .monaco-list-row.selected:hover { background-color: #084066; }
+.monaco-list.list_id_3:focus .monaco-list-row.selected { color: #ffffff; }
+
+				.monaco-drag-image,
+				.monaco-list.list_id_3:focus .monaco-list-row.selected.focused { background-color: #094771; }
+			
+
+				.monaco-drag-image,
+				.monaco-list.list_id_3:focus .monaco-list-row.selected.focused { color: #ffffff; }
+			
+.monaco-list.list_id_3 .monaco-list-row.focused { background-color:  #062f4a; }
+.monaco-list.list_id_3 .monaco-list-row.focused:hover { background-color:  #062f4a; }
+.monaco-list.list_id_3 .monaco-list-row.selected { background-color:  #37373d; }
+.monaco-list.list_id_3 .monaco-list-row.selected:hover { background-color:  #37373d; }
+.monaco-list.list_id_3:not(.drop-target) .monaco-list-row:hover:not(.selected):not(.focused) { background-color:  #2a2d2e; }
+
+				.monaco-list.list_id_3.drop-target,
+				.monaco-list.list_id_3 .monaco-list-rows.drop-target,
+				.monaco-list.list_id_3 .monaco-list-row.drop-target { background-color: #062f4a !important; color: inherit !important; }
+			
+.monaco-list-type-filter { background-color: #653723 }
+.monaco-list-type-filter { border: 1px solid rgba(0, 0, 0, 0); }
+.monaco-list-type-filter.no-matches { border: 1px solid #be1100; }
+.monaco-list-type-filter { box-shadow: 1px 1px 1px #000000; }</style></div></div><div class="suggest-status-bar" aria-hidden="true" style="display: none; background-color: rgb(37, 37, 38); border-color: rgb(69, 69, 69);"><span></span><span></span></div><div class="details" aria-hidden="true" style="font-size: 14px; font-weight: normal; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; display: none; background-color: rgb(37, 37, 38); border-color: rgb(69, 69, 69);"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="body" style="overflow: hidden;"><div class="header"><span class="codicon codicon-close" title="Read less...Ctrl+Space" style="height: 19px; width: 19px;"></span><p class="type" style="font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;;"></p></div><p class="docs"></p></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div class="shadow"></div><div class="shadow"></div><div class="shadow top-left-corner"></div></div></div></div></div><div class="context-view" aria-hidden="true" style="display: none;"></div></div></div></div></div>
+        <div class="css" style="display: none;"><div class="files"></div><div class="code"><div data-keybinding-context="1" data-mode-id="css"><div class="monaco-editor no-user-select  showUnused vs-dark" data-uri="inmemory://model/2" style="width: 5px; height: 5px;"><div data-mprt="3" class="overflow-guard" style="width: 5px; height: 5px;"><div class="margin" role="presentation" aria-hidden="true" style="position: absolute; transform: translate3d(0px, 0px, 0px); contain: strict; top: 0px; height: 200px; width: 68px;"><div class="glyph-margin" style="left: 0px; width: 0px; height: 200px;"></div><div class="margin-view-zones" role="presentation" aria-hidden="true" style="position: absolute;"></div><div class="margin-view-overlays" role="presentation" aria-hidden="true" style="position: absolute; width: 68px; font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px; height: 200px;"><div style="position:absolute;top:0px;width:100%;height:19px;"><div class="cldr codicon codicon-chevron-down" style="left:42px;width:26px;"></div><div class="line-numbers lh-odd" style="left:0px;width:42px;">1</div></div></div></div><div class="monaco-scrollable-element editor-scrollable vs-dark" role="presentation" data-mprt="5" style="position: absolute; overflow: hidden; left: 68px; height: 5px;"><div class="lines-content monaco-editor-background" style="position: absolute; overflow: hidden; width: 1e+06px; height: 1e+06px; transform: translate3d(0px, 0px, 0px); contain: strict; top: 0px; left: 0px;"><div class="view-overlays" role="presentation" aria-hidden="true" style="position: absolute; height: 0px; width: 43px;"><div style="position:absolute;top:0px;width:100%;height:19px;"></div></div><div role="presentation" aria-hidden="true" class="view-rulers"></div><div class="view-zones" role="presentation" aria-hidden="true" style="position: absolute;"></div><div class="view-lines" role="presentation" aria-hidden="true" data-mprt="7" style="position: absolute; font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px; width: 43px; height: 200px;"><div style="top:0px;height:19px;" class="view-line"><span><span class="mtk8">html</span><span class="mtk9">,</span><span class="mtk1">&nbsp;</span><span class="mtk8">body</span><span class="mtk1">&nbsp;</span><span class="mtk9">{</span></span></div></div><div data-mprt="1" class="contentWidgets" style="position: absolute; top: 0px;"></div><div role="presentation" aria-hidden="true" class="cursors-layer cursor-line-style cursor-solid"><div class="cursor" style="height: 19px; top: 0px; left: 0px; font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px; display: none; visibility: hidden;"></div></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal fade" style="position: absolute; width: 0px; height: 10px; left: 0px; bottom: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict; width: 20px;"></div></div><canvas class="decorationsOverviewRuler" aria-hidden="true" width="14" height="5" style="position: absolute; transform: translate3d(0px, 0px, 0px); contain: strict; top: 0px; right: 0px; width: 14px; height: 5px;"></canvas><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical fade" style="position: absolute; width: 14px; height: 5px; right: 0px; top: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 14px; transform: translate3d(0px, 0px, 0px); contain: strict; height: 20px;"></div></div></div><div role="presentation" aria-hidden="true" style="width: 5px;"></div><textarea data-mprt="6" class="inputarea" wrap="off" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" aria-label="Editor content;Press Alt+F1 for Accessibility Options." role="textbox" aria-multiline="true" aria-haspopup="false" aria-autocomplete="both" style="font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; line-height: 19px; letter-spacing: 0px; top: 0px; left: 0px; width: 1px; height: 1px;"></textarea><div class="monaco-editor-background textAreaCover line-numbers" style="position: absolute; top: 0px; left: 0px; width: 1px; height: 1px;"></div><div data-mprt="4" class="overlayWidgets" style="width: 5px;"><div class="accessibilityHelpWidget" role="dialog" aria-hidden="true" widgetid="editor.contrib.accessibilityHelpWidget" style="display: none; position: absolute;"><div role="document"></div></div><div class="monaco-editor-hover hidden" aria-hidden="true" role="presentation" widgetid="editor.contrib.modesGlyphHoverWidget" style="position: absolute;"></div></div><div data-mprt="8" class="minimap slider-mouseover" role="presentation" aria-hidden="true" style="position: absolute; left: 0px; width: 0px; height: 5px;"><div class="minimap-shadow-hidden" style="height: 5px;"></div><canvas width="0" height="5" style="position: absolute; left: 0px; width: 0px; height: 5px;"></canvas><canvas class="minimap-decorations-layer" width="0" height="5" style="position: absolute; left: 0px; width: 0px; height: 5px;"></canvas><div class="minimap-slider" style="position: absolute; transform: translate3d(0px, 0px, 0px); contain: strict; width: 0px;"><div class="minimap-slider-horizontal" style="position: absolute; width: 0px; height: 0px;"></div></div></div></div><div data-mprt="2" class="overflowingContentWidgets"><div class="monaco-editor-hover hidden" tabindex="0" widgetid="editor.contrib.modesContentHoverWidget" style="position: absolute; visibility: hidden; max-width: 528px;"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="monaco-editor-hover-content" style="overflow: hidden; font-size: 14px; line-height: 19px; max-height: 250px; max-width: 500px;"></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div class="shadow"></div><div class="shadow"></div><div class="shadow top-left-corner"></div></div></div><div class="monaco-editor rename-box" widgetid="__renameInputWidget" style="background-color: rgb(37, 37, 38); box-shadow: rgb(0, 0, 0) 0px 2px 8px; color: rgb(204, 204, 204); position: absolute; visibility: hidden; max-width: 528px;"><input class="rename-input" type="text" aria-label="Rename input. Type new name and press Enter to commit." style="font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; background-color: rgb(60, 60, 60); border-width: 0px; border-style: none;"><div class="rename-label" style="font-size: 11.2px;">Enter to Rename, Shift+Enter to Preview</div></div><div class="editor-widget suggest-widget" widgetid="editor.widget.suggestWidget" style="position: absolute; visibility: hidden; max-width: 528px;"><div class="message" aria-hidden="true" style="display: none; background-color: rgb(37, 37, 38); border-color: rgb(69, 69, 69);"></div><div class="tree" aria-hidden="true" style="display: none; background-color: rgb(37, 37, 38); border-color: rgb(69, 69, 69);"><div class="monaco-list list_id_2" tabindex="0" role="tree"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="monaco-list-rows" style="transform: translate3d(0px, 0px, 0px); overflow: hidden;"></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div></div><style type="text/css" media="screen">.monaco-list.list_id_2:focus .monaco-list-row.focused { background-color: #062f4a; }
+.monaco-list.list_id_2:focus .monaco-list-row.focused:hover { background-color: #062f4a; }
+.monaco-list.list_id_2:focus .monaco-list-row.selected { background-color: #084066; }
+.monaco-list.list_id_2:focus .monaco-list-row.selected:hover { background-color: #084066; }
+.monaco-list.list_id_2:focus .monaco-list-row.selected { color: #ffffff; }
+
+				.monaco-drag-image,
+				.monaco-list.list_id_2:focus .monaco-list-row.selected.focused { background-color: #094771; }
+			
+
+				.monaco-drag-image,
+				.monaco-list.list_id_2:focus .monaco-list-row.selected.focused { color: #ffffff; }
+			
+.monaco-list.list_id_2 .monaco-list-row.focused { background-color:  #062f4a; }
+.monaco-list.list_id_2 .monaco-list-row.focused:hover { background-color:  #062f4a; }
+.monaco-list.list_id_2 .monaco-list-row.selected { background-color:  #37373d; }
+.monaco-list.list_id_2 .monaco-list-row.selected:hover { background-color:  #37373d; }
+.monaco-list.list_id_2:not(.drop-target) .monaco-list-row:hover:not(.selected):not(.focused) { background-color:  #2a2d2e; }
+
+				.monaco-list.list_id_2.drop-target,
+				.monaco-list.list_id_2 .monaco-list-rows.drop-target,
+				.monaco-list.list_id_2 .monaco-list-row.drop-target { background-color: #062f4a !important; color: inherit !important; }
+			
+.monaco-list-type-filter { background-color: #653723 }
+.monaco-list-type-filter { border: 1px solid rgba(0, 0, 0, 0); }
+.monaco-list-type-filter.no-matches { border: 1px solid #be1100; }
+.monaco-list-type-filter { box-shadow: 1px 1px 1px #000000; }</style></div></div><div class="suggest-status-bar" aria-hidden="true" style="display: none; background-color: rgb(37, 37, 38); border-color: rgb(69, 69, 69);"><span></span><span></span></div><div class="details" aria-hidden="true" style="font-size: 14px; font-weight: normal; font-feature-settings: &quot;liga&quot; 0, &quot;calt&quot; 0; display: none; background-color: rgb(37, 37, 38); border-color: rgb(69, 69, 69);"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="body" style="overflow: hidden;"><div class="header"><span class="codicon codicon-close" title="Read less...Ctrl+Space" style="height: 19px; width: 19px;"></span><p class="type" style="font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;;"></p></div><p class="docs"></p></div><div role="presentation" aria-hidden="true" class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div role="presentation" aria-hidden="true" class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px; transform: translate3d(0px, 0px, 0px); contain: strict;"></div></div><div class="shadow"></div><div class="shadow"></div><div class="shadow top-left-corner"></div></div></div></div></div><div class="context-view" aria-hidden="true" style="display: none;"></div></div></div></div></div>
+        <div class="result" style="display: block;"><iframe src="./dcaf55bd-1d73-462f-85d5-026cc7dab1fa.html"></iframe></div>
+        <div class="other" style="display: none;">
+          <div>
+            <div><a href="https://threejs.org/"><span data-subst="textContent|name">three.js</span>&nbsp;</a><a href="https://threejs.org/"><img data-subst="src|icon" width="64" height="64" src="./icon.svg"></a></div>
+            <div class="loading" style="display: none;"></div>
+          </div>
+        </div>
+    </div>
+</div>
+<div class="dialog export" style="display: none;">
+  <div tabindex="-1">
+    <p>Export To: </p>
+    <div class="export-buttons">
+      <button class="button-jsgist">jsGist</button>
+      <button class="button-codepen">Codepen</button>
+      <button class="button-jsfiddle">JSFiddle</button>
+      <button class="button-codesandbox">CodeSandbox</button>
+      <button class="button-stackoverflow">Stack Overflow</button>
+    </div>
+  </div>
+</div>
+<div class="dialog copy-dialog" style="display: none;">
+  <div tabindex="-1">
+    <p>Copy and paste the text below into a <a href="https://threejs.org/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-gui.html" target="_blank">stack overflow question</a>.</p>
+    <pre class="copy-area"></pre>
+  </div>
+</div>
+
+<script src="./loader.js"></script>
+<script src="./editor-settings.js"></script>
+<script src="./editor.js"></script>
+
+<div class="monaco-aria-container"><div class="monaco-alert" role="alert" aria-atomic="true" style="visibility: visible;">1 of 18 found for light at 92:11</div><div class="monaco-status" role="status" aria-atomic="true"></div></div></body></html>

@@ -14,12 +14,13 @@ function reduct(ele){
     m.classList.toggle("hide")
     but = ele.currentTarget.querySelector("img")
     if (m.classList.contains("hide")){
-    but.src="./favicons/plus.svg"
+      
+      but.src="/HTMLcomponents/side-menu/favicons/plus.svg"
         
     }
     else
     {
-    but.src="./favicons/minus.svg"
+    but.src="/HTMLcomponents/side-menu/favicons/minus.svg"
        
 }
     

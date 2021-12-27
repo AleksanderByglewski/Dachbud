@@ -3,8 +3,9 @@ body{
     padding:0;
 }
 .side-menu{
-    width: 40vw;
+    width: 25vw;
     position: absolute;
+    top:0;
     right: 0;
     display: grid;
     background-color: rgba(64,64,64);
@@ -65,7 +66,6 @@ body{
 
 
 #page-container{
-    min-height: 110vh;
     position: relative;
 }
 @media (max-width:1024px) {
@@ -74,11 +74,15 @@ body{
     .side-menu{
         width: 100%;
         position: absolute;
-        bottom: 0;
+        bottom: unset;
         right:unset;
-        top:unset;
+        top:calc(100vh - 36px);
         left:unset;
         display: grid;
         background-color: rgba(64,64,64);
     }
 }
+
+
+
+/*Content of the menu styling*/

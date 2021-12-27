@@ -1,10 +1,13 @@
 //import * as THREE from 'https://threejs.org/build/three.module.js';
 
-import {GUI} from 'three/examples/jsm/libs/lil-gui.module.min.js';
-import './style.css';
-import * as THREE from 'three';
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
+//import {GUI} from 'three/examples/jsm/libs/lil-gui.module.min.js';
 
+//import * as THREE from 'three';
+//import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
+
+import * as THREE from 'https://threejs.org/build/three.module.js';
+import {OrbitControls} from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
+import {GUI} from 'https://threejs.org/examples/jsm/libs/lil-gui.module.min.js';
 
 
 //import './style.css';
@@ -51,7 +54,7 @@ class StringToNumberHelper {
   function updateTexture() {
     texture.needsUpdate = true;
   }
-const gui = new GUI();
+//const gui = new GUI();
 const loader = new THREE.TextureLoader();
 var  texture = loader.load('wall.jpg');
 texture = loader.load('roof2.jpg');
@@ -59,25 +62,25 @@ texture = loader.load('uv_grid_opengl.jpg');
 const material = new THREE.MeshBasicMaterial({
   map: texture,
 });
-gui.add(new StringToNumberHelper(texture, 'wrapS'), 'value', wrapModes)
-.name('texture.wrapS')
-.onChange(updateTexture);
-gui.add(new StringToNumberHelper(texture, 'wrapT'), 'value', wrapModes)
-.name('texture.wrapT')
-.onChange(updateTexture);
-gui.add(texture.repeat, 'x', 0, 5, .01).name('texture.repeat.x');
-gui.add(texture.repeat, 'y', 0, 5, .01).name('texture.repeat.y');
-gui.add(texture.offset, 'x', -2, 2, .01).name('texture.offset.x');
-gui.add(texture.offset, 'y', -2, 2, .01).name('texture.offset.y');
-gui.add(texture.center, 'x', -.5, 1.5, .01).name('texture.center.x');
-gui.add(texture.center, 'y', -.5, 1.5, .01).name('texture.center.y');
-gui.add(new DegRadHelper(texture, 'rotation'), 'value', -360, 360)
-.name('texture.rotation');
+//gui.add(new StringToNumberHelper(texture, 'wrapS'), 'value', wrapModes)
+//.name('texture.wrapS')
+//.onChange(updateTexture);
+//gui.add(new StringToNumberHelper(texture, 'wrapT'), 'value', wrapModes)
+//.name('texture.wrapT')
+//.onChange(updateTexture);
+//gui.add(texture.repeat, 'x', 0, 5, .01).name('texture.repeat.x');
+//gui.add(texture.repeat, 'y', 0, 5, .01).name('texture.repeat.y');
+//gui.add(texture.offset, 'x', -2, 2, .01).name('texture.offset.x');
+//gui.add(texture.offset, 'y', -2, 2, .01).name('texture.offset.y');
+//gui.add(texture.center, 'x', -.5, 1.5, .01).name('texture.center.x');
+//gui.add(texture.center, 'y', -.5, 1.5, .01).name('texture.center.y');
+//gui.add(new DegRadHelper(texture, 'rotation'), 'value', -360, 360)
+//.name('texture.rotation');
 let roof;
 let roof_front;
 let roof_back;
 let roof_right;
-const gui2 = new GUI();
+//const gui2 = new GUI();
 //gui2.add(texture.offset, 'y', 0, 255, 1).name('Red');
 class AxisGridHelper {
     constructor( units = 10) {
@@ -112,7 +115,7 @@ class AxisGridHelper {
   }
   function makeAxisGrid(node, label, units) {
     const helper = new AxisGridHelper(node, units);
-    gui.add(helper, 'visible').name(label);
+    //gui.add(helper, 'visible').name(label);
     return helper;
   }
   const visibility_enabler=makeAxisGrid( 'Enable manual texture update ', 'Live update');
@@ -156,12 +159,12 @@ class AxisGridHelper {
   }
 
   function makeColorHelper(node, label, units) {
-    const helper = new ColorHelper(node, units);
-    gui2.add(helper, 'visible').name(label);
-    gui2.add(helper, 'red', 0, 255, 1).name('Red');
-    gui2.add(helper, 'green', 0, 255, 1).name('Green');
-    gui2.add(helper, 'blue', 0, 255, 1).name('Blue');
-    return helper;
+    //const helper = new ColorHelper(node, units);
+    //gui2.add(helper, 'visible').name(label);
+    //gui2.add(helper, 'red', 0, 255, 1).name('Red');
+    //gui2.add(helper, 'green', 0, 255, 1).name('Green');
+    //gui2.add(helper, 'blue', 0, 255, 1).name('Blue');
+    //return helper;
   }
 
   const color_enabler=makeColorHelper( 'Enable manual texture update ', 'Live update');
@@ -223,15 +226,46 @@ class Bounding_Box{
 
 
   }
+}
+
+class Menu_interaction{
+//This is the class responsible for adjusting the contents of the side of the building calling proper functions and keeping the data about the contents about the side
+constructor(menu_id,object_interacted=null,created_object=null,width=0, height=0,translation_x=0, translation_y=0, translate_z=0){
+  //Those translations are with respect to the front wall the object is later placed
+  //automatically with the use of three.js placement
+  this.menu_id=null
+  this.object_interacted=null
+  this.rotation_y;
+  this.translation_x;
+  this.translation_y;
+  this.translation_z;
+  console.log("Hello")
+  this.create_a_cell()
+}
+create_a_cell(){ 
+  let node_elem=document.createElement("p")
+  //node_elem.textContent='Mozzila Developer Network'
+  //document.querySelector('#test').appendChild=node_elem
+}
 
 
-  }
+
+call_changes(wall_being_targeted, created_object){
+if(object != null){
+  wall_being_targeted.add_components()
+}
+remove_self()
+}
+
+
+}
+
 //This is basically the template for the front wall right now
 class Garage_walls extends General_object{
 //What is the logic of this class?
 //We have one main component mainly the wall that
 //takes care of it's subcomponents such as door
-
+  
   
   constructor(x, y,translate_x=0,translate_y=0, translate_z=0, rotation=0){
   super();
@@ -243,44 +277,13 @@ class Garage_walls extends General_object{
   this.rotation=0;
   const material = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide} );
   
-  const loader = new THREE.TextureLoader();
-  var  texture = loader.load('wall.jpg');
-  texture = loader.load('roof2.jpg');
-  texture.wrapS =  THREE.ClampToEdgeWrapping;
-  texture.wrapT =THREE.RepeatWrapping;
-  texture.repeat.set( 5, 3.28 );
-  texture.offset.set(1,0)
-  this.material = new THREE.MeshBasicMaterial( { map: texture ,color: 'rgb(255,255,255)', side: THREE.DoubleSide} );
-  let normalMap = new THREE.TextureLoader().load('NormalMap.png');
-  material.normalMap = normalMap;//normal map
-  
 
+  this.change_the_texture()
+
+  
   this.geometry=new THREE.PlaneGeometry( x, y );
-  
-  
-  
   this.object  = new THREE.Mesh( this.geometry, this.material );
-
  
-  const objects = [];
-
-  const radius = 1;
-  const widthSegments = 6;
-  const heightSegments = 6;
-  const sphereGeometry = new THREE.SphereGeometry(
-  radius, widthSegments, heightSegments);
-
-  const solarSystem = new THREE.Object3D();
-  objects.push(solarSystem);
-  const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xFFFF00});
-  const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
-  sunMesh.scale.set(5, 5, 5);
-  solarSystem.add(sunMesh);
-  objects.push(sunMesh);
-
- 
- 
-    
 
   const door_material = new THREE.MeshBasicMaterial({color: 0x44aa88});
   const door_width = 6;  // ui: width
@@ -288,41 +291,46 @@ class Garage_walls extends General_object{
   const door_depth = 0.1;  // ui: depth
   const door_geometry = new THREE.BoxGeometry(door_width, door_height, door_depth);
   const door = new THREE.Mesh(door_geometry, door_material);
-  door.geometry.translate(-5,+door_height/2-5/2,0)
-  //TODO MAKE IT ROTATE BASED ON side it is in
-  door.geometry.rotateY(0*Math.PI/2)
   
-  //@TODO: attach this code to the proper objects and allow attaching addtional components to them such as doors handles and such
-  //remember to define proper release methods for releasing the resources
-   //Learn about textures and implement nice textures configure the objects to implement the textures
+  
+  //@TODO:
+  //Learn about textures and implement nice textures configure the objects to implement the textures
   //Configure the menu so that the interaction may occur just through the menu items,optionally do the presentation
-//run_array=[]
+  //run_array=[]
 
 
 //Now for the creation of components
 
 
 
+//TODO MAKE IT ROTATE BASED ON side it is in
+door.geometry.translate(0,+door_height/2-5/2,0)
+door.geometry.rotateY(0*Math.PI/2)
 this.add_components(door)
-//this.remove_components()
 
-  //TODO Pt.1write a function that adds objects to garage wall objects,
-  //and write a function that removes object from garage wall (in the end based on a unique id)
-  
-  //ADDNOTATION Okay there is no other way as to make
-  //moving of the components relative to their rotation 
-  //sunMesh.geometry.translate(-1,0,0);  
-  //ADDNOTATION FOR THE CLEANUP ALL THAT IS NECESSARY IS THIS
-  //this.object.remove(solarSystem)
-  this.geometry.rotateY(rotation)
-  super.set_position(translate_x,translate_y,translate_z)
+door.name="alex"
+console.log(door.id)
+//this.remove_component(door.id)
+this.geometry.rotateY(rotation)
+super.set_position(translate_x,translate_y,translate_z)
  
   
-  
- 
 
-    }
-
+}
+  change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255){
+    const loader = new THREE.TextureLoader();
+    this.texture = loader.load('wall.jpg');
+    this.texture = loader.load('./resources/images/PWP.jpg');
+    this.texture.wrapS =  THREE.ClampToEdgeWrapping;
+    this.texture.wrapT =THREE.RepeatWrapping;
+    this.texture.repeat.set( 5, 2.0 );
+    this.texture.offset.set(1,0)
+    this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
+    this.material.needsUpdate=true;
+    let normalMap = new THREE.TextureLoader().load('NormalMap.png');
+    material.normalMap = normalMap;//normal map
+    
+  }
     
  add_components(component){
   console.log('Adding a component ')
@@ -330,11 +338,21 @@ this.add_components(door)
  }
  remove_components(){
     let children=this.object.children
-    //console.log(parent_element.object.children)
     for (const child of children){
-      this.object.remove(child)
+//      console.log(child)
+    this.object.remove(child)
     }
     //parent_element.object.remove(solarSystem)
+  }
+  remove_component(id){
+    let children=this.object.children
+  //  for (const child of children){
+   //   console.log(child)
+   // }
+    let target =this.object.getObjectById(id)
+    this.object.remove(target)
+    
+
   }
 
   //this.object.add(solarSystem)
@@ -378,21 +396,22 @@ class Roof_walls extends General_object{
 
   const loader = new THREE.TextureLoader();
   var  texture = loader.load('wall.jpg');
-  texture = loader.load('roof2.jpg');
+  this.texture = loader.load('roof2.jpg');
  
-  texture.wrapS =  THREE.ClampToEdgeWrapping;
-  texture.wrapT =THREE.RepeatWrapping;
-  texture.repeat.set( 0, 0.6 );
-  texture.offset.set(0,0.5)
-  texture.center.set(0.65,0)
+  this.texture.wrapS =  THREE.ClampToEdgeWrapping;
+  this.texture.wrapT =THREE.RepeatWrapping;
+  this.texture.repeat.set( 0, 0.6 );
+  this.texture.offset.set(0,0.5)
+  this.texture.center.set(0.65,0)
 
 
-  texture.repeat.set( 0, 0.65 );
-  texture.offset.set(0,0.12)
-  this.material = new THREE.MeshBasicMaterial( { map: texture ,color: 0xffffff, side: THREE.DoubleSide} );
+  this.texture.repeat.set( 0, 0.65 );
+  this.texture.offset.set(0,0.12)
+  this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} );
   let normalMap = new THREE.TextureLoader().load('NormalMap.png');
   //material.normalMap = normalMap;//normal map
-
+  this.change_the_texture()
+  
 
 
 
@@ -405,7 +424,22 @@ class Roof_walls extends General_object{
 
   //this.object = new THREE.Mesh(this.geometry, material);
     }
+    
+    change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255){
+      const loader = new THREE.TextureLoader();
+      this.texture = loader.load('wall.jpg');
+      this.texture = loader.load('roof2.jpg');
  
+      this.texture.wrapS =  THREE.ClampToEdgeWrapping;
+      this.texture.wrapT =THREE.RepeatWrapping;
+      this.texture.repeat.set( 5, 2.0 );
+      this.texture.offset.set(1,0)
+      this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
+      this.material.needsUpdate=true;
+      let normalMap = new THREE.TextureLoader().load('NormalMap.png');
+      material.normalMap = normalMap;//normal map
+    }
+
     reconstruct_material()
     {
         console.log("Reconstructing")
@@ -458,15 +492,9 @@ class Roof_walls_square extends General_object{
   //  map: loader.load('resources/images/wall.jpg'),
  // });
 
-
-    const loader = new THREE.TextureLoader();
-    var  texture = loader.load('wall.jpg');
-    texture = loader.load('roof2.jpg');
-    texture.wrapS =  THREE.ClampToEdgeWrapping;
-    texture.wrapT =THREE.RepeatWrapping;
-    texture.repeat.set( 5, 3.28 );
-    texture.offset.set(1,0)
-  this.material = new THREE.MeshBasicMaterial( { map: texture ,color: 0xffffff, side: THREE.DoubleSide} );
+this.change_the_texture()
+    
+  this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} );
   let normalMap = new THREE.TextureLoader().load('NormalMap.png');
   material.normalMap = normalMap;//normal map
   this.object  = new THREE.Mesh( this.geometry, this.material );
@@ -476,7 +504,21 @@ class Roof_walls_square extends General_object{
 
 
     }
- 
+    change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255){
+
+      const loader = new THREE.TextureLoader();
+      this.texture = loader.load('wall.jpg');
+      this.texture = loader.load('roof2.jpg');
+      this.texture.wrapS =  THREE.ClampToEdgeWrapping;
+      this.texture.wrapT =THREE.RepeatWrapping;
+      this.texture.repeat.set( 5, 3.28 );
+      this.texture.offset.set(1,0)
+  
+      this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
+      this.material.needsUpdate=true;
+      let normalMap = new THREE.TextureLoader().load('NormalMap.png');
+      material.normalMap = normalMap;//normal map
+    }
     reconstruct_material()
     {
         console.log("Reconstructing roof wall")
@@ -553,7 +595,8 @@ class Roof extends General_object{
    texture.wrapT =THREE.RepeatWrapping;
    texture.repeat.set( 5, 3.28 );
    texture.offset.set(1,0)
-    this.material = new THREE.MeshBasicMaterial( { map: texture ,color: 0xffffff, side: THREE.DoubleSide} );
+   this.change_the_texture()
+    this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} );
     let normalMap = new THREE.TextureLoader().load('NormalMap.png');
     material.normalMap = normalMap;//normal map
     this.object  = new THREE.Mesh( this.geometry, this.material );
@@ -572,6 +615,21 @@ class Roof extends General_object{
     
       }
   
+      change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255){
+        const loader = new THREE.TextureLoader();
+        this.texture = loader.load('wall.jpg');
+        this.texture = loader.load('roof2.jpg');
+        this.texture.wrapS =  THREE.ClampToEdgeWrapping;
+        this.texture.wrapT =THREE.RepeatWrapping;
+        this.texture.repeat.set( 5, 13.12 );
+        this.texture.offset.set(1,0)
+        this.texture.rotation=(Math.PI/2)
+        this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
+        this.material.needsUpdate=true;
+        let normalMap = new THREE.TextureLoader().load('NormalMap.png');
+        material.normalMap = normalMap;//normal map
+      }    
+
     reconstruct_material()
     {
         console.log("Reconstructing")
@@ -667,7 +725,7 @@ constructor(constructor_width, constructor_depth, constructor_height, roof_width
 
   this.scene=scene;
   
-  this.rebuild_walls();
+  this.rebuild_walls()
   
   this.rebuild_roofs(6);
   this.add_to_scene();
@@ -802,7 +860,7 @@ rebuild_roofs(roof_instance=0,constructor_width=this.constructor_width, construc
     //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
      this.roof2=new Roof(roof_width/2,roof_depth,-roof_width/4,constructor_height+roof_height/2,0,0,roof_height )
   
-    this.roof_front2.object.geometry.rotateY(Math.PI)  
+    this.roof_frontd2.object.geometry.rotateY(Math.PI)  
     this.roof_back2.object.geometry.rotateY(Math.PI)  
     this.roof_right2.object.geometry.rotateY(Math.PI)  
     this.roof2.object.geometry.rotateY(Math.PI)  
@@ -919,7 +977,7 @@ const sphereGeometry = new THREE.SphereGeometry(
 }
 
 //main_house=new Creation_controller(40,40,3,40,40,5,scene);
-let flat_ground=new Foundation(depth,width)
+//let flat_ground=new Foundation(depth,width)
 //width_of_a_plane,height_of_a_plane, translation_x,translation_y, translation_z; 
 //in left and right walls we rotate around the y axis so the width becomes the depth height remains the so we have
 //depth, height, half of width of building, half of height, and rotation by 90 deg
@@ -949,8 +1007,12 @@ let wall_back=new Garage_walls(constructor_width,constructor_height,0,constructo
 let wall_left=new Garage_walls(constructor_depth,constructor_height,-constructor_width/2,constructor_height/2,0,Math.PI/2)
 let wall_right=new Garage_walls(constructor_depth,constructor_height,constructor_width/2,constructor_height/2,0,Math.PI/2)
 
-
-
+  {
+const color = 0xFFFFFF;  // white
+const near = 10;
+const far = 70;
+scene.fog = new THREE.Fog(color, near, far);
+  }
 
 //wall_front.add_components_to_scene(scene)
 //scene.remove(wall_front)
@@ -988,39 +1050,63 @@ renderer.render(scene, camera);
 
 //Plane
 
-const geometry_plane = new THREE.PlaneGeometry( width, depth );
-geometry_plane.rotateX(Math.PI/2)
-const material_plane = new THREE.MeshBasicMaterial( {color: 0xff6347, side: THREE.DoubleSide} );
-const plane = new THREE.Mesh( geometry_plane, material_plane );
-scene.add( plane );
+//const geometry_plane = new THREE.PlaneGeometry( width, depth );
+//geometry_plane.rotateX(Math.PI/2)
+//const material_plane = new THREE.MeshBasicMaterial( {color: 0xff6347, side: THREE.DoubleSide} );
+//const plane = new THREE.Mesh( geometry_plane, material_plane );
+//scene.add( plane );
 
 
 
 // Torus
 
-const geometry = new THREE.TorusGeometry(1, 0.3, 10, 20);
-const material = new THREE.MeshStandardMaterial({ color: 0xff6347,wireframe: true });
-const torus = new THREE.Mesh(geometry, material);
+//const geometry = new THREE.TorusGeometry(1, 0.3, 10, 20);
+//const material = new THREE.MeshStandardMaterial({ color: 0xff6347,wireframe: true });
+//const torus = new THREE.Mesh(geometry, material);
 //scene.add(torus);
 
 
 
 
+{
+  const color = 0xFFFFFF;
+  const intensity = 1;
+  const light = new THREE.DirectionalLight(color, intensity);
+  //light.castShadow = true;
+  light.position.set(0, 20, 30);
+  light.target.position.set(-4, 0, -4);
+  scene.add(light);
+  scene.add(light.target);
 
-// Lights
+  const cameraHelper = new THREE.CameraHelper(light.shadow.camera);
+  scene.add(cameraHelper);
 
-const pointLight = new THREE.PointLight(0xffffff);
-pointLight.position.set(10, 10, 10);
+  const helper = new THREE.DirectionalLightHelper(light);
+  scene.add(helper);
 
-const ambientLight = new THREE.AmbientLight(0xffffff);
-scene.add(pointLight, ambientLight);
+  function updateCamera() {
+    // update the light target's matrixWorld because it's needed by the helper
+    light.target.updateMatrixWorld();
+    helper.update();
+    // update the light's shadow camera's projection matrix
+    light.shadow.camera.updateProjectionMatrix();
+    // and now update the camera helper we're using to show the light's shadow camera
+    cameraHelper.update();
+  }
+  updateCamera();
+}
+//const pointLight = new THREE.PointLight(0xffffff);
+//pointLight.position.set(10, 10, 10);
+
+//const ambientLight = new THREE.AmbientLight(0xffffff);
+//scene.add(pointLight, ambientLight);
 
 // Helpers
 
- const lightHelper = new THREE.PointLightHelper(pointLight)
+ //const lightHelper = new THREE.PointLightHelper(pointLight)
+ //scene.add(lightHelper, gridHelper)
  const gridHelper = new THREE.GridHelper(200, 200,200);
- scene.add(lightHelper, gridHelper)
-
+ scene.add(gridHelper)
  const controls = new OrbitControls(camera, renderer.domElement);
 
 
@@ -1045,20 +1131,20 @@ function animate() {
   renderer.render(scene, camera);
 
   {
-    const planeSize = 100;
+    const planeSize = 40;
 
     const loader = new THREE.TextureLoader();
-    //const texture = loader.load('https://threejs.org/manual/examples/resources/images/checker.png');
-    //texture.wrapS = THREE.RepeatWrapping;
-    //texture.wrapT = THREE.RepeatWrapping;
-    //texture.magFilter = THREE.NearestFilter;
+    const texture = loader.load('https://threejs.org/manual/examples/resources/images/checker.png');
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.magFilter = THREE.NearestFilter;
     const repeats = planeSize / 2;
-    //texture.repeat.set(repeats, repeats);
+    texture.repeat.set(repeats, repeats);
 
     const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
     const planeMat = new THREE.MeshPhongMaterial({
-      color: 0xff6347,
-      side: THREE.DoubleSide
+      map: texture,
+      side: THREE.DoubleSide,
     });
     const mesh = new THREE.Mesh(planeGeo, planeMat);
     mesh.receiveShadow = true;
@@ -1066,60 +1152,30 @@ function animate() {
     scene.add(mesh);
   }
   {
-    const sphereRadius = 5;
+    const cubeSize = 4;
+    const cubeGeo = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+    const cubeMat = new THREE.MeshPhongMaterial({color: '#8AC'});
+    const mesh = new THREE.Mesh(cubeGeo, cubeMat);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
+    scene.add(mesh);
+  }
+  {
+    const sphereRadius = 4;
     const sphereWidthDivisions = 32;
     const sphereHeightDivisions = 16;
     const sphereGeo = new THREE.SphereGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
     const sphereMat = new THREE.MeshPhongMaterial({color: '#CA8'});
     const mesh = new THREE.Mesh(sphereGeo, sphereMat);
+    mesh.geometry.translate(10,0,15)
     mesh.castShadow = true;
     mesh.receiveShadow = true;
-    sphereGeo.translate(-20,0,0)
     mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
     scene.add(mesh);
-  }
-
-  {
-    const color = 0xFF0000;
-    const intensity = 1;
-    const light = new THREE.DirectionalLight(color, intensity);
-    light.castShadow = true;
-    light.position.set(-25, 20, 0);
-    light.target.position.set(-25, 0, -4);
-    scene.add(light);
-    scene.add(light.target);
-
-    const helper = new THREE.DirectionalLightHelper(light);
-    scene.add(helper);
-
-    const onChange = () => {
-      light.target.updateMatrixWorld();
-      helper.update();
-    };
-    onChange();
-
-    
- 
   }
 
 }
 animate();
 }
 main()
-
-
-
-
-
-function helper_fuction(){
-  document.addEventListener('keydown', logKey);
-  
-  function logKey(e) {
-    console.log( ` ${e.code}`);
-  }
-}
-//helper_fuction();
-
-
-
-//secondary_main();
