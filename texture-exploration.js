@@ -228,6 +228,34 @@ class Bounding_Box{
   }
 }
 
+
+class state_component{
+  constructor(name){
+  }
+}
+
+class state_doors extends state_component{
+
+}
+
+class state_windows extends state_component{
+
+}
+
+
+class state_machine{
+constructor(){
+  this.roof=new state_component('roof')
+  this.walls_color;
+  this.walls_type;
+  this.walls_material_type;
+
+}}
+
+
+
+
+
 class Menu_interaction{
 //This is the class responsible for adjusting the contents of the side of the building calling proper functions and keeping the data about the contents about the side
 constructor(menu_id,object_interacted=null,created_object=null,width=0, height=0,translation_x=0, translation_y=0, translate_z=0){
@@ -281,22 +309,25 @@ class Garage_walls extends General_object{
 
   this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} );
   this.object = new THREE.Mesh(this.geometry, this.material);
-  this.change_the_texture(null, 255,0,0,0)  
+  this.change_the_texture(null, 255,255,255,0)  
 
   
   this.geometry=new THREE.PlaneGeometry( x, y );
   this.object  = new THREE.Mesh( this.geometry, this.material );
     
 
-  const door_material = new THREE.MeshBasicMaterial({color: 0x44aa88});
+
+  this.texture2 = loader.load('./resources/images/SCME.jpg');
+  const door_material = new THREE.MeshBasicMaterial({color: 0xaaaaaa, map: this.texture2});
   const door_width = 6;  // ui: width
   const door_height = 4;  // ui: height
   const door_depth = 0.1;  // ui: depth
   const door_geometry = new THREE.BoxGeometry(door_width, door_height, door_depth);
   const door = new THREE.Mesh(door_geometry, door_material);
-  
+  this.door=door
+
   door.geometry.translate(0,+door_height/2-5/2,0)
-  door.geometry.rotateY(0*Math.PI/2)
+  door.geometry.rotateY(rotation)
   this.add_components(door)
   
   door.name="alex"
@@ -738,7 +769,7 @@ const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
 });
 class Creation_controller{
-constructor(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene){
+constructor(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene,roof_type=4){
   
   this.constructor_width=constructor_width;
   this.constructor_depth= constructor_depth;
@@ -757,7 +788,7 @@ constructor(constructor_width, constructor_depth, constructor_height, roof_width
   this.roof_right=null;
   this.roof=null;
 
-  this.roof_front2=new Garage_walls(0,0,10,0,0);
+  this.roof_front2=new Garage_walls(0,0,0,0,0);
   this.roof_back2=new Garage_walls(0,0,0,0,0);
   this.roof_right2=new Garage_walls(0,0,0,0,0);
   this.roof2=new Garage_walls(0,0,0,0,0);
@@ -765,11 +796,18 @@ constructor(constructor_width, constructor_depth, constructor_height, roof_width
   this.scene=scene;
   
   this.rebuild_walls()
-  this.rebuild_roofs(6);
+  this.rebuild_roofs(roof_type);
+
+
+//PRESENTATION CODE
+  this.wall_left.remove_components()
+  this.wall_right.remove_components()
+  this.wall_back.remove_components()
+  
+
+
   this.add_to_scene();
 
-
-  
 
 }
 
@@ -819,7 +857,7 @@ rebuild_walls(constructor_width=this.constructor_width, constructor_depth=this.c
 rebuild_roofs(roof_instance=0,constructor_width=this.constructor_width, constructor_depth=this.constructor_depth, constructor_height=this.constructor_height, 
   roof_width=this.roof_width,roof_depth=this.roof_depth,roof_height=this.roof_height){
   switch (roof_instance) {
-    case 0:{
+  case 0:{
   //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z;   
   this.roof_front=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,constructor_depth/2)
   this.roof_back=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,-constructor_depth/2)
@@ -881,7 +919,7 @@ rebuild_roofs(roof_instance=0,constructor_width=this.constructor_width, construc
     break;
     }
 
-    case 5:{
+    case 4:{
 
       //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z;   
       this.roof_front=new Roof_walls(roof_width/2,roof_height,-roof_width/4,constructor_height+roof_height/2,constructor_depth/2)
@@ -898,7 +936,7 @@ rebuild_roofs(roof_instance=0,constructor_width=this.constructor_width, construc
     //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z, z height of the upper part=height of wall +desired height of the roof; 
      this.roof2=new Roof(roof_width/2,roof_depth,-roof_width/4,constructor_height+roof_height/2,0,0,roof_height )
   
-    this.roof_frontd2.object.geometry.rotateY(Math.PI)  
+    this.roof_front2.object.geometry.rotateY(Math.PI)  
     this.roof_back2.object.geometry.rotateY(Math.PI)  
     this.roof_right2.object.geometry.rotateY(Math.PI)  
     this.roof2.object.geometry.rotateY(Math.PI)  
@@ -912,7 +950,7 @@ rebuild_roofs(roof_instance=0,constructor_width=this.constructor_width, construc
      break;
       
     }
-    case 6:{
+    case 5:{
             let x=roof_width;
             roof_width =roof_depth;
             roof_depth =x;
@@ -975,6 +1013,11 @@ rebuild_roofs(roof_instance=0,constructor_width=this.constructor_width, construc
   scene.remove(this.roof_back.object)
   scene.remove(this.roof_right.object)
   scene.remove(this.roof.object)
+
+  scene.remove(this.roof_front2.object)
+  scene.remove(this.roof_back2.object)
+  scene.remove(this.roof_right2.object)
+  scene.remove(this.roof2.object)
  }
 
 add_to_scene(){
@@ -1025,8 +1068,16 @@ let constructor_height=5;
 
 let roof_width=27;
 let roof_depth=20;
-let roof_height=5;
+let roof_height=1.5;
 let main_house=new Creation_controller(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene);
+
+
+
+main_house.release()
+
+
+main_house=new Creation_controller(constructor_width-10, constructor_depth, constructor_height, roof_width-10, roof_depth, roof_height, scene);
+
 //ADDNOTATION
 //scene.remove(main_house.wall_front.object) works that is a really good sign
 
@@ -1108,7 +1159,8 @@ renderer.render(scene, camera);
   //light.castShadow = true;
   light.position.set(0, 20, 30);
   light.target.position.set(-4, 0, -4);
-  scene.add(light);
+  //const light = new THREE.AmbientLight( 0x404040 ); // soft white light
+  scene.add( light );
   scene.add(light.target);
 
   const cameraHelper = new THREE.CameraHelper(light.shadow.camera);
@@ -1143,7 +1195,8 @@ renderer.render(scene, camera);
  const controls = new OrbitControls(camera, renderer.domElement);
 
 
-
+ controls.maxPolarAngle=0.48*Math.PI
+ controls.minPolarAngle=0.2*Math.PI
 
 // Background
 
@@ -1153,63 +1206,67 @@ renderer.render(scene, camera);
 
 function animate() {
   requestAnimationFrame(animate);
+  controls.autoRotate = true;
+  controls.autoRotateSpeed =0.5
 
   //torus.rotation.x += 0.01;
   //torus.rotation.y += 0.005;
   //torus.rotation.z += 0.01;
-
+  controls.update();
 
   // controls.update();
 
   renderer.render(scene, camera);
 
   {
-    const planeSize = 40;
-
-    const loader = new THREE.TextureLoader();
-    const texture = loader.load('https://threejs.org/manual/examples/resources/images/checker.png');
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
-    texture.magFilter = THREE.NearestFilter;
-    const repeats = planeSize / 2;
-    texture.repeat.set(repeats, repeats);
-
-    const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
-    const planeMat = new THREE.MeshPhongMaterial({
-      map: texture,
-      side: THREE.DoubleSide,
-    });
-    const mesh = new THREE.Mesh(planeGeo, planeMat);
-    mesh.receiveShadow = true;
-    mesh.rotation.x = Math.PI * -.5;
-    scene.add(mesh);
+//    const cubeSize = 4;
+ //   const cubeGeo = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+  //  const cubeMat = new THREE.MeshPhongMaterial({color: '#8AC'});
+  //  const mesh = new THREE.Mesh(cubeGeo, cubeMat);
+  //  mesh.castShadow = true;
+  //  mesh.receiveShadow = true;
+  //  mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
+  //  scene.add(mesh);
   }
   {
-    const cubeSize = 4;
-    const cubeGeo = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-    const cubeMat = new THREE.MeshPhongMaterial({color: '#8AC'});
-    const mesh = new THREE.Mesh(cubeGeo, cubeMat);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
-    scene.add(mesh);
-  }
-  {
-    const sphereRadius = 4;
-    const sphereWidthDivisions = 32;
-    const sphereHeightDivisions = 16;
-    const sphereGeo = new THREE.SphereGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
-    const sphereMat = new THREE.MeshPhongMaterial({color: '#CA8'});
-    const mesh = new THREE.Mesh(sphereGeo, sphereMat);
-    mesh.geometry.translate(10,0,15)
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
-    scene.add(mesh);
+    //const sphereRadius = 4;
+    //const sphereWidthDivisions = 32;
+    //const sphereHeightDivisions = 16;
+    //const sphereGeo = new THREE.SphereGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
+    //const sphereMat = new THREE.MeshPhongMaterial({color: '#CA8'});
+    //const mesh = new THREE.Mesh(sphereGeo, sphereMat);
+    //mesh.geometry.translate(10,0,15)
+    //mesh.castShadow = true;
+    //mesh.receiveShadow = true;
+    //mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
+    //scene.add(mesh);
   }
 
 }
 animate();
+
+{
+  const planeSize = 40;
+
+  const loader = new THREE.TextureLoader();
+  const texture = loader.load('https://threejs.org/manual/examples/resources/images/checker.png');
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.magFilter = THREE.NearestFilter;
+  const repeats = planeSize / 2;
+  texture.repeat.set(repeats, repeats);
+
+  const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
+  const planeMat = new THREE.MeshPhongMaterial({
+    map: texture,
+    side: THREE.DoubleSide,
+  });
+  const mesh = new THREE.Mesh(planeGeo, planeMat);
+  mesh.receiveShadow = true;
+  mesh.rotation.x = Math.PI * -.5;
+  scene.add(mesh);
+}
+
 
 //Event listeners and interactivity with DOM this can be moved
 //outside of the function to lower the initial render time
@@ -1250,8 +1307,62 @@ animate();
   main_house.wall_left.change_the_texture(null,0,255,255,0)
   //main_house.roof.rotate_the_texture()
   //Todo pass the callbacks into the controller function that will handle all states
-}
 
+  }
+
+  let roof_index=0;
+  let overhang=0;
+  let index=0;
+
+  function presentation(){
+    index++;
+    if(!overhang){
+      overhang=0.5
+      roof_index=(roof_index+1)%6
+    }
+    else{
+      overhang=0
+    }
+    main_house.release()
+
+
+    let constructor_width=11;
+    let constructor_depth=15;
+    let constructor_height=5;
+    
+    let roof_width=11+overhang;
+    let roof_depth=15+overhang;
+    let roof_height=1.5;
+
+
+    if(index>12)
+    {
+      constructor_width=Math.random()*20+10;
+      constructor_depth=Math.random()*20+10;
+      constructor_height=5;
+      
+      roof_width=constructor_width+overhang;
+      roof_depth=constructor_depth+overhang;
+      roof_height=1.5+Math.random()*0.5;
+
+    }
+
+    main_house=new Creation_controller(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene,roof_index);
+ 
+  }
+  function change_roof(){
+  
+    main_house.release()
+    main_house=new Creation_controller(constructor_width-10, constructor_depth, constructor_height, roof_width-10, roof_depth, roof_height, scene,roof_index);
+  }
+
+
+ // const interval = setInterval(function() {
+ //   presentation()
+ // }, 1000);
+
+
+  
 }
 
 
