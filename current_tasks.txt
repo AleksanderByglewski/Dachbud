@@ -1,0 +1,25 @@
+Modelowanie[]
+    Stworzyć proste obiekty []
+        -Podłoże[]
+        -Okna[]
+        -Drzwi[]
+        -Kotwiczenie[]
+    Stworzyć skomplikowane obiekty[]
+        -Wiata[]
+        -Rynny[]
+
+Menu[]
+    -Utworzyć maszynę stanów trzymająca stany z menu[]
+    -Zarządzać menu i obecnymi w nim obiektach na podstawie stanów[]
+    -Dodawanie nowych podzakładek na podstawie poprzednich akcji[]
+    -Tworzone elementy dołaczyć do stanów[]
+
+Tworzenie budynku[]
+    -Renderowanie nowych budynków jest podsumowane w funkcji presentation; podłączyć do funckji
+
+Three.js 
+    -Modyfikacja i ładniejsze tekstury
+    
+Dodatkowe funkcje[]
+    -Generowanie rzutów
+    -Zmiana tła kolorystyki

@@ -33,7 +33,7 @@ class StringToNumberHelper {
   }
 
 
-  class DegRadHelper {
+class DegRadHelper {
     constructor(obj, prop) {
       this.obj = obj;
       this.prop = prop;
@@ -336,9 +336,6 @@ class Garage_walls extends General_object{
   this.geometry.rotateY(rotation)
   super.set_position(translate_x,translate_y,translate_z)
      
-  //@TODO:
-  //You can just force the rebuilding of the walls in change the texture
-
 
   
 
@@ -839,11 +836,6 @@ rebuild_walls(constructor_width=this.constructor_width, constructor_depth=this.c
   solarSystem.add(sunMesh);
   objects.push(sunMesh);
 
-  //@TODO: attach this code to the proper objects and allow attaching addtional components to them such as doors handles and such
-  //remember to define proper release methods for releasing the resources
-   //Learn about textures and implement nice textures configure the objects to implement the textures
-  //Configure the menu so that the interaction may occur just through the menu items
-  //Write the presentation if you have enough time and enjoy life
  
   //this.roof_front=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,constructor_depth/2)
   //this.roof_back=new Roof_walls(roof_width,roof_height,0,constructor_height+roof_height/2,-constructor_depth/2)
@@ -1271,6 +1263,7 @@ animate();
 //Event listeners and interactivity with DOM this can be moved
 //outside of the function to lower the initial render time
 
+  //@TODO move the interaction with menu outside of the main function
 
   let para=document.querySelector("#roof-color")
   para.addEventListener('click', change_color_roof)
@@ -1287,8 +1280,6 @@ animate();
   }
 
 
-  //@TODO call the controller class that will store data and construct objects based on 
-  //the stored model
   [red,green,blue]=color_decomposition(color)
 
   main_house.roof_back.change_the_texture(null,red,green,blue)
@@ -1306,7 +1297,6 @@ animate();
   main_house.wall_back.change_the_texture(null,0,255,255,0)
   main_house.wall_left.change_the_texture(null,0,255,255,0)
   //main_house.roof.rotate_the_texture()
-  //Todo pass the callbacks into the controller function that will handle all states
 
   }
 
@@ -1357,9 +1347,9 @@ animate();
   }
 
 
- // const interval = setInterval(function() {
- //   presentation()
- // }, 1000);
+//  const interval = setInterval(function() {
+//    presentation()
+//  }, 1000);
 
 
   
