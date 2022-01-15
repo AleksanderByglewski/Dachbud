@@ -747,10 +747,13 @@ class Front_wall extends Garage_walls{
 }
 
 
-
+let main_house_outer=""
+let scene_outer=""
+let Creation_controller_outer=""
 
 function main(){
 const scene = new THREE.Scene();
+
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 window.addEventListener( 'resize', onWindowResize, false );
 
@@ -1048,6 +1051,8 @@ const sphereGeometry = new THREE.SphereGeometry(
 
  
 }
+
+
 //main_house=new Creation_controller(40,40,3,40,40,5,scene);
 //let flat_ground=new Foundation(depth,width)
 //width_of_a_plane,height_of_a_plane, translation_x,translation_y, translation_z; 
@@ -1069,6 +1074,10 @@ main_house.release()
 
 
 main_house=new Creation_controller(constructor_width-10, constructor_depth, constructor_height, roof_width-10, roof_depth, roof_height, scene);
+
+
+//Attach the main_house to the main house outer so that you can modify it outside of the main loop
+
 
 //ADDNOTATION
 //scene.remove(main_house.wall_front.object) works that is a really good sign
@@ -1337,8 +1346,7 @@ animate();
 
     }
 
-    main_house=new Creation_controller(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene,roof_index);
- 
+   
   }
   function change_roof(){
   
@@ -1347,13 +1355,135 @@ animate();
   }
 
 
+
+ 
 //  const interval = setInterval(function() {
 //    presentation()
 //  }, 1000);
+Creation_controller_outer=main_house.constructor
+main_house_outer=main_house
+scene_outer=scene
+//main_house.release()
 
 
-  
 }
 
-
 main()
+
+
+//Get how to create a good and semi reusable box
+main_house_outer=new Creation_controller_outer(10, 10, 10, 10, 10, 10, scene_outer,4);
+
+
+class Menu_control{
+
+  constructor(){
+
+  this.side_menu=document.querySelector(".side-menu");
+  //let flooring_control=document.querySelector('input[name="flooring"]:checked')
+  let flooring_control=document.querySelectorAll('input[name="flooring"]')
+  for (let elem of flooring_control){
+  elem.addEventListener('change',this.radio_control_function)
+  }
+}
+  radio_control_function(){
+    let current_value=document.querySelector('input[name="flooring"]:checked').value
+    console.log(current_value)
+  }
+
+  clear_menu(){
+    this.side_menu.innerText="";
+  }
+
+  add_node(){
+    let div_elem=document.createElement("div");
+    div_elem.classList.add("menu-elem");
+
+    
+    let div_heading=document.createElement('div')
+    div_heading.classList.add("menu-elem-heading")
+    div_heading.innerHTML=`<div class="menu-elem-heading-title">Menu elem heading</div>
+    <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+    `
+
+    div_elem.innerHTML=`
+    <div class="menu-elem-content hide">
+    <div class="menu-elem-content-text">Menu elem content</div>
+    <div class="erase-button">Erase me</div>
+    </div>
+    `
+    
+    div_elem.prepend(div_heading)
+    div_heading.addEventListener("click", reduct)
+    //div_heading.addEventListener("click", (evt)=>{evt.currentTarget.parentNode.remove()})
+    div_elem.querySelector('.erase-button').addEventListener('click', (evt)=>{evt.currentTarget.parentNode.parentNode.remove()})
+    //this.side_menu.appendChild(div_elem)
+    return div_elem
+  }
+  add_gate(){
+    let new_elem=this.add_node()
+    this.side_menu.insertBefore(new_elem,document.querySelector("#windows-object") )
+
+  }
+  add_window(){
+    let new_elem=this.add_node()
+    this.side_menu.appendChild(new_elem)
+  }
+
+  add_node2(){
+    console.log(this.side_menu)
+  }
+ ohmawgawd(){
+  let para=document.querySelector("#roof-color")
+  para.addEventListener('click', change_color_roof)
+  
+  function change_color_roof(event){
+  let element=event.target.closest('.color-container')
+  let color=element.dataset.colorindex;
+  let red,green,blue;
+  function color_decomposition(x){
+    let red=parseInt(x.substring(0,2),16)
+    let green=parseInt(x.substring(2,4),16)
+    let blue=parseInt(x.substring(4,6),16)
+    return [red,green,blue]
+  }
+
+
+  [red,green,blue]=color_decomposition(color)
+
+  main_house.roof_back.change_the_texture(null,red,green,blue)
+  main_house.roof_front.change_the_texture(null,red,green,blue)
+  main_house.roof_right.change_the_texture(null,red,green,blue)
+  main_house.roof.change_the_texture(null,red,green,blue)
+  main_house.roof_back2.change_the_texture(null,red,green,blue)
+  main_house.roof_front2.change_the_texture(null,red,green,blue)
+  main_house.roof_right2.change_the_texture(null,red,green,blue)
+  main_house.roof2.change_the_texture(null,red,green,blue)
+
+
+  main_house.wall_front.change_the_texture("  ",0,0,0,0)
+  main_house.wall_right.change_the_texture(null,0,255,255,0)
+  main_house.wall_back.change_the_texture(null,0,255,255,0)
+  main_house.wall_left.change_the_texture(null,0,255,255,0)
+  //main_house.roof.rotate_the_texture()
+
+      }
+    }
+
+  }
+
+
+
+
+ let menu_controller=new Menu_control()
+
+
+
+
+document.querySelector("#add-gates").addEventListener('click',  ()=>{menu_controller.add_gate()})
+document.querySelector("#add-windows").addEventListener('click',  ()=>{menu_controller.add_window()})
+
+
+
+ //menu_controller.clear_menu()
+ 

@@ -15,11 +15,11 @@ Menu[]
     -Tworzone elementy dołaczyć do stanów[]
 
 Tworzenie budynku[]
-    -Renderowanie nowych budynków jest podsumowane w funkcji presentation; podłączyć do funckji
+    -Renderowanie nowych budynków jest podsumowane w funkcji presentation; podłączyć do funckji[]
 
 Three.js 
-    -Modyfikacja i ładniejsze tekstury
+    -Modyfikacja i ładniejsze tekstury[]
     
 Dodatkowe funkcje[]
-    -Generowanie rzutów
-    -Zmiana tła kolorystyki
+    -Generowanie rzutów[]
+    -Zmiana tła kolorystyki[]
