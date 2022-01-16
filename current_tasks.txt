@@ -7,14 +7,25 @@ Modelowanie[]
     Stworzyć skomplikowane obiekty[]
         -Wiata[]
         -Rynny[]
-
+Data_filling
+    Data
+        -Przetłoczenia[x]
+        -Podłoża[x]
+        -Typy budynkow [[Dependant on final-rendering[ ]] [ ] ]
+        -Kolory dachów[x]
+        -Typy dachów[x]
+        -Skasować stare dachy[]
+    Grafiki
+        -Grafiki kolory[x]
+        -Grafiki podłoże[[Dependant on final-rendering[ ]]
+    
 Menu[]
-    -Utworzyć maszynę stanów trzymająca stany z menu[]
-    -Zarządzać menu i obecnymi w nim obiektach na podstawie stanów[]
-    -Dodawanie nowych podzakładek na podstawie poprzednich akcji[]
+    Logika
+        -Specjalne prawa dla ocynkowania; brak możliwości wyboru przetłoczeń[]
+    -Dodawanie nowych podzakładek na podstawie poprzednich akcji[x]
     -Tworzone elementy dołaczyć do stanów[]
 
-Tworzenie budynku[]
+Tworzenie budynków[]
     -Renderowanie nowych budynków jest podsumowane w funkcji presentation; podłączyć do funckji[]
 
 Three.js 

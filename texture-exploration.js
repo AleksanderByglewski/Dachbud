@@ -336,8 +336,15 @@ class Garage_walls extends General_object{
   this.geometry.rotateY(rotation)
   super.set_position(translate_x,translate_y,translate_z)
      
-
-  
+abf
+acf
+adf
+baf
+bbf
+bcf
+cbf  
+ bf
+/bf
 
 }
   change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255,rotation=0){
@@ -1207,8 +1214,10 @@ renderer.render(scene, camera);
 
 function animate() {
   requestAnimationFrame(animate);
-  controls.autoRotate = true;
-  controls.autoRotateSpeed =0.5
+  
+  //uncode this
+  //controls.autoRotate = true;
+  //controls.autoRotateSpeed =0.5
 
   //torus.rotation.x += 0.01;
   //torus.rotation.y += 0.005;
@@ -1372,6 +1381,7 @@ main()
 
 
 //Get how to create a good and semi reusable box
+
 main_house_outer=new Creation_controller_outer(10, 10, 10, 10, 10, 10, scene_outer,4);
 
 
@@ -1381,6 +1391,9 @@ class Menu_control{
 
   this.side_menu=document.querySelector(".side-menu");
   //let flooring_control=document.querySelector('input[name="flooring"]:checked')
+
+  let arr_of_names=[""]
+
   let flooring_control=document.querySelectorAll('input[name="flooring"]')
   for (let elem of flooring_control){
   elem.addEventListener('change',this.radio_control_function)
@@ -1427,8 +1440,18 @@ class Menu_control{
   }
   add_window(){
     let new_elem=this.add_node()
-    this.side_menu.appendChild(new_elem)
+    this.side_menu.insertBefore(new_elem,document.querySelector("#doors-object") )
+   
   }
+  add_doors(){
+    let new_elem=this.add_node()
+    this.side_menu.insertBefore(new_elem,document.querySelector("#canopy-object") )
+  }
+  add_canopy(){
+    let new_elem=this.add_node()
+    this.side_menu.insertBefore(new_elem,document.querySelector("#final-object") )
+  }
+
 
   add_node2(){
     console.log(this.side_menu)
@@ -1475,15 +1498,16 @@ class Menu_control{
 
 
 
- let menu_controller=new Menu_control()
-
+let menu_controller=new Menu_control()
+console.log(menu_controller)
 
 
 
 document.querySelector("#add-gates").addEventListener('click',  ()=>{menu_controller.add_gate()})
 document.querySelector("#add-windows").addEventListener('click',  ()=>{menu_controller.add_window()})
+document.querySelector("#add-doors").addEventListener('click',  ()=>{menu_controller.add_doors()})
+document.querySelector("#add-canopy").addEventListener('click',  ()=>{menu_controller.add_canopy()})
 
 
 
  //menu_controller.clear_menu()
- 

@@ -133,6 +133,13 @@ div#roof-material {
     justify-content: space-around;
 }
 
+.grid-3-columns {
+    grid-template-columns: repeat(3,1fr) !important;  
+}
+.grid-6-columns {
+    grid-template-columns: repeat(6,1fr) !important;  
+}
+
 
 .image-based-selection{
     grid-template-columns: repeat(2,1fr);  
@@ -187,4 +194,24 @@ div#roof-material {
 
     max-width: 100%;
     border-radius:10px;
+  }
+
+
+
+
+  .image-description{
+  word-break: break-word;
+  line-height: 1.1em;
+  height: 2.2em;
+  }
+
+  @media screen and (max-width:600px){
+      .menu-elem-content .padded-element{
+          margin:0.5em;
+      }
+      
+  }
+  .image-description-widen{
+      margin-right: -1em;
+      margin-left: -1em;
   }
