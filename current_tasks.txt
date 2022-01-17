@@ -17,16 +17,17 @@ Data_filling
         -Skasować stare dachy[]
     Grafiki
         -Grafiki kolory[x]
-        -Grafiki podłoże[[Dependant on final-rendering[ ]]
+        -Grafiki podłoże[[Dependent on final-rendering[ ]]
     
 Menu[]
     Logika
         -Specjalne prawa dla ocynkowania; brak możliwości wyboru przetłoczeń[]
     -Dodawanie nowych podzakładek na podstawie poprzednich akcji[x]
-    -Tworzone elementy dołaczyć do stanów[]
+    -Tworzone elementy dołaczyć do stanów[x]
 
 Tworzenie budynków[]
-    -Renderowanie nowych budynków jest podsumowane w funkcji presentation; podłączyć do funckji[]
+    -Zmiana szerokości, wysokości, głębokości garażu[]
+    -Dodawanie obiektów drzwi, okna, bramy  na przód[x], na wszystko[]
 
 Three.js 
     -Modyfikacja i ładniejsze tekstury[]

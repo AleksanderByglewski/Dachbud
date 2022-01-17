@@ -288,6 +288,89 @@ remove_self()
 
 }
 
+
+class Displacement_object{
+  constructor(parent="for now it is unnecesary",width, height, depth, translation_x, translation_y,translation_z){
+    this.parent=parent
+
+    this.translation_x=translation_x;
+    this.translation_y=translation_y;
+    this.translation_z=translation_z;
+
+    const loader = new THREE.TextureLoader();
+    this.texture = loader.load('roof2.jpg');
+    this.texture.wrapS =  THREE.ClampToEdgeWrapping;
+    this.texture.wrapT =THREE.RepeatWrapping;
+  
+
+    this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x0000ff, side: THREE.DoubleSide} );
+    this.geometry = new THREE.BoxGeometry(width, height, depth);
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    
+    //Set the initial displacement based of the parents height
+    //First do the centered ones that is naturally
+    //this.geometry.translate(0,0,0)
+    //The bottom aligned ones are at
+    this.initial_displacement=new THREE.Vector3(0,-this.parent.depth/2+height/2,0);
+    this.user_translation=new THREE.Vector3(this.translation_x,this.translation_y,this.translation_z);
+    let final_displacement=this.initial_displacement.add(this.user_translation);
+    
+    this.geometry.translate(final_displacement.x,final_displacement.y,final_displacement.z);
+    
+    //If an object is on the side then you also need to rotate it
+    //this.geometry.rotateY(1.701)
+ 
+  }
+  change_texture()
+  {
+    //const loader = new THREE.TextureLoader();
+    //this.texture = loader.load('roof2.jpg');
+    this.texture.wrapS =  THREE.ClampToEdgeWrapping;
+    this.texture.wrapT =THREE.RepeatWrapping;
+    //this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x0000ff, side: THREE.DoubleSide} );
+    this.material.color=new THREE.Color(0xff0000)
+    this.material.needsUpdate=true;
+    
+  }
+
+
+  set_position(translation_vector_x,translation_vector_y,translation_vector_z){
+    this.mesh.position.x=translation_vector_x;
+    this.mesh.position.y=translation_vector_y;
+    this.mesh.position.z=translation_vector_z;
+  }
+
+  change_position(translation_vector_x,translation_vector_y,translation_vector_z){
+    this.mesh.position.x+=translation_vector_x;
+    this.mesh.position.y+=translation_vector_y;
+    this.mesh.position.z+=translation_vector_z;
+  }
+  set_translation(){
+    this.geometry.position=new THREE.Vector3(0,0,0);
+    this.geometry.position.y=100;
+    console.log(this.geometry.position)
+
+    this.user_translation=new THREE.Vector3(this.translation_x,this.translation_y,this.translation_z);
+    let final_displacement=this.initial_displacement.add(this.user_translation);
+    final_displacement=new THREE.Vector3(this.user_translation_x,0,0)
+    
+    this.geometry.translate(final_displacement.x,final_displacement.y,final_displacement.z);
+ 
+  }
+
+  provide_identification(){
+    return this.mesh.id
+  }
+  return_self(){
+    return this.mesh
+  }
+  check_overlap(){
+   //You are good for now to not worry about overlap
+   return false;
+  }
+}
+
+
 //This is basically the template for the front wall right now
 class Garage_walls extends General_object{
 //What is the logic of this class?
@@ -297,10 +380,15 @@ class Garage_walls extends General_object{
   super();
   this.boundingBoxInstance = new Bounding_Box(x,y)
 
+  
+
+
+  //this.add_components(friendly_door.return_self())
+
   this.components=[];
   this.width=x;
   this.depth=y;
-  this.rotation=0;
+  this.rotation=rotation;
 
   const loader = new THREE.TextureLoader();
   this.texture = loader.load('roof2.jpg');
@@ -328,7 +416,7 @@ class Garage_walls extends General_object{
 
   door.geometry.translate(0,+door_height/2-5/2,0)
   door.geometry.rotateY(rotation)
-  this.add_components(door)
+  //this.add_components(door)
   
   door.name="alex"
   console.log(door.id)
@@ -336,17 +424,39 @@ class Garage_walls extends General_object{
   this.geometry.rotateY(rotation)
   super.set_position(translate_x,translate_y,translate_z)
      
-abf
-acf
-adf
-baf
-bbf
-bcf
-cbf  
- bf
-/bf
+
+  let friendly_door=new Displacement_object(this.object,10,10,0.5,0,0,0)
+  //this.add_components(friendly_door.return_self())
+
+
+  
 
 }
+
+place_a_box2(a_box){
+
+  
+//  const door_material = new THREE.MeshBasicMaterial({color: 0xff1111, map: this.texture2});
+ // const door_geometry = new THREE.BoxGeometry(this.width, this.depth, 0.1);
+ // const door = new THREE.Mesh(door_geometry, door_material);
+ // door.geometry.rotateY(this.rotation)
+ // door.geometry.translate(0,+this.depth/2-5/2,0)
+  this.add_components(a_box.return_self())
+  //console.log(door.id)
+  //return door.id
+}
+
+  place_a_box(displacement){
+    const door_material = new THREE.MeshBasicMaterial({color: 0xff1111, map: this.texture2});
+    const door_geometry = new THREE.BoxGeometry(this.width, this.depth, 0.1);
+    const door = new THREE.Mesh(door_geometry, door_material);
+    door.geometry.rotateY(this.rotation)
+    door.geometry.translate(0,+this.depth/2-5/2,0)
+    this.add_components(door)
+    console.log(door.id)
+    return door.id
+  }
+
   change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255,rotation=0){
     const loader = new THREE.TextureLoader();
     this.texture = loader.load('wall.jpg');
@@ -360,7 +470,7 @@ cbf
     this.material.needsUpdate=true;
     let normalMap = new THREE.TextureLoader().load('NormalMap.png');
     material.normalMap = normalMap;//normal map
-    console.log("Siul la ruin")
+   // console.log("Siul la ruin")
    
 
     //this.object  = new THREE.Mesh( this.geometry, this.material );
@@ -370,7 +480,7 @@ cbf
   }
     
  add_components(component){
-  console.log('Adding a component ')
+  //console.log('Adding a component ')
   this.object.add(component)
  }
  remove_components(){
@@ -818,6 +928,8 @@ constructor(constructor_width, constructor_depth, constructor_height, roof_width
 
 }
 
+
+
 rebuild_walls(constructor_width=this.constructor_width, constructor_depth=this.constructor_depth, constructor_height=this.constructor_height, 
   roof_width=this.roof_width,roof_depth=this.roof_depth,roof_height=this.roof_height) {
   //width_of_a_plane,height_of_a_plane, translation_x,translation_y+height of the wall, translation_z;   
@@ -1021,7 +1133,13 @@ rebuild_roofs(roof_instance=0,constructor_width=this.constructor_width, construc
   scene.remove(this.roof_right2.object)
   scene.remove(this.roof2.object)
  }
+ release_roof(){
+  scene.remove(this.roof_front2.object)
+  scene.remove(this.roof_back2.object)
+  scene.remove(this.roof_right2.object)
+  scene.remove(this.roof2.object)
 
+ }
 add_to_scene(){
 
 
@@ -1381,13 +1499,18 @@ main()
 
 
 //Get how to create a good and semi reusable box
-
+main_house_outer.release();
 main_house_outer=new Creation_controller_outer(10, 10, 10, 10, 10, 10, scene_outer,4);
 
 
 class Menu_control{
 
   constructor(){
+
+    this.gate_array=[];
+    this.window_arr=[];
+    this.door_array=[];
+    this.canopy_arr=[];
 
   this.side_menu=document.querySelector(".side-menu");
   //let flooring_control=document.querySelector('input[name="flooring"]:checked')
@@ -1408,7 +1531,7 @@ class Menu_control{
     this.side_menu.innerText="";
   }
 
-  add_node(){
+  add_node(element_id, element){
     let div_elem=document.createElement("div");
     div_elem.classList.add("menu-elem");
 
@@ -1418,33 +1541,179 @@ class Menu_control{
     div_heading.innerHTML=`<div class="menu-elem-heading-title">Menu elem heading</div>
     <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
     `
+    let base_menu=`<div>`+
+    `<div  class="num-selector"><label>displacement value left</label><input direction="left" type="number">  </input> </div>`+
+    `<div  class="num-selector"><label>displacement value right</label><input direction="right" type="number">  </input> </div>`+
+    `<div  class="num-selector"><label>displacement value top</label><input direction="top" type="number">  </input> </div>`+
+    `<div  class="num-selector"><label>displacement value bottom</label><input direction="bottom" type="number">  </input> </div>`+
+    `</div>`
 
-    div_elem.innerHTML=`
-    <div class="menu-elem-content hide">
-    <div class="menu-elem-content-text">Menu elem content</div>
-    <div class="erase-button">Erase me</div>
-    </div>
-    `
-    
+
+    div_elem.innerHTML=
+    `<div class="menu-elem-content hide">`+
+    `<div class="menu-elem-content-text">`+base_menu +`</div>`+
+    `<div class="erase-button">Erase me</div>
+    </div>`
+
     div_elem.prepend(div_heading)
     div_heading.addEventListener("click", reduct)
     //div_heading.addEventListener("click", (evt)=>{evt.currentTarget.parentNode.remove()})
     div_elem.querySelector('.erase-button').addEventListener('click', (evt)=>{evt.currentTarget.parentNode.parentNode.remove()})
+    div_elem.querySelector('.erase-button').addEventListener('click', ()=>{remove_composite_object(element_id)})
     //this.side_menu.appendChild(div_elem)
+
+    let input_arr=div_elem.querySelectorAll('input')
+for (let input of input_arr) {
+    input.addEventListener('change', (evt)=>{
+
+      console.log(evt.currentTarget.value)
+      let translation_value=evt.currentTarget.value
+
+
+      let direction=evt.currentTarget.getAttribute('direction')
+
+      let direction_x=element.translation_x;
+      let direction_y=element.translation_y;
+      let direction_z=element.translation_z;
+
+      console.log(direction)
+      switch(direction){
+        case 'left':
+        
+           direction_x=translation_value;
+           break;
+        case 'right':
+          
+        
+           direction_x=10-translation_value;
+           break;
+        case 'top':
+          
+            direction_y=translation_value;
+            break;
+        case 'bottom':
+      
+            direction_y=10-translation_value;
+            break;
+        //You can technically add the z-index and be happy with general solution
+        //This will make it much easier to just switch directions on off based on 
+        //wall you are actually on
+      }
+
+      //If you pass the movement test movement test to be implemented
+      element.translation_x=direction_x;
+      element.translation_y=direction_y;
+      element.translation_z=direction_z;
+
+      element.set_position(direction_x,direction_y, direction_z)
+      console.log(element.mesh.position)
+      main_house_outer.wall_front.place_a_box2(element);
+      
+      
+    });
+  }
+
     return div_elem
   }
-  add_gate(){
-    let new_elem=this.add_node()
-    this.side_menu.insertBefore(new_elem,document.querySelector("#windows-object") )
+
+
+  initial_gate_logic(width,height, array_of_objects){
+
+    let message="gate";
+    let position=new THREE.Vector3(0,0,0)
+
+    switch(array_of_objects.length) {
+      case 0: 
+        message="front "+message;
+        position=new THREE.Vector3(0,0,0)
+        break;
+      case 1: 
+        message="left"+message;
+        position=new THREE.Vector3(-main_house_outer.wall_front.width/2+width/2,0,0)
+        break;
+      case 2: 
+        message="right"+message;
+        position=new THREE.Vector3(+main_house_outer.wall_front.width/2-width/2,0,0)
+        break;
+    }
+
+    return{ 
+      message:message,
+      position:position
+    }
+        
 
   }
+  add_gate(){
+    let width_of_gate=2;
+    let height_of_gate=2;
+    
+    const {message, position}=this.initial_gate_logic(width_of_gate, height_of_gate, this.gate_array)
+    console.log(message)
+    console.log(position)
+
+    //IF it passes the logic tests
+  
+    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.5,0,0,0)
+    this.gate_array.push(friendly_door)
+    main_house_outer.wall_front.place_a_box2(friendly_door);
+    friendly_door.set_position(position.x,position.y,position.z)
+    let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door)
+    this.side_menu.insertBefore(new_elem,document.querySelector("#windows-object") )
+
+    //friendly_door.set_position(position.x, position.y, position.z);
+    //friendly_door.change_texture()
+  }
+
+  initial_window_logic(width, height){
+    let message='Okno'
+    let position=new THREE.Vector3(0,main_house_outer.constructor_height-height,0)
+    console.log(main_house_outer)
+    return{ 
+      message:message,
+      position:position
+    }
+  }
+
   add_window(){
-    let new_elem=this.add_node()
-    this.side_menu.insertBefore(new_elem,document.querySelector("#doors-object") )
+    let width_of_gate=2;
+    let height_of_gate=2;
+    
+    const {message, position}=this.initial_window_logic(width_of_gate, height_of_gate)
+    console.log(message)
+    console.log(position)
+
+    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.5,0,0,0)
    
+    main_house_outer.wall_front.place_a_box2(friendly_door);
+    
+    let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door)
+    this.side_menu.insertBefore(new_elem,document.querySelector("#doors-object") )
+    
+    friendly_door.set_position(position.x,position.y,position.z)
+    friendly_door.change_texture()
+
+
+    
+
+    
   }
   add_doors(){
-    let new_elem=this.add_node()
+    let width_of_gate=2;
+    let height_of_gate=2;
+    
+    const {message, position}=this.initial_gate_logic(width_of_gate, height_of_gate, this.door_array)
+    console.log(message)
+    console.log(position)
+
+    //IF it passes the logic tests
+  
+    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.5,0,0,0)
+    this.door_array.push(friendly_door)
+    main_house_outer.wall_front.place_a_box2(friendly_door);
+    friendly_door.set_position(position.x,position.y,position.z)
+
+    let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door)
     this.side_menu.insertBefore(new_elem,document.querySelector("#canopy-object") )
   }
   add_canopy(){
@@ -1456,6 +1725,37 @@ class Menu_control{
   add_node2(){
     console.log(this.side_menu)
   }
+
+  release_all_objects(){
+    main_house_outer.wall_back.remove_components()
+    main_house_outer.wall_front.remove_components()
+    main_house_outer.wall_left.remove_components()
+    main_house_outer.wall_right.remove_components()
+  }
+
+  rebuild_garage_dimensions(){
+    let constructor_width=parseFloat(document.querySelector(".num-selector [name='width']").value);
+    let constructor_depth=parseFloat(document.querySelector(".num-selector [name='depth']").value);
+    let constructor_height=parseFloat(document.querySelector(".num-selector [name='wall-height']").value);  
+    let roof_width=parseFloat(document.querySelector(".num-selector [name='width']").value);  
+    let roof_depth=parseFloat(document.querySelector(".num-selector [name='depth']").value); 
+    let roof_height=parseFloat(document.querySelector(".num-selector [name='total-height']").value); 
+    let roof_type=parseInt(document.querySelector('input[name="roof-type"]:checked').value);
+    main_house_outer.release();
+//main_house_outer=new Creation_controller_outer(30, 10, 10, 10, 10, 10, scene_outer,4);
+    main_house_outer=new Creation_controller_outer(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene_outer,roof_type);
+    
+  }
+
+  rebuild_roof(){
+    //This code causes bugs for unknown reasons so lets get rid of it
+    //main_house_outer.release_roof();
+    //main_house_outer.roof_type=parseInt(document.querySelector('input[name="roof-type"]:checked').value);
+    //main_house_outer.rebuild_roofs(roof_type)
+  }
+
+
+
  ohmawgawd(){
   let para=document.querySelector("#roof-color")
   para.addEventListener('click', change_color_roof)
@@ -1491,15 +1791,48 @@ class Menu_control{
   //main_house.roof.rotate_the_texture()
 
       }
-    }
+  }
 
   }
 
 
+//Klasa odseparowujaca rendering od placementu
+//Kontroller logiki scian
 
 
 let menu_controller=new Menu_control()
 console.log(menu_controller)
+
+
+//Interaction to add a new object
+let friendly_door=new Displacement_object(main_house_outer.wall_front,2,2,0.5,0,0,0)
+main_house_outer.wall_front.place_a_box2(friendly_door);
+
+
+//Interaction with menu to the actual display to remove the object
+function remove_composite_object(curr_id){
+  main_house_outer.wall_back.remove_component(curr_id)
+  main_house_outer.wall_front.remove_component(curr_id)
+  main_house_outer.wall_left.remove_component(curr_id)
+  main_house_outer.wall_right.remove_component(curr_id)
+}
+function release_resources(){
+  //menu_controller.add_window()
+  remove_composite_object();
+  main_house_outer.release();
+}
+
+function initiate_project(){
+
+  main_house_outer=new Creation_controller_outer(10, 10, 10, 10, 10, 10, scene_outer,4);
+  menu_controller=new Menu_control()
+
+}
+
+
+
+remove_composite_object(friendly_door.provide_identification())
+
 
 
 
@@ -1509,5 +1842,11 @@ document.querySelector("#add-doors").addEventListener('click',  ()=>{menu_contro
 document.querySelector("#add-canopy").addEventListener('click',  ()=>{menu_controller.add_canopy()})
 
 
+document.querySelector('input[name="roof-type"]').addEventListener('change', ()=>{menu_controller.add_canopy()})
 
- //menu_controller.clear_menu()
+//main_house_outer.release();
+//menu_controller.release_all_objects()
+//menu_controller.clear_menu()
+release_resources()
+initiate_project()
+menu_controller.rebuild_garage_dimensions()
