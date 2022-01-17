@@ -521,56 +521,28 @@ class Roof_walls extends General_object{
   this.depth=y;
   this.rotation=0;
   
+  const a=new THREE.Vector3(0,-x/2,0);
+  const b= new THREE.Vector3(0, x/2, 0);
+  const c=new THREE.Vector3(0, x/2,y/2);
+  this.geometry=new THREE.PlaneGeometry( x, y );
+  const shape = new THREE.Shape();
+
+  
+  shape.moveTo(-x/2, -y/2);
+  shape.lineTo(x/2,-y/2);
+  shape.lineTo(x/2, y/2);
+  
+  this.geometry = new THREE.ShapeGeometry(shape);
+  this.geometry.rotateY(rotation)
+  this.geometry.translate(translate_x,translate_y,translate_z );
 
   const vertices = [
     // front
-    { pos: [-1, -1,  1], norm: [ 0,  0,  1], uv: [0, 0], },
-    { pos: [ 1, -1,  1], norm: [ 0,  0,  1], uv: [1, 0], },
-    { pos: [-1,  1,  1], norm: [ 0,  0,  1], uv: [0, 1], },
+    { pos: [-x/2, -y/2,  0], norm: [ 0,  0,  1], uv: [0, 0], },
+    { pos: [ x/2, -y/2,  0], norm: [ 0,  0,  1], uv: [1, 0], },
+    { pos: [x/2,  y/2,  0], norm: [ 0,  0,  1], uv: [0, 1], },
 
-    { pos: [-1,  1,  1], norm: [ 0,  0,  1], uv: [0, 1], },
-    { pos: [ 1, -1,  1], norm: [ 0,  0,  1], uv: [1, 0], },
-    { pos: [ 1,  1,  1], norm: [ 0,  0,  1], uv: [1, 1], },
-    // right
-    { pos: [ 1, -1,  1], norm: [ 1,  0,  0], uv: [0, 0], },
-    { pos: [ 1, -1, -1], norm: [ 1,  0,  0], uv: [1, 0], },
-    { pos: [ 1,  1,  1], norm: [ 1,  0,  0], uv: [0, 1], },
 
-    { pos: [ 1,  1,  1], norm: [ 1,  0,  0], uv: [0, 1], },
-    { pos: [ 1, -1, -1], norm: [ 1,  0,  0], uv: [1, 0], },
-    { pos: [ 1,  1, -1], norm: [ 1,  0,  0], uv: [1, 1], },
-    // back
-    { pos: [ 1, -1, -1], norm: [ 0,  0, -1], uv: [0, 0], },
-    { pos: [-1, -1, -1], norm: [ 0,  0, -1], uv: [1, 0], },
-    { pos: [ 1,  1, -1], norm: [ 0,  0, -1], uv: [0, 1], },
-
-    { pos: [ 1,  1, -1], norm: [ 0,  0, -1], uv: [0, 1], },
-    { pos: [-1, -1, -1], norm: [ 0,  0, -1], uv: [1, 0], },
-    { pos: [-1,  1, -1], norm: [ 0,  0, -1], uv: [1, 1], },
-    // left
-    { pos: [-1, -1, -1], norm: [-1,  0,  0], uv: [0, 0], },
-    { pos: [-1, -1,  1], norm: [-1,  0,  0], uv: [1, 0], },
-    { pos: [-1,  1, -1], norm: [-1,  0,  0], uv: [0, 1], },
-
-    { pos: [-1,  1, -1], norm: [-1,  0,  0], uv: [0, 1], },
-    { pos: [-1, -1,  1], norm: [-1,  0,  0], uv: [1, 0], },
-    { pos: [-1,  1,  1], norm: [-1,  0,  0], uv: [1, 1], },
-    // top
-    { pos: [ 1,  1, -1], norm: [ 0,  1,  0], uv: [0, 0], },
-    { pos: [-1,  1, -1], norm: [ 0,  1,  0], uv: [1, 0], },
-    { pos: [ 1,  1,  1], norm: [ 0,  1,  0], uv: [0, 1], },
-
-    { pos: [ 1,  1,  1], norm: [ 0,  1,  0], uv: [0, 1], },
-    { pos: [-1,  1, -1], norm: [ 0,  1,  0], uv: [1, 0], },
-    { pos: [-1,  1,  1], norm: [ 0,  1,  0], uv: [1, 1], },
-    // bottom
-    { pos: [ 1, -1,  1], norm: [ 0, -1,  0], uv: [0, 0], },
-    { pos: [-1, -1,  1], norm: [ 0, -1,  0], uv: [1, 0], },
-    { pos: [ 1, -1, -1], norm: [ 0, -1,  0], uv: [0, 1], },
-
-    { pos: [ 1, -1, -1], norm: [ 0, -1,  0], uv: [0, 1], },
-    { pos: [-1, -1,  1], norm: [ 0, -1,  0], uv: [1, 0], },
-    { pos: [-1, -1, -1], norm: [ 0, -1,  0], uv: [1, 1], },
   ];
   const positions = [];
   const normals = [];
@@ -581,17 +553,17 @@ class Roof_walls extends General_object{
     uvs.push(...vertex.uv);
   }
 
-  const geometry = new THREE.BufferGeometry();
+  this.geometry = new THREE.BufferGeometry();
   const positionNumComponents = 3;
   const normalNumComponents = 3;
   const uvNumComponents = 2;
-  geometry.setAttribute(
+  this.geometry.setAttribute(
       'position',
       new THREE.BufferAttribute(new Float32Array(positions), positionNumComponents));
-  geometry.setAttribute(
+  this.geometry.setAttribute(
       'normal',
       new THREE.BufferAttribute(new Float32Array(normals), normalNumComponents));
-  geometry.setAttribute(
+  this.geometry.setAttribute(
       'uv',
       new THREE.BufferAttribute(new Float32Array(uvs), uvNumComponents));
 
@@ -599,7 +571,9 @@ class Roof_walls extends General_object{
 
 
 
-
+  this.geometry.rotateY(rotation)
+  this.geometry.translate(translate_x,translate_y,translate_z );
+    
 
   
 
@@ -610,9 +584,6 @@ class Roof_walls extends General_object{
   this.texture.repeat.set( 0, 1 );
   this.texture.offset.set(0,0.5)
   this.texture.center.set(0.65,0)
-
-
-  const texture = loader.load('https://threejs.org/manual/examples/resources/images/star.png');
 
 
 
@@ -635,7 +606,7 @@ class Roof_walls extends General_object{
       this.texture.rotation=(rotation)
       this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
       this.material.needsUpdate=true;
-      let normalMap = new THREE.TextureLoader().load('NormalMap.png');
+      let normalMap = new THREE.TextureLoader().load('roof2.jpg');
       //material.normalMap = normalMap;//normal map
 
 
