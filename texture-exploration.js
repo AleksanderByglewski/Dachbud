@@ -433,18 +433,18 @@ class Garage_walls extends General_object{
 
 }
 
-  place_a_box2(a_box){
+place_a_box2(a_box){
 
-    
-  //  const door_material = new THREE.MeshBasicMaterial({color: 0xff1111, map: this.texture2});
-  // const door_geometry = new THREE.BoxGeometry(this.width, this.depth, 0.1);
-  // const door = new THREE.Mesh(door_geometry, door_material);
-  // door.geometry.rotateY(this.rotation)
-  // door.geometry.translate(0,+this.depth/2-5/2,0)
-    this.add_components(a_box.return_self())
-    //console.log(door.id)
-    //return door.id
-  }
+  
+//  const door_material = new THREE.MeshBasicMaterial({color: 0xff1111, map: this.texture2});
+ // const door_geometry = new THREE.BoxGeometry(this.width, this.depth, 0.1);
+ // const door = new THREE.Mesh(door_geometry, door_material);
+ // door.geometry.rotateY(this.rotation)
+ // door.geometry.translate(0,+this.depth/2-5/2,0)
+  this.add_components(a_box.return_self())
+  //console.log(door.id)
+  //return door.id
+}
 
   place_a_box(displacement){
     const door_material = new THREE.MeshBasicMaterial({color: 0xff1111, map: this.texture2});
@@ -500,17 +500,22 @@ class Garage_walls extends General_object{
     this.object.material.color.setHSL(0, 1, Math.random()); 
   }
  add_components(component){
+  //console.log('Adding a component ')
   this.object.add(component)
  }
  remove_components(){
     let children=this.object.children
     for (const child of children){
+//      console.log(child)
     this.object.remove(child)
     }
     //parent_element.object.remove(solarSystem)
   }
   remove_component(id){
     let children=this.object.children
+  //  for (const child of children){
+   //   console.log(child)
+   // }
     let target =this.object.getObjectById(id)
     this.object.remove(target)
     
@@ -523,7 +528,7 @@ class Garage_walls extends General_object{
 
   add_components_to_scene(scene){
 
-    //const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
+    const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
     scene.add(this.object);
   }
 }
@@ -1908,27 +1913,39 @@ function initiate_project(){
 menu_controller.ohmawgawd()
 function call_me()
 {
-  var loader2 = new THREE.TextureLoader();
+  const loader = new THREE.TextureLoader();
 
-  main_house_outer.wall_front.object.material.texture = loader2.load('wall.jpg');
-  main_house_outer.wall_front.object.material.texture = loader2.load('./resources/images/PWP8.jpg');
+  main_house_outer.wall_front.object.material.texture = loader.load('wall.jpg');
+  main_house_outer.wall_front.object.material.texture = loader.load('./resources/images/PWP8.jpg');
   main_house_outer.wall_front.object.material.texture.wrapS =  THREE.ClampToEdgeWrapping;
   main_house_outer.wall_front.object.material.texture.wrapT =THREE.RepeatWrapping;
   main_house_outer.wall_front.object.material.texture.repeat.set( 1, 10 );
   main_house_outer.wall_front.object.material.texture.needsUpdate=true;
   main_house_outer.wall_front.object.material.needsUpdate=true;
 
-  const loader = new THREE.TextureLoader();
-  let texture = loader2.load('wall.jpg');
-  texture = loader2.load('./resources/images/PWP2.jpg');
-  texture.wrapS =  THREE.ClampToEdgeWrapping;
-  texture.wrapT =THREE.RepeatWrapping;
-  texture.repeat.set( 1,10);
+  main_house_outer.wall_front.material = new THREE.MeshBasicMaterial( { color: 0xff0000, side: THREE.DoubleSide} );
+    
+  this.material.needsUpdate=true;
+  this.object.geometry.needsUpdate=true;
 
-  //this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
-  main_house_outer.wall_front.material = new THREE.MeshBasicMaterial( { map: texture ,color: 0xff0000, side: THREE.DoubleSide} );
-  main_house_outer.wall_front.material.needsUpdate=true;
-  main_house_outer.wall_front.object  = new THREE.Mesh( main_house_outer.wall_front.geometry, main_house_outer.wall_front.material );
+
+
+
+  //geometry.attributes.color.needsUpdate = true;
+  this.object  = new THREE.Mesh( this.geometry, this.material );
+  
+  //this.objec
+
+  //this.texture.repeat.set( 5, 2.0 );
+  //this.texture.offset.set(1,0)
+  
+  //Experimental_tiling
+
+
+  //menu_controller.change_wall_texture()
+  //main_house_outer.wall_front.object.material.color.setHSL(0, 1, 0.5*Math.random()); 
+  //main_house_outer.wall_left.change_color()
+  //alert("hi")
 }
 remove_composite_object(friendly_door.provide_identification())
 
