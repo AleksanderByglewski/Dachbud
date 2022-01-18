@@ -97,16 +97,16 @@
                 <div class="menu-elem-heading-title">Materiał dach</div>
                 <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
             </div>    
-            <div class="menu-elem-content hide image-based-selection">
+            <div class="menu-elem-content hide image-based-selection wall-type-select">
 
                 <label class="padded-element">
-                    <input type="radio" name="test" value="small" checked>
+                    <input type="radio" name="roof-type-orientation" id="ocynk-roof-rotation" value="standard" checked>
                     <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN.jpg">
                     <div class="image-description">Przetłoczenia pionowe</div>
                   </label>
                   
                   <label  class="padded-element">
-                    <input type="radio" name="test" value="big">
+                    <input type="radio" name="roof-type-orientation" value="rotated">
                     <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN.jpg">
                     <div class="image-description">Przetłoczenia poziome</div>
                   </label>
@@ -184,7 +184,7 @@
                     <div class="image-description">RAL<br> 9010</div>
                   </label>
                   <label  class="padded-element">
-                    <input type="radio" name="roof-color" value="0">
+                    <input type="radio" id="ocynk-roof" name="roof-color" value="0">
                     <img src="./resources/colors/TEXTURE-METAL.jpg">
                     <div class="image-description">Ocynk<br> 9010</div>
                   </label>
@@ -206,8 +206,8 @@
             </div>
         </div>
 
-
-        <div class="menu-elem">
+        <!---->
+        <div class="menu-elem" style="display:none">
             <div class="menu-elem-heading">
                 <div class="menu-elem-heading-title">Pokrycie dachu (deprecated)</div>
                 <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
@@ -276,27 +276,27 @@
                 <div class="menu-elem-heading-title">Materiał ściany</div>
                 <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
             </div>    
-            <div class="menu-elem-content hide image-based-selection">
+            <div class="menu-elem-content hide image-based-selection wall-type-select">
 
                 <label class="padded-element">
-                    <input type="radio" name="wall-type" value="small" checked>
+                    <input type="radio" name="wall-type" value="rotated" id="ocynk-wall-rotation" checked>
                     <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN.jpg">
                     <div class="image-description">Przetłoczenia pionowe</div>
                   </label>
                   
                   <label  class="padded-element">
-                    <input type="radio" name="wall-type" value="big">
+                    <input type="radio" name="wall-type" value="rotated-dense ">
                     <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN-DENSE.jpg">
                     <div class="image-description">Przetłoczenia pionowe wąskie</div>
                   </label>
                   <label class="padded-element">
-                    <input type="radio" name="wall-type" value="small" checked>
+                    <input type="radio" name="wall-type" value=" standard" checked>
                     <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN.jpg">
                     <div class="image-description">Przetłoczenia poziome</div>
                   </label>
                   
                   <label  class="padded-element">
-                    <input type="radio" name="wall-type" value="big">
+                    <input type="radio" name="wall-type" value="standard-dense">
                     <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg">
                     <div class="image-description">Przetłoczenia poziome wąskie</div>
                   </label>
@@ -311,7 +311,7 @@
             <div class="menu-elem-content hide image-based-selection grid-6-columns">
 
                 <label class="padded-element">
-                    <input type="radio" name="roof-color" value="#D2B773" checked>
+                    <input type="radio" name="wall-color" value="#D2B773" checked>
                     <img src="./resources/colors/RAL1002.gif">
                     <div class="image-description">RAL<br> 1002</div>
                 </label>
@@ -373,7 +373,7 @@
                     <div class="image-description">RAL<br> 9010</div>
                   </label>
                   <label  class="padded-element">
-                    <input type="radio" name="wall-color" value="0">
+                    <input type="radio" id="ocynk-wall" name="wall-color" value="0">
                     <img src="./resources/colors/TEXTURE-METAL.jpg">
                     <div class="image-description">Ocynk<br> 9010</div>
                   </label>

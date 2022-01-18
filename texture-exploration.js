@@ -82,93 +82,18 @@ let roof_back;
 let roof_right;
 //const gui2 = new GUI();
 //gui2.add(texture.offset, 'y', 0, 255, 1).name('Red');
-class AxisGridHelper {
-    constructor( units = 10) {
-      //const axes = new THREE.AxesHelper();
-      //axes.material.depthTest = false;
-      //axes.renderOrder = 2;  // after the grid
-      //node.add(axes);
 
-      //const grid = new THREE.GridHelper(units, units);
-      //grid.material.depthTest = false;
-      //grid.renderOrder = 1;
-      //node.add(grid);
-
-      //this.grid = grid;
-      //this.axes = axes;
-      this.visible = false;
-    }
-    get visible() {
-      return this._visible;
-    }
-    set visible(v) {
-      this._visible = v;
-      if(v){
-      roof.reconstruct_material()
-      roof_front.reconstruct_material();
-      roof_back.reconstruct_material();
-      roof_right.reconstruct_material();
-      }
-      //this.grid.visible = v;
-      //this.axes.visible = v;
-    }
-  }
-  function makeAxisGrid(node, label, units) {
-    const helper = new AxisGridHelper(node, units);
-    //gui.add(helper, 'visible').name(label);
-    return helper;
-  }
-  const visibility_enabler=makeAxisGrid( 'Enable manual texture update ', 'Live update');
-  let enable_texture_hearing=false;
-
-  class ColorHelper {
-    constructor( units = 10) {
-      //const axes = new THREE.AxesHelper();
-      //axes.material.depthTest = false;
-      //axes.renderOrder = 2;  // after the grid
-      //node.add(axes);
-
-      //const grid = new THREE.GridHelper(units, units);
-      //grid.material.depthTest = false;
-      //grid.renderOrder = 1;
-      //node.add(grid);
-
-      //this.grid = grid;
-      //this.axes = axes;
-      this.red=145;
-      this.green=202;
-      this.blue=255;
-      this.visible = false;
-    }
-    get visible() {
-      return this._visible;
-    }
-    set visible(v) {
-      this._visible = v;
-      if(v){
-       
-      roof.recolor_material(this.red,this.green, this.blue);
-      roof_front.recolor_material(this.red,this.green, this.blue);
-      roof_back.recolor_material(this.red,this.green, this.blue);
-      roof_right.recolor_material(this.red,this.green, this.blue);
-      this.visible=false;
-      }
-      //this.grid.visible = v;
-      //this.axes.visible = v;
-    }
-  }
-
-  function makeColorHelper(node, label, units) {
+  //function makeColorHelper(node, label, units) {
     //const helper = new ColorHelper(node, units);
     //gui2.add(helper, 'visible').name(label);
     //gui2.add(helper, 'red', 0, 255, 1).name('Red');
     //gui2.add(helper, 'green', 0, 255, 1).name('Green');
     //gui2.add(helper, 'blue', 0, 255, 1).name('Blue');
     //return helper;
-  }
+  //}
 
-  const color_enabler=makeColorHelper( 'Enable manual texture update ', 'Live update');
-  let enable_color_hearing=false;
+  //const color_enabler=makeColorHelper( 'Enable manual texture update ', 'Live update');
+  //let enable_color_hearing=false;
   
 //Helper variables
 var depth=10;
@@ -897,8 +822,6 @@ class Roof extends General_object{
       }    
       rotate_the_texture(){
         this.object.material=this.material;
-       
-        
         this.material.needsUpdate=true;
         this.object.material.needsUpdate = true;
       }
@@ -1798,6 +1721,8 @@ for (let input of input_arr) {
   }
 
   rebuild_garage_dimensions(){
+
+
     let constructor_width=parseFloat(document.querySelector(".num-selector [name='width']").value);
     let constructor_depth=parseFloat(document.querySelector(".num-selector [name='depth']").value);
     let constructor_height=parseFloat(document.querySelector(".num-selector [name='wall-height']").value);  
@@ -1823,19 +1748,188 @@ for (let input of input_arr) {
 
     main_house_outer.wall_front.object.material.color.setRGB(r/255, g/255, b/255);
     main_house_outer.wall_left.object.material.color.setRGB(r/255, g/255, b/255);
-    main_house_outer.wall_right.object.material.color.setRGB(r/255, g/255, b/255);;
-    main_house_outer.wall_back.object.material.color.setRGB(r/255, g/255, b/255);;
+    main_house_outer.wall_right.object.material.color.setRGB(r/255, g/255, b/255);
+    main_house_outer.wall_back.object.material.color.setRGB(r/255, g/255, b/255);
+
+
+    main_house_outer.roof_front.object.material.color.setRGB(r/255, g/255, b/255);
+    main_house_outer.roof_back.object.material.color.setRGB(r/255, g/255, b/255);
+    main_house_outer.roof_right.object.material.color.setRGB(r/255, g/255, b/255);
+
+    
+    main_house_outer.roof_front2.object.material.color.setRGB(r/255, g/255, b/255);
+    main_house_outer.roof_right2.object.material.color.setRGB(r/255, g/255, b/255);
+    main_house_outer.roof_back2.object.material.color.setRGB(r/255, g/255, b/255);
 
   }
-  change_wall_texture(){
+
+
+  change_wall(){
+
     const loader = new THREE.TextureLoader();
-    this.texture = loader.load('./resources/images/PWP8.jpg');
+  
+    let texture_to_check=document.querySelector('input[name="wall-color"]:checked').value
+    let texture_rotated=document.querySelector('input[name="wall-type"]:checked').value
+   
+    function wall_repaint_inner(wall){
 
 
-    main_house_outer.wall_front.material = new THREE.MeshBasicMaterial( { map: this.texture , side: THREE.DoubleSide} );
-    main_house_outer.wall_front.material.needsUpdate=true;
+      switch(texture_to_check){
+
+        case "0":
+          wall.texture = loader.load('./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg'); 
+          break;
+        case "1":
+          wall.texture = loader.load('./resources/images/PWP7.jpg');
+          break;
+        case "2":
+          wall.texture = loader.load('./resources/images/PWP8.jpg');
+          break;
+
+        default:
+          wall.texture = loader.load('./resources/images/PWP2.jpg');
+          //alert('3')
+          break;
+      }
 
 
+    wall.texture.wrapS =  THREE.ClampToEdgeWrapping;
+    wall.texture.wrapT =THREE.RepeatWrapping;
+
+   console.log(texture_rotated)
+   console.log(texture_rotated.includes("rotated"))
+   if(texture_rotated.includes("rotated")){
+ 
+     wall.texture.repeat.set( 1, wall.width );
+     wall.texture.rotation=(Math.PI/2)
+   }
+   else{
+     //This is kinda a quick fix but it works
+     wall.texture.repeat.set( 1, wall.depth );
+     wall.texture.rotation=(0)
+   }
+ 
+ 
+   wall.object.material = new THREE.MeshBasicMaterial( { side: THREE.DoubleSide, map:wall.texture} );
+   wall.object.material.needsUpdate=true;
+   wall.object.geometry.needsUpdate=true;
+  }
+
+  wall_repaint_inner(main_house_outer.wall_front)
+  wall_repaint_inner(main_house_outer.wall_right)
+  wall_repaint_inner(main_house_outer.wall_left)
+  wall_repaint_inner(main_house_outer.wall_back)
+
+  wall_repaint_inner(main_house_outer.roof_front)
+  wall_repaint_inner(main_house_outer.roof_back)
+  wall_repaint_inner(main_house_outer.roof_right)
+  wall_repaint_inner(main_house_outer.roof_front2)
+  wall_repaint_inner(main_house_outer.roof_right2)
+  wall_repaint_inner(main_house_outer.roof_back2)
+
+
+  if(texture_to_check=='0' ||texture_to_check=='1' ||texture_to_check=='2')
+  {
+    console.log("special_case")
+  }
+  else{
+   let color_value=document.querySelector('input[name="wall-color"]:checked').value
+   let three_color=new THREE.Color(color_value)
+   menu_controller.change_wall_color(three_color.r*255, three_color.g*255, three_color.b*255)
+  }
+  // main_house_outer.roof_front.object.material.color.setRGB(r/255, g/255, b/255);
+  // main_house_outer.roof_back.object.material.color.setRGB(r/255, g/255, b/255);
+  // main_house_outer.roof_right.object.material.color.setRGB(r/255, g/255, b/255);
+ 
+   
+  // main_house_outer.roof_front2.object.material.color.setRGB(r/255, g/255, b/255);
+  // main_house_outer.roof_right2.object.material.color.setRGB(r/255, g/255, b/255);
+  // main_house_outer.roof_back2.object.material.color.setRGB(r/255, g/255, b/255);
+ 
+ 
+   //wall_repaint_inner(main_house_outer.roof_back)
+   
+   //wall_repaint_inner(main_house_outer.roof_right)
+   
+   //wall_repaint_inner(main_house_outer.roof_left)
+ 
+ 
+ 
+
+
+
+  }
+  
+  
+  change_roof_color(r=255,g=255,b=255){
+    main_house_outer.roof.object.material.color.setRGB(r/255, g/255, b/255);
+    main_house_outer.roof2.object.material.color.setRGB(r/255, g/255, b/255);
+
+  }
+
+  change_roof(){
+
+    const loader = new THREE.TextureLoader();
+  
+    let texture_to_check=document.querySelector('input[name="roof-color"]:checked').value
+    let texture_rotated=document.querySelector('input[name="roof-type-orientation"]:checked').value
+   
+    function wall_repaint_inner(wall){
+
+
+      switch(texture_to_check){
+
+        case "0":
+          wall.texture = loader.load('./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg'); 
+          break;
+        case "1":
+          wall.texture = loader.load('./resources/images/PWP7.jpg');
+          break;
+        case "2":
+          wall.texture = loader.load('./resources/images/PWP8.jpg');
+          break;
+
+        default:
+          wall.texture = loader.load('./resources/images/PWP2.jpg');
+          //alert('3')
+          break;
+      }
+
+
+    wall.texture.wrapS =  THREE.ClampToEdgeWrapping;
+    wall.texture.wrapT =THREE.RepeatWrapping;
+
+   console.log(texture_rotated)
+   console.log(texture_rotated.includes("rotated"))
+   if(texture_rotated.includes("rotated")){
+ 
+     wall.texture.repeat.set( 1, wall.width );
+     wall.texture.rotation=(Math.PI/2)
+   }
+   else{
+     //This is kinda a quick fix but it works
+     wall.texture.repeat.set( 1, wall.depth );
+     wall.texture.rotation=(0)
+   }
+ 
+ 
+   wall.object.material = new THREE.MeshBasicMaterial( { side: THREE.DoubleSide, map:wall.texture} );
+   wall.object.material.needsUpdate=true;
+   wall.object.geometry.needsUpdate=true;
+  }
+
+  wall_repaint_inner(main_house_outer.roof)
+  wall_repaint_inner(main_house_outer.roof2)
+
+  if(texture_to_check=='0' ||texture_to_check=='1' ||texture_to_check=='2')
+  {
+    console.log("special_case")
+  }
+  else{
+   let color_value=document.querySelector('input[name="roof-color"]:checked').value
+   let three_color=new THREE.Color(color_value)
+   menu_controller.change_roof_color(three_color.r*255, three_color.g*255, three_color.b*255)
+  }
   }
 
  ohmawgawd(){
@@ -1913,44 +2007,65 @@ function initiate_project(){
 menu_controller.ohmawgawd()
 function call_me()
 {
+
   const loader = new THREE.TextureLoader();
-
-  main_house_outer.wall_front.object.material.texture = loader.load('wall.jpg');
-  main_house_outer.wall_front.object.material.texture = loader.load('./resources/images/PWP8.jpg');
-  main_house_outer.wall_front.object.material.texture.wrapS =  THREE.ClampToEdgeWrapping;
-  main_house_outer.wall_front.object.material.texture.wrapT =THREE.RepeatWrapping;
-  main_house_outer.wall_front.object.material.texture.repeat.set( 1, 10 );
-  main_house_outer.wall_front.object.material.texture.needsUpdate=true;
-  main_house_outer.wall_front.object.material.needsUpdate=true;
-
-  main_house_outer.wall_front.material = new THREE.MeshBasicMaterial( { color: 0xff0000, side: THREE.DoubleSide} );
-    
-  this.material.needsUpdate=true;
-  this.object.geometry.needsUpdate=true;
-
-
-
-
-  //geometry.attributes.color.needsUpdate = true;
-  this.object  = new THREE.Mesh( this.geometry, this.material );
   
-  //this.objec
 
-  //this.texture.repeat.set( 5, 2.0 );
-  //this.texture.offset.set(1,0)
+
+
+
+  //main_house_outer.wall_front.object.material.texture = loader.load('wall.jpg');
+  //main_house_outer.wall_front.texture = loader.load('./resources/images/PWP2.jpg');
+  //main_house_outer.wall_front.texture.wrapS =  THREE.ClampToEdgeWrapping;
+  //main_house_outer.wall_front.texture.wrapT =THREE.RepeatWrapping;
+  //main_house_outer.wall_right.texture.repeat.set( 1, 20 );
+  function wall_repaint_inner(wall){
+  let texture_rotated=document.querySelector('input[name="wall-type"]:checked').value
+  wall.texture = loader.load('./resources/images/PWP2.jpg');
+  wall.texture.wrapS =  THREE.ClampToEdgeWrapping;
+  wall.texture.wrapT =THREE.RepeatWrapping;
+
   
-  //Experimental_tiling
+ console.log(texture_rotated)
+ console.log(texture_rotated.includes("rotated"))
+ if(texture_rotated.includes("rotated")){
+
+   wall.texture.repeat.set( 1, wall.width );
+   wall.texture.rotation=(Math.PI/2)
+ }
+ else{
+   //This is kinda a quick fix but it works
+   wall.texture.repeat.set( 1, wall.depth );
+   wall.texture.rotation=(0)
+ }
+ 
+
+ wall.object.material = new THREE.MeshBasicMaterial( { side: THREE.DoubleSide, map:wall.texture} );
+ wall.object.material.needsUpdate=true;
+ wall.object.geometry.needsUpdate=true;
+  }
 
 
-  //menu_controller.change_wall_texture()
-  //main_house_outer.wall_front.object.material.color.setHSL(0, 1, 0.5*Math.random()); 
-  //main_house_outer.wall_left.change_color()
-  //alert("hi")
+  wall_repaint_inner(main_house_outer.roof)
+  wall_repaint_inner(main_house_outer.roof2)
+
+
+
+  let color_value=document.querySelector('input[name="roof-color"]:checked').value
+  let three_color=new THREE.Color(color_value)
+
+  menu_controller.change_roof_color(three_color.r*255, three_color.g*255, three_color.b*255)
+  //menu_controller.change_roof_color(200,0,0)
+
+  
+   //main_house_outer.wall_front.texture.needsUpdate=true;
+   //main_house_outer.wall_front.needsUpdate=true;
+  
 }
 remove_composite_object(friendly_door.provide_identification())
 
 
-document.addEventListener('click',  ()=>{call_me()})
+//document.addEventListener('click',  ()=>{menu_controller.change_roof()})
 
 document.querySelector("#add-gates").addEventListener('click',  ()=>{menu_controller.add_gate()})
 document.querySelector("#add-windows").addEventListener('click',  ()=>{menu_controller.add_window()})
@@ -1961,11 +2076,63 @@ document.querySelector("#add-canopy").addEventListener('click',  ()=>{menu_contr
 let roof_types=document.querySelectorAll('input[name="roof-type"]')
 for (let roof of roof_types){roof.addEventListener('change', menu_controller.rebuild_garage_dimensions)}
 
+
+let roof_types_orientation=document.querySelectorAll('input[name="roof-type-orientation"]')
+let roof_colors=document.querySelectorAll('input[name="roof-color"]')
+for (let roof_color of roof_colors){roof_color.addEventListener('change', menu_controller.change_roof)}
+for (let roof_color of roof_colors){roof_color.addEventListener('change', (evt)=>{
+
+
+ for (let i=0;i<roof_types_orientation.length;i++){
+   roof_types_orientation[i].parentElement.style.display='block'
+   //alert('i triggered')
+ }
+
+ if(evt.target.id=="ocynk-roof")
+ {
+   
+ for (let i=1;i<roof_types_orientation.length;i++){
+   roof_types_orientation[i].parentElement.style.display='none'
+ }
+ document.getElementById('ocynk-roof-rotation').checked=true
+ menu_controller.change_roof()
+}
+
+
+})}
+
+
 let garage_dimension_changers=document.querySelectorAll('.num-selector select')
 for (let garage_dimension of garage_dimension_changers){garage_dimension.addEventListener('change', menu_controller.rebuild_garage_dimensions)}
 
 let wall_types=document.querySelectorAll('input[name="wall-type"]')
-for (let roof of wall_types){roof.addEventListener('change', menu_controller.change_wall_texture)}
+for (let roof of wall_types){roof.addEventListener('change', menu_controller.change_wall)}
+
+let wall_colors=document.querySelectorAll('input[name="wall-color"]')
+for (let wall_color of wall_colors){wall_color.addEventListener('change', menu_controller.change_wall)}
+
+for (let wall_color of wall_colors){wall_color.addEventListener('change', (evt)=>{
+
+
+  for (let i=0;i<wall_types.length;i++){
+    wall_types[i].parentElement.style.display='block'
+    //alert('i triggered')
+  }
+
+  if(evt.target.id=="ocynk-wall")
+  {
+    
+  for (let i=1;i<wall_types.length;i++){
+    wall_types[i].parentElement.style.display='none'
+  }
+  document.getElementById('ocynk-wall-rotation').checked=true
+  menu.menu_controller.change_wall()
+}
+
+
+ })}
+
+
 
 
 //main_house_outer.release();
