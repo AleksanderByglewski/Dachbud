@@ -433,18 +433,18 @@ class Garage_walls extends General_object{
 
 }
 
-place_a_box2(a_box){
+  place_a_box2(a_box){
 
-  
-//  const door_material = new THREE.MeshBasicMaterial({color: 0xff1111, map: this.texture2});
- // const door_geometry = new THREE.BoxGeometry(this.width, this.depth, 0.1);
- // const door = new THREE.Mesh(door_geometry, door_material);
- // door.geometry.rotateY(this.rotation)
- // door.geometry.translate(0,+this.depth/2-5/2,0)
-  this.add_components(a_box.return_self())
-  //console.log(door.id)
-  //return door.id
-}
+    
+  //  const door_material = new THREE.MeshBasicMaterial({color: 0xff1111, map: this.texture2});
+  // const door_geometry = new THREE.BoxGeometry(this.width, this.depth, 0.1);
+  // const door = new THREE.Mesh(door_geometry, door_material);
+  // door.geometry.rotateY(this.rotation)
+  // door.geometry.translate(0,+this.depth/2-5/2,0)
+    this.add_components(a_box.return_self())
+    //console.log(door.id)
+    //return door.id
+  }
 
   place_a_box(displacement){
     const door_material = new THREE.MeshBasicMaterial({color: 0xff1111, map: this.texture2});
@@ -457,19 +457,37 @@ place_a_box2(a_box){
     return door.id
   }
 
-  change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255,rotation=0){
+  change_the_texture(texture_name="./resources/images/PWP2.jpg",r=255,g=255,b=255,rotation=0){
     const loader = new THREE.TextureLoader();
     this.texture = loader.load('wall.jpg');
-    this.texture = loader.load('./resources/images/PWP.jpg');
+    this.texture = loader.load('./resources/images/PWP2.jpg');
     this.texture.wrapS =  THREE.ClampToEdgeWrapping;
     this.texture.wrapT =THREE.RepeatWrapping;
-    this.texture.repeat.set( 5, 2.0 );
-    this.texture.offset.set(1,0)
+    //this.texture.repeat.set( 5, 2.0 );
+    //this.texture.offset.set(1,0)
     
-    this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
+    //Experimental_tiling
+    this.texture.repeat.set( 1, this.depth );
+    //alert("this is being triggered")
+    let parsed_color="rgb("+r+','+g+','+b+')'
+
+  
+    //this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
+    this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: parsed_color, side: THREE.DoubleSide} );
+    
     this.material.needsUpdate=true;
-    let normalMap = new THREE.TextureLoader().load('NormalMap.png');
-    material.normalMap = normalMap;//normal map
+    this.object.geometry.needsUpdate=true;
+
+
+ 
+
+    //geometry.attributes.color.needsUpdate = true;
+    this.object  = new THREE.Mesh( this.geometry, this.material );
+    
+    //this.object.material.color.setHSL(0, 1, Math.random()); 
+    //this.material.needsUpdate=true;
+    //let normalMap = new THREE.TextureLoader().load('NormalMap.png');
+    //material.normalMap = normalMap;//normal map
    // console.log("Siul la ruin")
    
 
@@ -478,24 +496,21 @@ place_a_box2(a_box){
     //this.object.material.needsUpdate=true;
  
   }
-    
+  change_color(){
+    this.object.material.color.setHSL(0, 1, Math.random()); 
+  }
  add_components(component){
-  //console.log('Adding a component ')
   this.object.add(component)
  }
  remove_components(){
     let children=this.object.children
     for (const child of children){
-//      console.log(child)
     this.object.remove(child)
     }
     //parent_element.object.remove(solarSystem)
   }
   remove_component(id){
     let children=this.object.children
-  //  for (const child of children){
-   //   console.log(child)
-   // }
     let target =this.object.getObjectById(id)
     this.object.remove(target)
     
@@ -508,7 +523,7 @@ place_a_box2(a_box){
 
   add_components_to_scene(scene){
 
-    const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
+    //const material = new THREE.MeshBasicMaterial( {color: 0x0000ff, side: THREE.DoubleSide} );
     scene.add(this.object);
   }
 }
@@ -540,7 +555,7 @@ class Roof_walls extends General_object{
     // front
     { pos: [-x/2, -y/2,  0], norm: [ 0,  0,  1], uv: [0, 0], },
     { pos: [ x/2, -y/2,  0], norm: [ 0,  0,  1], uv: [1, 0], },
-    { pos: [x/2,  y/2,  0], norm: [ 0,  0,  1], uv: [0, 1], },
+    { pos: [x/2,  y/2,  0], norm: [ 0,  0,  1], uv: [1, 1], },
 
 
   ];
@@ -595,15 +610,28 @@ class Roof_walls extends General_object{
 
     }
     
-    change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255,rotation=0){
+    change_the_texture(texture_name="./resources/images/PWP2.jpg",r=255,g=255,b=255,rotation=0){
       const loader = new THREE.TextureLoader();
       this.texture = loader.load('wall.jpg');
-      this.texture = loader.load('roof2.jpg');
+      //this.texture = loader.load('roof2.jpg');
+
+      //this.texture = loader.load('./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN.jpg');
+      this.texture = loader.load('./resources/images/PWP2.jpg')
+
+      
+
       this.texture.wrapS =  THREE.ClampToEdgeWrapping;
       this.texture.wrapT =THREE.RepeatWrapping;
       this.texture.repeat.set( 5,5.2 );
       this.texture.offset.set(1,0);
+
+      this.texture.repeat.set( 1,this.depth );
+      this.texture.offset.set(0,0);
+
       this.texture.rotation=(rotation)
+
+      //this.texture.rotation=(1.5707)
+
       this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
       this.material.needsUpdate=true;
       let normalMap = new THREE.TextureLoader().load('roof2.jpg');
@@ -692,9 +720,10 @@ class Roof_walls_square extends General_object{
    const loader = new THREE.TextureLoader();
    var  texture = loader.load('wall.jpg');
    texture = loader.load('roof2.jpg');
+   texture=loader.load('./resources/images/PWP2.jpg')
    texture.wrapS =  THREE.ClampToEdgeWrapping;
    texture.wrapT =THREE.RepeatWrapping;
-   texture.repeat.set( 5, 3.28 );
+   texture.repeat.set( 1, this.depth );
    texture.offset.set(1,0);
     this.change_the_texture()
     this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} );
@@ -711,13 +740,14 @@ class Roof_walls_square extends General_object{
 
     }
 
-    change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255,rotation=0){
+    change_the_texture(texture_name="./resources/images/PWP2.jpg",r=255,g=255,b=255,rotation=0){
       const loader = new THREE.TextureLoader();
       this.texture = loader.load('wall.jpg');
       this.texture = loader.load('roof2.jpg');
+      this.texture=loader.load('./resources/images/PWP2.jpg')
       this.texture.wrapS =  THREE.ClampToEdgeWrapping;
       this.texture.wrapT =THREE.RepeatWrapping;
-      this.texture.repeat.set( 5, 13.12 );
+      this.texture.repeat.set( 1, this.depth );
       this.texture.offset.set(1,0);
       this.texture.rotation=(rotation)
       this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
@@ -734,14 +764,15 @@ class Roof_walls_square extends General_object{
 
     }   
 
-    change_the_texture2(texture_name="./resources/images/PWP.jpg",r=255,g=0,b=0,rotation=0){
+    change_the_texture2(texture_name="./resources/images/PWP2.jpg",r=255,g=0,b=0,rotation=0){
 
       const loader = new THREE.TextureLoader();
       this.texture = loader.load('wall.jpg');
       this.texture = loader.load('roof2.jpg');
+      this.texture=loader.load('./resources/images/PWP2.jpg')
       this.texture.wrapS =  THREE.ClampToEdgeWrapping;
       this.texture.wrapT =THREE.RepeatWrapping;
-      this.texture.repeat.set( 5, 3.28 );
+      this.texture.repeat.set( 1, this.depth );
       this.texture.offset.set(1,0)
       this.texture.rotation=(rotation)
       this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
@@ -812,6 +843,7 @@ class Roof extends General_object{
     let normalMap = new THREE.TextureLoader().load('NormalMap.png');
     material.normalMap = normalMap;//normal map
     this.object  = new THREE.Mesh( this.geometry, this.material );
+    this.change_the_texture()
     //let material = new THREE.MeshPhongMaterial();
     //let map = new THREE.TextureLoader().load(image);
      //   material.map = map;//Bottom mapping
@@ -827,19 +859,28 @@ class Roof extends General_object{
     
       }
   
-      change_the_texture(texture_name="./resources/images/PWP.jpg",r=255,g=255,b=255,rotation=0){
+      change_the_texture(texture_name="./resources/images/PWP2.jpg",r=255,g=255,b=255,rotation=0){
         const loader = new THREE.TextureLoader();
         this.texture = loader.load('wall.jpg');
         this.texture = loader.load('roof2.jpg');
+        this.texture = loader.load('./resources/colors/alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg');
+        this.texture = loader.load('./resources/images/PWP7.jpg');
         this.texture.wrapS =  THREE.ClampToEdgeWrapping;
         this.texture.wrapT =THREE.RepeatWrapping;
         this.texture.repeat.set( 5, 13.12 );
+        this.texture.repeat.set( 1, 6 );
+        this.texture.repeat.set( 1, 4.5 );
         this.texture.offset.set(1,0);
+    
+
+        this.texture.offset.set(0,0);
         this.texture.rotation=(rotation)
+        //this.texture.rotation=(1.5707)
         this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
         this.material.needsUpdate=true;
         let normalMap = new THREE.TextureLoader().load('NormalMap.png');
         material.normalMap = normalMap;//normal map
+
 
         this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
         this.material.needsUpdate=true;
@@ -1413,28 +1454,6 @@ function animate() {
 }
 animate();
 
-{
-  const planeSize = 40;
-
-  const loader = new THREE.TextureLoader();
-  const texture = loader.load('https://threejs.org/manual/examples/resources/images/checker.png');
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  texture.magFilter = THREE.NearestFilter;
-  const repeats = planeSize / 2;
-  texture.repeat.set(repeats, repeats);
-
-  const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
-  const planeMat = new THREE.MeshPhongMaterial({
-    map: texture,
-    side: THREE.DoubleSide,
-  });
-  const mesh = new THREE.Mesh(planeGeo, planeMat);
-  mesh.receiveShadow = true;
-  mesh.rotation.x = Math.PI * -.5;
-  scene.add(mesh);
-}
-
 
 //Event listeners and interactivity with DOM this can be moved
 //outside of the function to lower the initial render time
@@ -1795,7 +1814,24 @@ for (let input of input_arr) {
     //main_house_outer.rebuild_roofs(roof_type)
   }
 
+  change_wall_color(r=255,g=255,b=255){
 
+    main_house_outer.wall_front.object.material.color.setRGB(r/255, g/255, b/255);
+    main_house_outer.wall_left.object.material.color.setRGB(r/255, g/255, b/255);
+    main_house_outer.wall_right.object.material.color.setRGB(r/255, g/255, b/255);;
+    main_house_outer.wall_back.object.material.color.setRGB(r/255, g/255, b/255);;
+
+  }
+  change_wall_texture(){
+    const loader = new THREE.TextureLoader();
+    this.texture = loader.load('./resources/images/PWP8.jpg');
+
+
+    main_house_outer.wall_front.material = new THREE.MeshBasicMaterial( { map: this.texture , side: THREE.DoubleSide} );
+    main_house_outer.wall_front.material.needsUpdate=true;
+
+
+  }
 
  ohmawgawd(){
   let para=document.querySelector("#roof-color")
@@ -1869,13 +1905,35 @@ function initiate_project(){
   menu_controller=new Menu_control()
 
 }
+menu_controller.ohmawgawd()
+function call_me()
+{
+  var loader2 = new THREE.TextureLoader();
 
+  main_house_outer.wall_front.object.material.texture = loader2.load('wall.jpg');
+  main_house_outer.wall_front.object.material.texture = loader2.load('./resources/images/PWP8.jpg');
+  main_house_outer.wall_front.object.material.texture.wrapS =  THREE.ClampToEdgeWrapping;
+  main_house_outer.wall_front.object.material.texture.wrapT =THREE.RepeatWrapping;
+  main_house_outer.wall_front.object.material.texture.repeat.set( 1, 10 );
+  main_house_outer.wall_front.object.material.texture.needsUpdate=true;
+  main_house_outer.wall_front.object.material.needsUpdate=true;
 
+  const loader = new THREE.TextureLoader();
+  let texture = loader2.load('wall.jpg');
+  texture = loader2.load('./resources/images/PWP2.jpg');
+  texture.wrapS =  THREE.ClampToEdgeWrapping;
+  texture.wrapT =THREE.RepeatWrapping;
+  texture.repeat.set( 1,10);
 
+  //this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: `rgb(${r},${g},${b})`, side: THREE.DoubleSide} );
+  main_house_outer.wall_front.material = new THREE.MeshBasicMaterial( { map: texture ,color: 0xff0000, side: THREE.DoubleSide} );
+  main_house_outer.wall_front.material.needsUpdate=true;
+  main_house_outer.wall_front.object  = new THREE.Mesh( main_house_outer.wall_front.geometry, main_house_outer.wall_front.material );
+}
 remove_composite_object(friendly_door.provide_identification())
 
 
-
+document.addEventListener('click',  ()=>{call_me()})
 
 document.querySelector("#add-gates").addEventListener('click',  ()=>{menu_controller.add_gate()})
 document.querySelector("#add-windows").addEventListener('click',  ()=>{menu_controller.add_window()})
@@ -1885,8 +1943,12 @@ document.querySelector("#add-canopy").addEventListener('click',  ()=>{menu_contr
 
 let roof_types=document.querySelectorAll('input[name="roof-type"]')
 for (let roof of roof_types){roof.addEventListener('change', menu_controller.rebuild_garage_dimensions)}
+
 let garage_dimension_changers=document.querySelectorAll('.num-selector select')
 for (let garage_dimension of garage_dimension_changers){garage_dimension.addEventListener('change', menu_controller.rebuild_garage_dimensions)}
+
+let wall_types=document.querySelectorAll('input[name="wall-type"]')
+for (let roof of wall_types){roof.addEventListener('change', menu_controller.change_wall_texture)}
 
 
 //main_house_outer.release();

@@ -26,8 +26,9 @@ Menu[]
     -Tworzone elementy dołaczyć do stanów[x]
 
 Tworzenie budynków[]
-    -Zmiana szerokości, wysokości, głębokości garażu[]
+    -Zmiana szerokości, wysokości, głębokości garażu[x]
     -Dodawanie obiektów drzwi, okna, bramy  na przód[x], na wszystko[]
+    -Rotacja tekstur
 
 Three.js 
     -Modyfikacja i ładniejsze tekstury[]
