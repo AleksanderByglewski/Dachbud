@@ -196,7 +196,13 @@ div#roof-material {
     border-radius:10px;
   }
 
-
+  .grid-elem{
+      display:grid;
+  }
+  .unmargined-sides{
+      margin-left: -1em;
+      margin-right: -1em;
+  }
 
 
   .image-description{

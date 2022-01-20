@@ -1,34 +1,35 @@
 Modelowanie[]
-    Stworzyć proste obiekty []
-        -Podłoże[]
-        -Okna[]
+    Stworzyć proste obiekty [x]
+        -Podłoże[x]
+        -Okna[x]
+    Stworzyć skomplikowane obiekty[]
         -Drzwi[]
         -Kotwiczenie[]
-    Stworzyć skomplikowane obiekty[]
-        -Wiata[]
+        -Wiata[x]
+        -Bramy[]
         -Rynny[]
 Data_filling
-    Data
+    Data[]
         -Przetłoczenia[x]
         -Podłoża[x]
-        -Typy budynkow [[Dependant on final-rendering[ ]] [ ] ]
+        -Typy budynkow [[Dependant on final-rendering[x]] [x ] x]
         -Kolory dachów[x]
         -Typy dachów[x]
-        -Skasować stare dachy[]
-    Grafiki
+        -Skasować stare dachy[x]
+    Grafiki[x]
         -Grafiki kolory[x]
-        -Grafiki podłoże[[Dependent on final-rendering[ ]]
+        -Grafiki podłoże[[Dependent on final-rendering[x]x]
     
 Menu[]
     Logika
-        -Specjalne prawa dla ocynkowania; brak możliwości wyboru przetłoczeń[]
+        -Specjalne prawa dla ocynkowania; brak możliwości wyboru przetłoczeń[x]
     -Dodawanie nowych podzakładek na podstawie poprzednich akcji[x]
     -Tworzone elementy dołaczyć do stanów[x]
 
 Tworzenie budynków[]
     -Zmiana szerokości, wysokości, głębokości garażu[x]
     -Dodawanie obiektów drzwi, okna, bramy  na przód[x], na wszystko[]
-    -Rotacja tekstur
+    -Rotacja tekstur[x]
 
 Three.js 
     -Modyfikacja i ładniejsze tekstury[]

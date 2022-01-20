@@ -18,7 +18,7 @@
       <div class="side-menu">
 
 
-        <div class="menu-elem">
+        <div class="menu-elem" style="display:none">
             <div class="menu-elem-heading">
                 <div class="menu-elem-heading-title">Empty elem heading</div>
                 <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
@@ -26,7 +26,7 @@
             <div class="menu-elem-content hide"><div class="menu-elem-content-text">Menu elem content</div></div>
         </div>
 
-        <div class="menu-elem">
+        <div class="menu-elem" style="display:none">
             <div class="menu-elem-heading">
                 <div class="menu-elem-heading-title">Empty image selector</div>
                 <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
@@ -48,41 +48,41 @@
             </div>
         </div>
 
-        <div class="menu-elem">
+        <div class="menu-elem" >
             <div class="menu-elem-heading">
-                <div class="menu-elem-heading-title">Wybor dachu</div>
+                <div class="menu-elem-heading-title">Wybór dachu</div>
                 <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
             </div>    
             <div class="menu-elem-content hide image-based-selection grid-3-columns">
 
                 <label class="padded-element">
                     <input type="radio" name="roof-type" value="0" checked>
-                    <img src="http://placehold.it/400x400/0bf/fff&text=A">
+                    <img src="./resources/images/0.jpg">
                     <div class="image-description">Dach jednospadowy prawy</div>
                   </label>
                   <label class="padded-element">
                     <input type="radio" name="roof-type" value="2" checked>
-                    <img src="http://placehold.it/400x400/0bf/fff&text=A">
+                    <img src="./resources/images/2.jpg">
                     <div class="image-description">Dach jednospadowy lewy</div>
                   </label>
                   <label class="padded-element">
                     <input type="radio" name="roof-type" value="5" checked>
-                    <img src="http://placehold.it/400x400/0bf/fff&text=A">
+                    <img src="./resources/images/5.jpg">
                     <div class="image-description">Dach dwuspadowy przód</div>
                   </label>
                   <label class="padded-element">
                     <input type="radio" name="roof-type" value="1" checked>
-                    <img src="http://placehold.it/400x400/0bf/fff&text=A">
+                    <img src="./resources/images/1.jpg">
                     <div class="image-description">Dach jednospadowy przód</div>
                   </label>
                   <label class="padded-element">
                     <input type="radio" name="roof-type" value="3" checked>
-                    <img src="http://placehold.it/400x400/0bf/fff&text=A">
+                    <img src="./resources/images/3.jpg">
                     <div class="image-description">Dach jednospadowy tył</div>
                   </label>
                   <label class="padded-element">
                     <input type="radio" name="roof-type" value="4" checked>
-                    <img src="http://placehold.it/400x400/0bf/fff&text=A">
+                    <img src="./resources/images/4.jpg">
                     <div class="image-description">Dach dwuspadowy bok</div>
                   </label>
 
@@ -122,23 +122,23 @@
             <div class="menu-elem-content hide image-based-selection grid-6-columns">
 
                 <label class="padded-element">
-                    <input type="radio" name="roof-color" value="#D2B773" checked>
+                    <input type="radio" name="roof-color" value="#D2B773" >
                     <img src="./resources/colors/RAL1002.gif">
                     <div class="image-description">RAL<br> 1002</div>
                 </label>
                   
           
-
+                <label  class="padded-element">
+                  <input type="radio" name="roof-color" value="#59191F">
+                  <img src="./resources/colors/RAL3005.gif">
+                  <div class="image-description">RAL<br> 3005</div>
+                </label>
                 <label  class="padded-element">
                     <input type="radio" name="roof-color" value="#13447C">
                     <img src="./resources/colors/RAL5010.gif">
                     <div class="image-description">RAL<br> 5010</div>
                   </label>
-                  <label  class="padded-element">
-                    <input type="radio" name="roof-color" value="#13447C">
-                    <img src="./resources/colors/RAL5010.gif">
-                    <div class="image-description">RAL<br> 5010</div>
-                  </label>
+
                   <label  class="padded-element">
                     <input type="radio" name="roof-color" value="#0F4336">
                     <img src="./resources/colors/RAL6005.gif">
@@ -179,7 +179,7 @@
                     <div class="image-description">RAL<br> 9006</div>
                   </label>
                   <label  class="padded-element">
-                    <input type="radio" name="roof-color" value="#FFFFFF">
+                    <input type="radio" name="roof-color" value="#FFFFFF" >
                     <img src="./resources/colors/RAL9010.gif">
                     <div class="image-description">RAL<br> 9010</div>
                   </label>
@@ -190,7 +190,7 @@
                   </label>
   
                   <label  class="padded-element">
-                    <input type="radio" name="roof-color" value="1">
+                    <input type="radio" name="roof-color" value="1" checked>
                     <img src="./resources/colors/TEXTURE-ORZECH.jpg">
                     <div class="image-description image-description-widen">Orzech</div>
                   </label>
@@ -279,27 +279,29 @@
             <div class="menu-elem-content hide image-based-selection wall-type-select">
 
                 <label class="padded-element">
-                    <input type="radio" name="wall-type" value="rotated" id="ocynk-wall-rotation" checked>
+                    <input type="radio" name="wall-type" value="rotated" id="ocynk-wall-rotation" >
                     <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN.jpg">
                     <div class="image-description">Przetłoczenia pionowe</div>
                   </label>
-                  
+                       <!--
                   <label  class="padded-element">
                     <input type="radio" name="wall-type" value="rotated-dense ">
                     <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN-DENSE.jpg">
                     <div class="image-description">Przetłoczenia pionowe wąskie</div>
                   </label>
+                   -->
                   <label class="padded-element">
                     <input type="radio" name="wall-type" value=" standard" checked>
                     <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN.jpg">
                     <div class="image-description">Przetłoczenia poziome</div>
                   </label>
-                  
+                  <!--
                   <label  class="padded-element">
                     <input type="radio" name="wall-type" value="standard-dense">
                     <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg">
                     <div class="image-description">Przetłoczenia poziome wąskie</div>
                   </label>
+                  -->
             </div>
         </div>
         
@@ -319,9 +321,9 @@
           
 
                 <label  class="padded-element">
-                    <input type="radio" name="wall-color" value="#13447C">
-                    <img src="./resources/colors/RAL5010.gif">
-                    <div class="image-description">RAL<br> 5010</div>
+                    <input type="radio" name="wall-color" value="#59191F">
+                    <img src="./resources/colors/RAL3005.gif">
+                    <div class="image-description">RAL<br> 3005</div>
                   </label>
                   <label  class="padded-element">
                     <input type="radio" name="wall-color" value="#13447C">
@@ -368,7 +370,7 @@
                     <div class="image-description">RAL<br> 9006</div>
                   </label>
                   <label  class="padded-element">
-                    <input type="radio" name="wall-color" value="#FFFFFF">
+                    <input type="radio" name="wall-color" value="#FFFFFF" checked>
                     <img src="./resources/colors/RAL9010.gif">
                     <div class="image-description">RAL<br> 9010</div>
                   </label>
@@ -546,14 +548,37 @@
           </div>
 
 
- 
 
           <div class="menu-elem">
             <div class="menu-elem-heading">
-                <div class="menu-elem-heading-title">Teren pod garaz</div>
+                <div class="menu-elem-heading-title">Teren pod garaż</div>
                 <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
             </div>    
-            <div class="menu-elem-content hide"><div class="menu-elem-content-text">Menu elem content</div></div>
+            <div class="menu-elem-content hide image-based-selection wall-type-select">
+
+              <label class="padded-element">
+                  <input type="radio" name="foundation-type" value="0" checked>
+                  <img src="./resources/images/bottom/0.jpg">
+                  <div class="image-description">Wylewka betonowa</div>
+                </label>
+                
+                <label  class="padded-element">
+                  <input type="radio" name="foundation-type" value="1">
+                  <img src="./resources/images/bottom/1.jpg">
+                  <div class="image-description">Płyty chodnikowe</div>
+                </label>
+                <label class="padded-element">
+                  <input type="radio" name="foundation-type" value="2" >
+                  <img src="./resources/images/bottom/2.jpg">
+                  <div class="image-description">Fundament </div>
+                </label>
+                
+                <label  class="padded-element">
+                  <input type="radio" name="foundation-type" value="3">
+                  <img src="./resources/images/bottom/3.jpg">
+                  <div class="image-description">Kostka brukowa</div>
+                </label>
+          </div>
         </div>
 
 

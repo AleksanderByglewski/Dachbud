@@ -113,23 +113,6 @@ class General_object{
  
  }
 
-class Foundation extends General_object{
-
-
-  constructor(width, depth){
-  super();
-  this.components=[];
-  this.width=width;
-  this.depth=depth;
-    }
-  add_components_to_scene(scene){
-    const geometry = new THREE.TorusGeometry(2, 0.5, 16, 100);
-    const material = new THREE.MeshStandardMaterial({ color: 0xff6347,wireframe: true });
-    const torus = new THREE.Mesh(geometry, material);
-    
-    scene.add(torus);
-  }
-}
 
 class Bounding_Box{
   constructor(x_begin, x_end,y_begin, y_end){
@@ -228,10 +211,25 @@ class Displacement_object{
     this.texture.wrapT =THREE.RepeatWrapping;
   
 
-    this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x0000ff, side: THREE.DoubleSide} );
+    //this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x0000ff, side: THREE.DoubleSide} );
+    this.material=[
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
+    
+    ];
+    
+
     this.geometry = new THREE.BoxGeometry(width, height, depth);
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-    
+
+
+
+
+
     //Set the initial displacement based of the parents height
     //First do the centered ones that is naturally
     //this.geometry.translate(0,0,0)
@@ -248,14 +246,37 @@ class Displacement_object{
   }
   change_texture()
   {
-    //const loader = new THREE.TextureLoader();
-    //this.texture = loader.load('roof2.jpg');
+    const loader = new THREE.TextureLoader();
+    this.texture = loader.load('./resources/images/PWP2.jpg')
+    this.black_texture = loader.load('black.jpg');
+
+
+
+
+
     this.texture.wrapS =  THREE.ClampToEdgeWrapping;
     this.texture.wrapT =THREE.RepeatWrapping;
+    this.texture.repeat.set( 1, this.geometry.parameters.height*1);
+    this.mesh.material=[
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+    
+    ];
+    this.change_color(19,68,124)
+    //this.mesh.material[4].color=new THREE.Color(1,0,0)
     //this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x0000ff, side: THREE.DoubleSide} );
-    this.material.color=new THREE.Color(0xff0000)
+    //this.mesh.material.color=new THREE.Color(0x000000)
     this.material.needsUpdate=true;
     
+  }
+  change_color(r, g , b)
+  {
+    this.mesh.material[4].color=new THREE.Color(r/255,g/255,b/255)
+    this.mesh.material[5].color=new THREE.Color(r/255,g/255,b/255)
   }
 
 
@@ -874,6 +895,9 @@ class Front_wall extends Garage_walls{
 
 
 let main_house_outer=""
+let main_house_canopy=""
+
+    
 let scene_outer=""
 let Creation_controller_outer=""
 
@@ -1343,8 +1367,8 @@ function animate() {
   requestAnimationFrame(animate);
   
   //uncode this
-  //controls.autoRotate = true;
-  //controls.autoRotateSpeed =0.5
+  controls.autoRotate = true;
+  controls.autoRotateSpeed =0.5
 
   //torus.rotation.x += 0.01;
   //torus.rotation.y += 0.005;
@@ -1386,7 +1410,7 @@ animate();
 //Event listeners and interactivity with DOM this can be moved
 //outside of the function to lower the initial render time
 
-  //@TODO move the interaction with menu outside of the main function
+ 
 
   let para=document.querySelector("#roof-color")
   para.addEventListener('click', change_color_roof)
@@ -1477,6 +1501,7 @@ animate();
 Creation_controller_outer=main_house.constructor
 main_house_outer=main_house
 scene_outer=scene
+main_house_canopy=new Creation_controller_outer(1.01, 1.01, 1.01, 1.01, 1.01, 1, scene_outer,1);
 //main_house.release()
 
 
@@ -1497,7 +1522,7 @@ class Menu_control{
     this.gate_array=[];
     this.window_arr=[];
     this.door_array=[];
-    this.canopy_arr=[];
+    this.canopy_array=[];
 
   this.side_menu=document.querySelector(".side-menu");
   //let flooring_control=document.querySelector('input[name="flooring"]:checked')
@@ -1518,36 +1543,281 @@ class Menu_control{
     this.side_menu.innerText="";
   }
 
-  add_node(element_id, element){
+  add_node(element_id, element, wall_being_targeted="front", heading_title="Nowy element"){
+
+
+    wall_being_targeted= main_house_outer.wall_front;
+
+    const loader = new THREE.TextureLoader();
+  
+    //let texture_to_check=document.querySelector('input[name="wall-color"]:checked').value
+    //let texture_rotated=document.querySelector('input[name="wall-type"]:checked').value
+   
+
+
+
+
+
+
     let div_elem=document.createElement("div");
     div_elem.classList.add("menu-elem");
 
     
     let div_heading=document.createElement('div')
     div_heading.classList.add("menu-elem-heading")
-    div_heading.innerHTML=`<div class="menu-elem-heading-title">Menu elem heading</div>
+    div_heading.innerHTML=`<div class="menu-elem-heading-title">${heading_title}</div>
     <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
     `
     let base_menu=`<div>`+
-    `<div  class="num-selector"><label>displacement value left</label><input direction="left" type="number">  </input> </div>`+
-    `<div  class="num-selector"><label>displacement value right</label><input direction="right" type="number">  </input> </div>`+
-    `<div  class="num-selector"><label>displacement value top</label><input direction="top" type="number">  </input> </div>`+
-    `<div  class="num-selector"><label>displacement value bottom</label><input direction="bottom" type="number">  </input> </div>`+
+    `<div  class="num-selector"><label>Odchylenie od środka ściany (poziom)</label><input direction="left" type="number" step="0.1">  </input> </div>`+
+    `<!--<div  class="num-selector"><label>displacement value right</label><input direction="right" type="number" step="0.1">  </input> </div>-->`+
+    `<div  class="num-selector"><label>Odchylenie od środka ściany (pion)</label><input direction="top" type="number" step="0.1">  </input> </div>`+
+    `<!--<div  class="num-selector"><label>displacement value bottom</label><input direction="bottom" type="number" step="0.1">  </input> </div>-->`+
     `</div>`
 
 
+    let sizing_menu=`<div>`+
+    `<div  class="num-selector"><label>Szerokość elementu</label><input direction="width" type="number">  </input> </div>`+
+    `<div  class="num-selector"><label>Wysokość elementu</label><input direction="height" type="number">  </input> </div>`+
+    `</div>`
+    let tiling_type_menu=
+    `<div class="image-based-selection grid-elem tiling-inner unmargined-sides">`+
+    `<label class="padded-element">
+    <input type="radio" name="wall-type" id="ocynk-roof-rotation" value="rotated" checked>
+    <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN.jpg">
+    <div class="image-description">Przetłoczenia pionowe</div>
+  </label>
+  
+  <label  class="padded-element">
+    <input type="radio" name="wall-type" value="standard">
+    <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN.jpg">
+    <div class="image-description">Przetłoczenia poziome</div>
+  </label>
+
+
+  <label class="padded-element">
+  <input type="radio" name="wall-type" value="rotated-dense">
+  <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN-DENSE.jpg">
+  <div class="image-description">Przetłoczenia pionowe wąskie</div>
+</label>
+
+<label  class="padded-element">
+  <input type="radio" name="wall-type" value="standard-dense">
+  <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg">
+  <div class="image-description">Przetłoczenia poziome wąskie</div>
+</label>`
+
+
+
+  
++`</div>`
+    let color_menu=`<div>`+
+
+ 
+
+`<div class="image-based-selection grid-6-columns grid-elem color-inner unmargined-sides">
+<label class="padded-element">
+        <input type="radio" name="wall-color" value="#D2B773" checked>
+        <img src="./resources/colors/RAL1002.gif">
+        <div class="image-description">RAL<br> 1002</div>
+    </label>
+
+    <label  class="padded-element">
+        <input type="radio" name="wall-color" value="#59191F">
+        <img src="./resources/colors/RAL3005.gif">
+        <div class="image-description">RAL<br> 3005</div>
+      </label>
+      <label  class="padded-element">
+        <input type="radio" name="wall-color" value="#13447C">
+        <img src="./resources/colors/RAL5010.gif">
+        <div class="image-description">RAL<br> 5010</div>
+      </label>
+      <label  class="padded-element">
+        <input type="radio" name="wall-color" value="#0F4336">
+        <img src="./resources/colors/RAL6005.gif">
+        <div class="image-description">RAL<br> 6005</div>
+      </label>
+      <label  class="padded-element">
+        <input type="radio" name="wall-color" value="#354733">
+        <img src="./resources/colors/RAL6020.gif">
+        <div class="image-description">RAL<br> 6020</div>
+      </label>
+      <label  class="padded-element">
+        <input type="radio" name="wall-color" value="#373F43">
+        <img src="./resources/colors/RAL7016.gif">
+        <div class="image-description">RAL<br> 7016</div>
+      </label>
+
+
+
+
+      <label  class="padded-element">
+        <input type="radio" name="wall-color" value="#8F4E35">
+        <img src="./resources/colors/RAL8004.gif">
+        <div class="image-description">RAL<br> 8004</div>
+      </label>
+      <label  class="padded-element">
+        <input type="radio" name="wall-color" value="#44322D">
+        <img src="./resources/colors/RAL8017.gif">
+        <div class="image-description">RAL<br> 8017</div>
+      </label>
+      <label  class="padded-element">
+        <input type="radio" name="wall-color" value="#0A0A0A">
+        <img src="./resources/colors/RAL9005.gif">
+        <div class="image-description">RAL<br> 9005</div>
+      </label>
+      <label  class="padded-element">
+        <input type="radio" name="wall-color" value="#A5A5A5">
+        <img src="./resources/colors/RAL9006.gif">
+        <div class="image-description">RAL<br> 9006</div>
+      </label>
+      <label  class="padded-element">
+        <input type="radio" name="wall-color" value="#FFFFFF" checked>
+        <img src="./resources/colors/RAL9010.gif">
+        <div class="image-description">RAL<br> 9010</div>
+      </label>
+      <label  class="padded-element">
+        <input type="radio" id="ocynk-wall" name="wall-color" value="0">
+        <img src="./resources/colors/TEXTURE-METAL.jpg">
+        <div class="image-description">Ocynk<br> 9010</div>
+      </label>
+
+      <label  class="padded-element">
+        <input type="radio" name="wall-color" value="1">
+        <img src="./resources/colors/TEXTURE-ORZECH.jpg">
+        <div class="image-description image-description-widen">Orzech</div>
+      </label>
+      <label  class="padded-element">
+        <input type="radio" name="wall-color" value="2">
+        <img src="./resources/colors/TEXTURE-DAB.jpg">
+        <div class="image-description image-description-widen">Złoty dąb<br> </div>
+      </label>
+  </div>`+
+  `</div>`
+
     div_elem.innerHTML=
     `<div class="menu-elem-content hide">`+
-    `<div class="menu-elem-content-text">`+base_menu +`</div>`+
-    `<div class="erase-button">Erase me</div>
+    `<div class="menu-elem-content-text">`+base_menu + sizing_menu +color_menu+tiling_type_menu+`</div>`+
+  
+    `<div class="erase-button">Usuń element</div>
     </div>`
+
+
+
+
+  //wall_repaint_inner(main_house_outer.wall_front)
+
+
+
 
     div_elem.prepend(div_heading)
     div_heading.addEventListener("click", reduct)
     //div_heading.addEventListener("click", (evt)=>{evt.currentTarget.parentNode.remove()})
     div_elem.querySelector('.erase-button').addEventListener('click', (evt)=>{evt.currentTarget.parentNode.parentNode.remove()})
     div_elem.querySelector('.erase-button').addEventListener('click', ()=>{remove_composite_object(element_id)})
+
+    //Presentation
+    
+    div_elem.querySelector('.erase-button').addEventListener('click', ()=>{
+      try {
+        menu_controller.canopy_array=[]
+        menu_controller.rebuild_garage_dimensions()
+      } catch (error) {
+        console.error(error);
+      }
+
+    
+    
+    })
+
     //this.side_menu.appendChild(div_elem)
+
+    let color_input_arr=div_elem.querySelectorAll('.color-inner input')
+    for (let colored_thing of color_input_arr){colored_thing.addEventListener('change', inner_change_wall)}
+
+
+    let type_input_arr=div_elem.querySelectorAll('input[name="wall-type"]')
+    for (let type_thing of type_input_arr){type_thing.addEventListener('change', inner_change_wall)}
+
+    function inner_change_wall(){
+      //alert("h")
+    const loader = new THREE.TextureLoader();
+    
+    let texture_to_check=div_elem.querySelector('input[name="wall-color"]:checked').value
+    let texture_rotated=div_elem.querySelector('input[name="wall-type"]:checked').value
+   
+    function wall_repaint_inner(wall){
+
+
+      switch(texture_to_check){
+
+        case "0":
+          wall.texture = loader.load('./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg'); 
+          break;
+        case "1":
+          wall.texture = loader.load('./resources/images/PWP7.jpg');
+          break;
+        case "2":
+          wall.texture = loader.load('./resources/images/PWP8.jpg');
+          break;
+
+        default:
+          wall.texture = loader.load('./resources/images/PWP2.jpg');
+          //alert('3')
+          break;
+      }
+
+
+    wall.texture.wrapS =  THREE.ClampToEdgeWrapping;
+    wall.texture.wrapT =THREE.RepeatWrapping;
+      //console.log(texture_rotated)
+    let texture_sparsity=1
+    if(texture_rotated.includes('dense')){
+      texture_sparsity = 2;
+    }
+
+
+   if(texture_rotated.includes("rotated")){
+ 
+     wall.texture.repeat.set( 1, wall.geometry.parameters.width*texture_sparsity );
+     wall.texture.rotation=(Math.PI/2)
+     //alert("hi")
+   }
+   else{
+     //This is kinda a quick fix but it works
+     wall.texture.repeat.set( 1, wall.geometry.parameters.height*texture_sparsity);
+     wall.texture.rotation=(0)
+     //alert("hii")
+   }
+
+ 
+   wall.mesh.material =  [
+   new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+   new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+   new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+   new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+   new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
+   new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
+   ];
+   
+   
+   
+   //new THREE.MeshBasicMaterial( { side: THREE.DoubleSide, map:wall.texture} );
+   wall.mesh.material.needsUpdate=true;
+   wall.mesh.geometry.needsUpdate=true;
+  }
+
+  wall_repaint_inner(element)
+
+  let color_value=div_elem.querySelector('input[name="wall-color"]:checked').value
+  let three_color=new THREE.Color(color_value)
+  //menu_controller.change_wall_color()
+  element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
+  }
+    
+
+
+
 
     let input_arr=div_elem.querySelectorAll('input')
 for (let input of input_arr) {
@@ -1562,17 +1832,51 @@ for (let input of input_arr) {
       let direction_x=element.translation_x;
       let direction_y=element.translation_y;
       let direction_z=element.translation_z;
+      console.log(element)
+      function check_correctness_of_translation(allowable_margin=0.011){
+        //console.log(direction_x)
+        
+        //1console.log('aha')
+        //console.log(wall_being_targeted.width/2-allowable_margin)
+        //console.log('Skoro')
+        //console.log(parseFloat(direction_x))
+        //console.log(parseFloat(element.geometry.parameters.width/2))
+        //console.log('to')
+        //console.log(parseFloat(direction_x)+parseFloat(element.geometry.parameters.width/2))
+        //console.log(direction_x+element.geometry.parameters.width/2 <wall_being_targeted.width/2-allowable_margin)
+        //onsole.log(-wall_being_targeted.width/2+allowable_margin<direction_x-element.geometry.parameters.width/2)
+
+        if (!(-parseFloat(wall_being_targeted.width)/2+parseFloat(allowable_margin)<parseFloat(direction_x)-parseFloat(element.geometry.parameters.width)/2 && parseFloat(direction_x)+parseFloat(element.geometry.parameters.width)/2 <parseFloat(wall_being_targeted.width)/2-parseFloat(allowable_margin))){
+          
+          console.log("Scream stop")
+          return false;
+        }
+        allowable_margin=-0.01
+        console.log(parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin))
+        console.log(parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2)
+        if (!(-parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin)<=parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2 && parseFloat(direction_y)+parseFloat(element.geometry.parameters.height)/2 <parseFloat(wall_being_targeted.depth)/2-parseFloat(allowable_margin))){
+          
+          console.log("Scream stop")
+          return false;
+        }
+
+        console.log("Go on")
+        return true;
+        
+      }
 
       console.log(direction)
       switch(direction){
         case 'left':
-        
+
+
+
            direction_x=translation_value;
            break;
         case 'right':
           
         
-           direction_x=10-translation_value;
+          //direction_x=10-translation_value;
            break;
         case 'top':
           
@@ -1580,19 +1884,47 @@ for (let input of input_arr) {
             break;
         case 'bottom':
       
-            direction_y=10-translation_value;
+            //direction_y=10-translation_value;
             break;
         //You can technically add the z-index and be happy with general solution
         //This will make it much easier to just switch directions on off based on 
         //wall you are actually on
       }
-
+      if( check_correctness_of_translation() ){
       //If you pass the movement test movement test to be implemented
       element.translation_x=direction_x;
       element.translation_y=direction_y;
       element.translation_z=direction_z;
-
       element.set_position(direction_x,direction_y, direction_z)
+      }
+      else{
+        //Just prevent the change of value and maybe add an alert
+        switch(direction){
+
+          case 'left':
+            evt.currentTarget.value=element.translation_x
+
+
+
+            direction_x=translation_value;
+            break;
+         case 'right':
+          evt.currentTarget.value=element.translation_x
+
+         
+           //direction_x=10-translation_value;
+            break;
+         case 'top':
+          evt.currentTarget.value=element.translation_y;
+             break;
+         case 'bottom':
+          evt.currentTarget.value=element.translation_y;
+             //direction_y=10-translation_value;
+             break;
+
+           
+        }
+      }
       console.log(element.mesh.position)
       main_house_outer.wall_front.place_a_box2(element);
       
@@ -1631,6 +1963,78 @@ for (let input of input_arr) {
         
 
   }
+
+force_a_placed_object_update(element){
+  function wall_repaint_inner(wall){
+
+    let texture_to_check="default"
+    let texture_rotated="standard"
+    switch(texture_to_check){
+
+      case "0":
+        wall.texture = loader.load('./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg'); 
+        break;
+      case "1":
+        wall.texture = loader.load('./resources/images/PWP7.jpg');
+        break;
+      case "2":
+        wall.texture = loader.load('./resources/images/PWP8.jpg');
+        break;
+
+      default:
+        wall.texture = loader.load('./resources/images/PWP2.jpg');
+        //alert('3')
+        break;
+    }
+
+
+  wall.texture.wrapS =  THREE.ClampToEdgeWrapping;
+  wall.texture.wrapT =THREE.RepeatWrapping;
+    //console.log(texture_rotated)
+  let texture_sparsity=1
+  if(texture_rotated.includes('dense')){
+    texture_sparsity = 2;
+  }
+
+
+ if(texture_rotated.includes("rotated")){
+
+   wall.texture.repeat.set( 1, wall.geometry.parameters.width*texture_sparsity );
+   wall.texture.rotation=(Math.PI/2)
+  
+ }
+ else{
+   //This is kinda a quick fix but it works
+   wall.texture.repeat.set( 1, wall.geometry.parameters.height*texture_sparsity);
+   wall.texture.rotation=(0)
+
+  
+   //alert(wall.geometry.parameters.height*texture_sparsity)
+ }
+ 
+ wall.mesh.material =  [
+ new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+ new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+ new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+ new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+ new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
+ new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
+ ];
+ 
+ 
+ 
+ //new THREE.MeshBasicMaterial( { side: THREE.DoubleSide, map:wall.texture} );
+ wall.mesh.material.needsUpdate=true;
+ wall.mesh.geometry.needsUpdate=true;
+}
+
+wall_repaint_inner(element)
+
+let color_value="#13447C"
+let three_color=new THREE.Color(color_value)
+//menu_controller.change_wall_color()
+element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
+}
   add_gate(){
     let width_of_gate=2;
     let height_of_gate=2;
@@ -1641,13 +2045,20 @@ for (let input of input_arr) {
 
     //IF it passes the logic tests
   
-    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.5,0,0,0)
+    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.04,0,0,0)
     this.gate_array.push(friendly_door)
     main_house_outer.wall_front.place_a_box2(friendly_door);
     friendly_door.set_position(position.x,position.y,position.z)
-    let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door)
-    this.side_menu.insertBefore(new_elem,document.querySelector("#windows-object") )
 
+    let gate_number="główna"
+    if(menu_controller.gate_array.length>1)
+    {
+      gate_number=menu_controller.gate_array.length
+    }
+    let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door, "TODO", "Brama " +gate_number)
+    this.side_menu.insertBefore(new_elem,document.querySelector("#windows-object") )
+    menu_controller.force_a_placed_object_update(friendly_door)
+    
     //friendly_door.set_position(position.x, position.y, position.z);
     //friendly_door.change_texture()
   }
@@ -1663,14 +2074,14 @@ for (let input of input_arr) {
   }
 
   add_window(){
-    let width_of_gate=2;
-    let height_of_gate=2;
+    let width_of_gate=0.60;
+    let height_of_gate=1.40;
     
     const {message, position}=this.initial_window_logic(width_of_gate, height_of_gate)
     console.log(message)
     console.log(position)
 
-    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.5,0,0,0)
+    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.025,0,0,0)
    
     main_house_outer.wall_front.place_a_box2(friendly_door);
     
@@ -1678,7 +2089,7 @@ for (let input of input_arr) {
     this.side_menu.insertBefore(new_elem,document.querySelector("#doors-object") )
     
     friendly_door.set_position(position.x,position.y,position.z)
-    friendly_door.change_texture()
+    menu_controller.force_a_placed_object_update(friendly_door)
 
 
     
@@ -1695,16 +2106,21 @@ for (let input of input_arr) {
 
     //IF it passes the logic tests
   
-    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.5,0,0,0)
+    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.05,0,0,0)
     this.door_array.push(friendly_door)
     main_house_outer.wall_front.place_a_box2(friendly_door);
     friendly_door.set_position(position.x,position.y,position.z)
 
     let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door)
     this.side_menu.insertBefore(new_elem,document.querySelector("#canopy-object") )
+    menu_controller.force_a_placed_object_update(friendly_door)
   }
   add_canopy(){
-    let new_elem=this.add_node()
+    let new_elem=this.add_node(null, null, "Front",'Wiata')
+    //TODO
+    
+    this.canopy_array.push("elem")
+    this.rebuild_garage_dimensions()
     this.side_menu.insertBefore(new_elem,document.querySelector("#final-object") )
   }
 
@@ -1721,7 +2137,10 @@ for (let input of input_arr) {
   }
 
   rebuild_garage_dimensions(){
-
+    this.gate_array=[];
+    this.window_arr=[];
+    this.door_array=[];
+    this.canopy_arr=[];
 
     let constructor_width=parseFloat(document.querySelector(".num-selector [name='width']").value);
     let constructor_depth=parseFloat(document.querySelector(".num-selector [name='depth']").value);
@@ -1734,9 +2153,125 @@ for (let input of input_arr) {
     main_house_outer.release();
 //main_house_outer=new Creation_controller_outer(30, 10, 10, 10, 10, 10, scene_outer,4);
     main_house_outer=new Creation_controller_outer(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene_outer,roof_type);
+
+
+
+    //Based on the The canopy flag 
+    try {
+      main_house_canopy.release();
+    } catch (error) {
+      console.error(error);
+      // expected output: ReferenceError: nonExistentFunction is not defined
+      // Note - error messages will vary depending on browser
+    }
+    
+
+
+    //Canopy code TODO proper logic
+    //Presentation
+  
+    if(this.canopy_array.length>0){
+
+    main_house_canopy=new Creation_controller_outer(constructor_width+2.01, constructor_depth-0.01, constructor_height, roof_width+2.01, roof_depth, roof_height, scene_outer,roof_type);
+    main_house_canopy.wall_front.object.material.color.setRGB(1.0, 0, 0);
+
+    function wall_repaint_canopy(wall){
+
+    const loader = new THREE.TextureLoader();
+
+    wall.texture = loader.load('./resources/images/PWP9-SIMPLE2.png');
+    //wall.texture = loader.load('uv_grid_opengl.jpg');
+    wall.texture.wrapS =  THREE.RepeatWrapping;
+    wall.texture.wrapT =THREE.RepeatWrapping;
+   let texture_rotated="false"
+   console.log(texture_rotated)
+   console.log(texture_rotated.includes("rotated"))
+   if(texture_rotated.includes("rotated")){
+ 
+     wall.texture.repeat.set( 1, 1 );
+     wall.texture.rotation=(Math.PI/2)
+   }
+   else{
+    wall.texture.repeat.set(1 , 1 );
+    //This is much better but buggier a quick fix but it works 
+     //wall.texture.repeat.set(wall.width/2  , 1 );
+     wall.texture.rotation=(0)
+   }
+   
+   //wall.object.material = new THREE.MeshBasicMaterial( { side: THREE.DoubleSide, map:wall.texture} );
+   wall.object.material = new THREE.MeshBasicMaterial( { side: THREE.DoubleSide, map:wall.texture, opacity:1.0,transparent:true} );
+   //You can also set the properties without the constructor
+   // wall.object.material.opacity=0.0
+   
+   wall.object.material.needsUpdate=true;
+   wall.object.geometry.needsUpdate=true;
+  }
+
+
+    wall_repaint_canopy(main_house_canopy.wall_front)
+    wall_repaint_canopy(main_house_canopy.wall_right)
+    wall_repaint_canopy(main_house_canopy.wall_left)
+    wall_repaint_canopy(main_house_canopy.wall_back)
+
+    
+    main_house_canopy.wall_back.geometry.translate(-1,0,0)
+    main_house_canopy.wall_front.geometry.translate(-1,0,0)
+    main_house_canopy.wall_left.geometry.translate(-1,0,0)
+    main_house_canopy.wall_right.geometry.translate(-1,0,0)
+
+    main_house_canopy.roof_front.geometry.translate(-1,0,0)
+    main_house_canopy.roof_back.geometry.translate(-1,0,0)
+    main_house_canopy.roof_right.geometry.translate(-1,0,0)
+
+    
+    main_house_canopy.roof_front2.geometry.translate(-1,0,0)
+    main_house_canopy.roof_right2.geometry.translate(-1,0,0)
+    main_house_canopy.roof_back2.geometry.translate(-1,0,0)
+
+    main_house_canopy.roof.geometry.translate(-1,0,0)    
+    main_house_canopy.roof2.geometry.translate(-1,0,0)
+    
+    main_house_outer.roof.object.removeFromParent()
+    main_house_outer.roof2.object.removeFromParent()
+
+    main_house_outer.roof_front.object.removeFromParent()
+    main_house_outer.roof_front2.object.removeFromParent()
+    main_house_outer.roof_back.object.removeFromParent()
+    main_house_outer.roof_back2.object.removeFromParent()
+    
+    main_house_outer.roof_right.object.removeFromParent()
+    main_house_outer.roof_right2.object.removeFromParent()
+
+    
+    //main_house_outer.wall_back=main_house_canopy.wall_back
+    //main_house_outer.wall_front=main_house_canopy.wall_front
+    //main_house_outer.wall_left=main_house_canopy.wall_left
+    //main_house_outer.wall_right=main_house_canopy.wall_right
+   
+    //TODO
+    //Based on what type of canopy is being added remove certain parts of the canopy
+    //main_house_canopy.wall_front.object.removeFromParent()
+    //main_house_canopy.wall_back.object.removeFromParent()
+    //main_house_canopy.wall_left.object.removeFromParent()
+    main_house_canopy.wall_right.object.removeFromParent()
+    
+
+
+    main_house_outer.roof_front=main_house_canopy.roof_front
+    main_house_outer.roof_back=main_house_canopy.roof_back
+    main_house_outer.roof_right=main_house_canopy.roof_right
+
+    main_house_outer.roof_front2=main_house_canopy.roof_front2
+    main_house_outer.roof_right2=main_house_canopy.roof_right2
+    main_house_outer.roof_back2=main_house_canopy.roof_back2
+
+    main_house_outer.roof=main_house_canopy.roof    
+    main_house_outer.roof2=main_house_canopy.roof2
+
     
   }
 
+}
   rebuild_roof(){
     //This code causes bugs for unknown reasons so lets get rid of it
     //main_house_outer.release_roof();
@@ -1861,7 +2396,7 @@ for (let input of input_arr) {
   }
   
   
-  change_roof_color(r=255,g=255,b=255){
+change_roof_color(r=255,g=255,b=255){
     main_house_outer.roof.object.material.color.setRGB(r/255, g/255, b/255);
     main_house_outer.roof2.object.material.color.setRGB(r/255, g/255, b/255);
 
@@ -1999,7 +2534,7 @@ function release_resources(){
 }
 
 function initiate_project(){
-
+  
   main_house_outer=new Creation_controller_outer(10, 10, 10, 10, 10, 10, scene_outer,4);
   menu_controller=new Menu_control()
 
@@ -2079,6 +2614,7 @@ for (let roof of roof_types){roof.addEventListener('change', menu_controller.reb
 
 let roof_types_orientation=document.querySelectorAll('input[name="roof-type-orientation"]')
 let roof_colors=document.querySelectorAll('input[name="roof-color"]')
+for (let roof_type_orientation of roof_types_orientation){roof_type_orientation.addEventListener('change', menu_controller.change_roof)}
 for (let roof_color of roof_colors){roof_color.addEventListener('change', menu_controller.change_roof)}
 for (let roof_color of roof_colors){roof_color.addEventListener('change', (evt)=>{
 
@@ -2104,6 +2640,7 @@ for (let roof_color of roof_colors){roof_color.addEventListener('change', (evt)=
 
 let garage_dimension_changers=document.querySelectorAll('.num-selector select')
 for (let garage_dimension of garage_dimension_changers){garage_dimension.addEventListener('change', menu_controller.rebuild_garage_dimensions)}
+for (let garage_dimension of garage_dimension_changers){garage_dimension.addEventListener('change', recreate_foundation)}
 
 let wall_types=document.querySelectorAll('input[name="wall-type"]')
 for (let roof of wall_types){roof.addEventListener('change', menu_controller.change_wall)}
@@ -2126,7 +2663,7 @@ for (let wall_color of wall_colors){wall_color.addEventListener('change', (evt)=
     wall_types[i].parentElement.style.display='none'
   }
   document.getElementById('ocynk-wall-rotation').checked=true
-  menu.menu_controller.change_wall()
+  menu_controller.change_wall()
 }
 
 
@@ -2140,4 +2677,142 @@ for (let wall_color of wall_colors){wall_color.addEventListener('change', (evt)=
 //menu_controller.clear_menu()
 release_resources()
 initiate_project()
+
+//Presentation
+menu_controller.add_canopy()
+//Presentation
 menu_controller.rebuild_garage_dimensions()
+
+
+class Foundation extends General_object{
+
+
+  constructor(width, depth, index){
+  super();
+  this.components=[];
+  this.width=width;
+  this.depth=depth;
+  this.index=index;
+    }
+  add_components_to_scene(){
+    
+    //Define geometry based on the index
+    switch(this.index){
+case 0:
+  var geometry = new THREE.PlaneGeometry(this.width, this.depth,2 ,2 );
+  geometry.rotateX(Math.PI/2)
+  var texture = loader.load('./resources/images/foundation0.jpg');
+  texture.wrapS =THREE.RepeatWrapping;
+  texture.wrapT =THREE.RepeatWrapping;
+   //This is kinda a quick fix but it works
+  texture.repeat.set( this.width/2, this.depth/2 );
+  texture.rotation=(0)
+  var material = new THREE.MeshStandardMaterial({ color: 0xffffff,wireframe: false, side: THREE.DoubleSide, map:texture });
+  var torus = new THREE.Mesh(geometry, material);
+  this.components.push(torus);
+    break;
+case 1:
+    var block_width=1;
+    var block_depth=1;
+
+    var texture = loader.load('./resources/images/foundation1.jpg');
+    texture.wrapS =THREE.RepeatWrapping;
+    texture.wrapT =THREE.RepeatWrapping;
+  
+    texture.repeat.set( block_width, block_depth );
+    texture.rotation=(0)
+
+    let displacement_array_x=[-1,0, 1]
+    let displacement_array_y=[-1,0, 1]
+    for (let displacement_x of displacement_array_x){
+      for (let displacement_y of displacement_array_y){
+        console.log(displacement_x)
+        console.log(displacement_y)
+
+        var geometry = new THREE.PlaneGeometry(block_width, block_depth,2 ,2 );
+        geometry.translate(displacement_x*(this.width/2-block_width/2), displacement_y*(this.depth/2-block_depth/2),0)
+        geometry.rotateX(Math.PI/2)
+        var material = new THREE.MeshStandardMaterial({ color: 0xff6347,wireframe: false, side: THREE.DoubleSide,map:texture });
+        var mesh = new THREE.Mesh(geometry, material);
+        this.components.push(mesh);
+
+      }
+    }
+    break;
+
+
+case 2:
+  var geometry = new THREE.PlaneGeometry(this.width, this.depth,2 ,2 );
+  geometry.rotateX(Math.PI/2)
+  var texture = loader.load('./resources/images/foundation2.jpg');
+  texture.wrapS =THREE.RepeatWrapping;
+  texture.wrapT =THREE.RepeatWrapping;
+
+  texture.repeat.set( this.width, this.depth );
+  texture.rotation=(0)
+  var material = new THREE.MeshStandardMaterial({ color: 0xffffff,wireframe: false, side: THREE.DoubleSide ,map:texture });
+  var torus = new THREE.Mesh(geometry, material);
+  this.components.push(torus);
+  //this.add_components();
+
+
+
+ 
+
+  break;
+case 3:
+  var geometry = new THREE.PlaneGeometry(this.width, this.depth,2 ,2 );
+  geometry.rotateX(Math.PI/2)
+  var texture = loader.load('./resources/images/foundation1.jpg');
+  texture.wrapS =THREE.RepeatWrapping;
+  texture.wrapT =THREE.RepeatWrapping;
+   //This is kinda a quick fix but it works
+  texture.repeat.set( this.width, this.depth );
+  texture.rotation=(0)
+  var material = new THREE.MeshStandardMaterial({ color: 0xffffff,wireframe: false, side: THREE.DoubleSide, map:texture });
+  var torus = new THREE.Mesh(geometry, material);
+  this.components.push(torus);
+  //this.add_components();
+
+
+
+  break;
+
+
+  }
+  this.add_components();
+  }
+  remove_components(){
+    for (const elem of this.components){
+      scene_outer.remove(elem);
+    }
+  }
+  add_components(){
+    for (const elem of this.components){
+      scene_outer.add(elem);
+    }
+
+  }
+  
+}
+let found=new Foundation(3+1,3+1 ,1);
+function recreate_foundation(){
+//get the value from the selector
+let constructor_width=parseFloat(document.querySelector(".num-selector [name='width']").value);
+let constructor_depth=parseFloat(document.querySelector(".num-selector [name='depth']").value);
+let index=parseInt(document.querySelector("[name=foundation-type]:checked").value);
+console.log(index)
+found.remove_components()
+found=new Foundation(constructor_width+1,constructor_depth+1 ,index);
+found.add_components_to_scene()
+}
+recreate_foundation()
+//found.remove_components()
+let foundation_types=document.querySelectorAll('input[name="foundation-type"]')
+for (let foundation_type of foundation_types){foundation_type.addEventListener('change', recreate_foundation)}
+
+
+menu_controller.add_gate()
+
+//menu_controller.gate_array[0].change_texture()
+
