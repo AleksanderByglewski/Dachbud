@@ -318,7 +318,7 @@ class Displacement_object{
    //You are good for now to not worry about overlap
    return false;
   }
-  remodel_self(width, height, depth=0){
+  remodel_self(width, height, depth=0, object_rotation=0){
     this.depth
 
     //
@@ -332,8 +332,10 @@ class Displacement_object{
     
     ];
     
-
+    console.log(this.geometry)
+    
     this.geometry = new THREE.BoxGeometry(width, height, this.depth);
+    this.geometry.rotateY(object_rotation)
     this.mesh.geometry=this.geometry
 
     this.initial_displacement=new THREE.Vector3(0,-this.parent.depth/2+height/2,0);
@@ -1900,8 +1902,8 @@ class Menu_control{
       allowable_margin=-0.01
       //console.log(parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin))
       //console.log(parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2)
-      if (!(-parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin)<=parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2 && parseFloat(direction_y)+parseFloat(element.geometry.parameters.height)/2 <parseFloat(wall_being_targeted.depth)/2-parseFloat(allowable_margin))){
-        
+      if (!(0<=parseFloat(direction_y) && parseFloat(direction_y)+parseFloat(element.geometry.parameters.height) <parseFloat(wall_being_targeted.depth)-parseFloat(allowable_margin))){
+          
         //console.log("Scream stop")
         return false;
       }
@@ -2013,11 +2015,18 @@ class Menu_control{
         allowable_margin=-0.01
         //console.log(parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin))
         //console.log(parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2)
-        if (!(-parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin)<=parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2 && parseFloat(direction_y)+parseFloat(element.geometry.parameters.height)/2 <parseFloat(wall_being_targeted.depth)/2-parseFloat(allowable_margin))){
+        
+        //if (!(-parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin)<=parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2 && parseFloat(direction_y)+parseFloat(element.geometry.parameters.height)/2 <parseFloat(wall_being_targeted.depth)/2-parseFloat(allowable_margin))){
           
           //console.log("Scream stop")
+          //return false;
+        //}
+        if (!(0<=parseFloat(direction_y) && parseFloat(direction_y)+parseFloat(element.geometry.parameters.height)/2 <parseFloat(wall_being_targeted.depth)-parseFloat(allowable_margin))){
+          
+          console.log("Scream stop")
           return false;
         }
+
 
         //console.log("Go on")
         return true;
@@ -2059,14 +2068,14 @@ class Menu_control{
       switch(direction){
       
         case 'width':
-          element.remodel_self(set_width,set_height)
+          element.remodel_self(set_width,set_height, element.geometry.depth, object_rotation);
           //element.texture.repeat.set( 1, element.geometry.parameters.height*1);
           //inner_change_wall()
           //direction_x=10-translation_value;
            break;
         case 'height':
  
-          element.remodel_self(set_width,set_height)
+          element.remodel_self(set_width,set_height,element.geometry.depth, object_rotation)
           element.texture.repeat.set( 1, element.geometry.parameters.height*1);
           //inner_change_wall()
             //direction_y=10-translation_value;
@@ -2079,35 +2088,35 @@ class Menu_control{
 
       if( check_correctness_of_translation() ){
       //If you pass the movement test movement test to be implemented
-       
-
-      element.translation_x=direction_x;
-      element.translation_y=direction_y;
-      element.translation_z=direction_z;
-      element.set_position(direction_x,direction_y, direction_z)
+       //Probably should implement the custom logic that prevents the changes to the sizing of the elements anyhow
+      
+      //element.translation_x=direction_x;
+      //element.translation_y=direction_y;
+      //element.translation_z=direction_z;
+      //element.set_position(direction_x,direction_y, direction_z)
       }
       else{
-        //Just prevent the change of value and maybe add an alert
+        //Custom logic to be implemented
         switch(direction){
-
+          
           case 'left':
-            evt.currentTarget.value=element.translation_x
+            //evt.currentTarget.value=element.translation_x
 
 
 
-            direction_x=translation_value;
+            //direction_x=translation_value;
             break;
          case 'right':
-          evt.currentTarget.value=element.translation_x
+          //evt.currentTarget.value=element.translation_x
 
          
            //direction_x=10-translation_value;
             break;
          case 'top':
-          evt.currentTarget.value=element.translation_y;
+          //evt.currentTarget.value=element.translation_y;
              break;
          case 'bottom':
-          evt.currentTarget.value=element.translation_y;
+          //evt.currentTarget.value=element.translation_y;
              //direction_y=10-translation_value;
              break;
 
@@ -2116,7 +2125,7 @@ class Menu_control{
       }
       
 
-      main_house_outer.wall_front.place_a_box2(element);
+      //main_house_outer.wall_front.place_a_box2(element);
       
       
     });

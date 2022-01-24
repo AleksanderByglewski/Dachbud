@@ -13,3 +13,6 @@ Modelowanie[]
 Dodatkowe funkcje[]
     -Zmiana tła kolorystyki[]
     -Generowanie rzutów[]
+
+
+Add the elements such as door handles and windows
