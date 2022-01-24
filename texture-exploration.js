@@ -198,7 +198,10 @@ remove_self()
 
 
 class Displacement_object{
-  constructor(parent="for now it is unnecesary",width, height, depth, translation_x, translation_y,translation_z){
+  constructor(parent="for now it is unnecesary",width, height, depth, translation_x, translation_y,translation_z, name_type=""){
+    this.name_type=name_type
+    
+    
     this.width=width
     this.height=height
     this.depth=depth
@@ -213,9 +216,12 @@ class Displacement_object{
     this.texture = loader.load('roof2.jpg');
     this.texture.wrapS =  THREE.ClampToEdgeWrapping;
     this.texture.wrapT =THREE.RepeatWrapping;
-  
+    
 
     //this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x0000ff, side: THREE.DoubleSide} );
+
+  
+
     this.material=[
       new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
       new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
@@ -226,6 +232,9 @@ class Displacement_object{
     
     ];
     
+  
+
+
 
     this.geometry = new THREE.BoxGeometry(width, height, depth);
     this.mesh = new THREE.Mesh(this.geometry, this.material);
@@ -244,9 +253,69 @@ class Displacement_object{
     
     this.geometry.translate(final_displacement.x,final_displacement.y,final_displacement.z);
     
+    //glass update
+    //If you are a window then add this logic to displacement object
+    if(this.name_type.toUpperCase().includes("OKNO"))
+    {
+ 
+    let material2 = new THREE.MeshPhysicalMaterial( {
+      metalness: 0.5,
+      roughness: 0.0,
+      clearcoat: 1.0,
+      roughness: 0,  
+      transmission: 1,
+      thickness: 0.1,
+      opacity:0.6,
+      //normalMap: normalMap4,
+      //bumpMap:normalMap4,
+      //clearcoatNormalMap: clearcoatNormaMap,
+      // y scale is negated to compensate for normal map handedness.
+      //clearcoatNormalScale: new THREE.Vector2( 2.0, - 2.0 )
+    } );
+  
+    this.mesh.material =  [
+      new THREE.MeshBasicMaterial( { map:this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map:this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map:this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map:this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      material2,
+      material2,
+      ];
+    
+    const clearcoatNormaMap =  new THREE.TextureLoader().load( './textures/glass2.png' );
+    let insert_material = new THREE.MeshPhysicalMaterial( {
+      
+      side: THREE.DoubleSide,
+      metalness:0.2,
+      roughness: 0.3,
+      clearcoat: 1.0,
+      roughness: 0,  
+      transmission: 0.3,
+      thickness: 0.1,
+      map: clearcoatNormaMap
+    } );
+
+    //insert_material= new THREE.MeshBasicMaterial( { emissive:0xffffff,emissiventensity:0.6,map: clearcoatNormaMap, side: THREE.DoubleSide} );
+    let insert_geometry = new THREE.BoxGeometry(0.95,0.55,0.070);
+    insert_geometry.translate(final_displacement.x,final_displacement.y,final_displacement.z);
+    let insert_mesh = new THREE.Mesh(insert_geometry, insert_material);
+    this.mesh.add(insert_mesh);
+    }
     //If an object is on the side then you also need to rotate it
     //this.geometry.rotateY(1.701)
- 
+    if(this.name_type.toUpperCase().includes("BRAMA"))
+    {
+
+      let insert_material = new THREE.MeshBasicMaterial( { color: 0x272727, side: THREE.DoubleSide} );
+      let insert_geometry = new THREE.BoxGeometry(0.02,this.height+0.01,this.depth+0.02);
+      insert_geometry.translate(final_displacement.x,final_displacement.y,final_displacement.z);
+      let insert_mesh = new THREE.Mesh(insert_geometry, insert_material);
+      insert_mesh.name="door_decoration"
+      this.mesh.add(insert_mesh);
+      console.log(this.mesh)
+      //To access and change the door decoration later you can pass it in the menu and access it by the name "door-decoration"
+
+    }
   }
   change_texture()
   {
@@ -274,6 +343,9 @@ class Displacement_object{
     //this.mesh.material[4].color=new THREE.Color(1,0,0)
     //this.material = new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x0000ff, side: THREE.DoubleSide} );
     //this.mesh.material.color=new THREE.Color(0x000000)
+
+
+
     this.material.needsUpdate=true;
     
   }
@@ -1345,6 +1417,14 @@ renderer.render(scene, camera);
   const color = 0xFFFFFF;
   const intensity = 1;
   const light = new THREE.DirectionalLight(color, intensity);
+
+  //glass update
+  const light2 = new THREE.DirectionalLight(color, intensity);
+  light2.position.set(30, 5, 30);
+  light2.target.position.set(0, 0, 0);
+  scene.add( light2 );
+  scene.add(light2.target);
+
   //light.castShadow = true;
   light.position.set(0, 20, 30);
   light.target.position.set(-4, 0, -4);
@@ -1585,6 +1665,7 @@ class Menu_control{
     console.log("This is my object rotation!:"+ object_rotation)
     
 
+
     const loader = new THREE.TextureLoader();
 
 
@@ -1787,12 +1868,17 @@ class Menu_control{
     let color_input_arr=div_elem.querySelectorAll('.color-inner input')
     for (let colored_thing of color_input_arr){colored_thing.addEventListener('change', inner_change_wall)}
 
-
-    let type_input_arr=div_elem.querySelectorAll('input[name="wall-type"]')
+    //Second presentation
+    let type_input_arr="rotated"
+    try {
+       type_input_arr=div_elem.querySelectorAll('input[name="wall-type"]') 
+    } catch (error) {
+      console.log(error);}
+    
     for (let type_thing of type_input_arr){type_thing.addEventListener('change', inner_change_wall)}
 
     function inner_change_wall(){
-      //alert("h")
+    //alert("h")
     const loader = new THREE.TextureLoader();
     
     let texture_to_check=div_elem.querySelector('input[name="wall-color"]:checked').value
@@ -1851,6 +1937,42 @@ class Menu_control{
    new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
    new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
    ];
+
+   //If you want to add custom textures glass update
+
+
+
+   //const normalMap4 =  new THREE.TextureLoader().load( './textures/golfball2.jpg' );
+  // const clearcoatNormaMap =  new THREE.TextureLoader().load( './textures/scratched.png' );
+   let material2 = new THREE.MeshPhysicalMaterial( {
+    metalness: 0.5,
+    roughness: 0.0,
+    clearcoat: 1.0,
+    roughness: 0,  
+    transmission: 1,
+    thickness: 0.1,
+    opacity:0.6,
+    //normalMap: normalMap4,
+    //bumpMap:normalMap4,
+    //clearcoatNormalMap: clearcoatNormaMap,
+    // y scale is negated to compensate for normal map handedness.
+    //clearcoatNormalScale: new THREE.Vector2( 2.0, - 2.0 )
+  } );
+
+   wall.mesh.material =  [
+    new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+    new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+    new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+    new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+    material2,
+    material2,
+    ];
+
+
+  
+  //If you want to add custom textures
+
+   
    
    
    
@@ -1865,7 +1987,10 @@ class Menu_control{
   let three_color=new THREE.Color(color_value)
   //menu_controller.change_wall_color()
   element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
+
   }
+  
+
 
   try {
     element.set_position(0,0,0)  
@@ -2032,12 +2157,9 @@ class Menu_control{
         return true;
         
       }
-      //console.log("Mighty nyan")
-      //console.log(direction)
 
       let new_width = 0.4;
 
- 
       
       function remodel_a_box(targeted_element=element,new_width=1, new_height=1 ){
         //remove_composite_object(element_id)
@@ -2124,26 +2246,23 @@ class Menu_control{
         }
       }
       
-
-      //main_house_outer.wall_front.place_a_box2(element);
-      
-      
     });
   }
 
+  
+  try {
+    //alert("helllo")
+    element.change_color(10,10,10)
+    inner_change_wall()
+ 
+  } catch (error) {
+    console.log(error);}
+
+    // expected output: ReferenceError: nonExistentFunction is not defined
+    // Note - error messages will vary depending on browser
 
     return div_elem
   }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2240,6 +2359,10 @@ force_a_placed_object_update(element){
  wall.mesh.geometry.needsUpdate=true;
 }
 
+
+
+
+
 wall_repaint_inner(element)
 
 let color_value="#13447C"
@@ -2295,6 +2418,10 @@ side_selecting(friendly_door, position, side){
   friendly_door.geometry.rotateY(object_rotation)
   menu_controller.gate_array.push(friendly_door)
 
+  console.log(friendly_door.mesh)
+  for(let child_element of friendly_door.mesh.children){
+    child_element.geometry.rotateY(object_rotation)
+  }
 
   wall_targeted.place_a_box2(friendly_door);
   friendly_door.set_position(position.x,position.y,position.z)
@@ -2305,9 +2432,6 @@ side_selecting(friendly_door, position, side){
   add_gate(){
     
 
-
-
-
     let width_of_gate=2;
     let height_of_gate=2;
     
@@ -2317,7 +2441,8 @@ side_selecting(friendly_door, position, side){
 
     //IF it passes the logic tests
   
-    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.04,0,0,0)
+    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.04,0,0,0, "BRAMA")
+    
     //menu_controller.side_selecting(friendly_door,position, "front")
     
     //Wow that's actually so smart you dont have to worry about passing the wall selected 
@@ -2351,8 +2476,6 @@ side_selecting(friendly_door, position, side){
     this.side_menu.insertBefore(new_elem,document.querySelector("#windows-object") )
     menu_controller.force_a_placed_object_update(friendly_door)
     
-    //friendly_door.set_position(position.x, position.y, position.z);
-    //friendly_door.change_texture()
   }
 
   initial_window_logic(width, height){
@@ -2366,46 +2489,104 @@ side_selecting(friendly_door, position, side){
   }
 
   add_window(){
-    let width_of_gate=0.60;
-    let height_of_gate=1.40;
+    let width_of_gate=1.00;
+    let height_of_gate=0.60;
+    
+    const {message, position}=this.initial_window_logic(width_of_gate, height_of_gate)
+    //console.log(message)
+    //console.log(position)
+
+    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.065,0,0,0,"okno")
+    friendly_door.name_type="OKNO"
+//glass_update
+    //let insert_geometry = new THREE.BoxGeometry(1,1,0.055);
+    //let insert_material = new THREE.MeshBasicMaterial( { color: 0x0000ff, side: THREE.DoubleSide} );
+    //let insert_mesh = new THREE.Mesh(insert_geometry, insert_material);
+    //friendly_door.mesh.add(insert_mesh);
+
+    //
+
+    //menu_controller.side_selecting(friendly_door,position, "front")
+    
+    //Wow that's actually so smart you dont have to worry about passing the wall selected 
+    //You can just get id from the check form at creation time
+    let wall_chosen=document.querySelector("#window-wall[name='wall-chosen']").value
+    this.side_selecting(friendly_door, position, wall_chosen)
+    
+    let object_rotation=menu_controller.convert_side_to_rotation(wall_chosen)["object_rotation"]
+
+    //A base for rotations and ease of manipulations
+    let eigen=new THREE.Vector3(1,0,0)
+    let rotation_axis=new THREE.Vector3(0,1,0)
+    eigen.applyAxisAngle(rotation_axis,object_rotation)
+    //Now just make the logic of transformations adhere to proper rules
+
+
+    //console.log("friendly door:")
+    //console.log(friendly_door)
+    //this.gate_array.push(friendly_door)
+    //main_house_outer.wall_front.place_a_box2(friendly_door);
+    //friendly_door.set_position(position.x,position.y,position.z)
+    
+
+
+    let gate_number=""
+    if(menu_controller.gate_array.length>1)
+    {
+      gate_number=menu_controller.gate_array.length
+    }
+    let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door, wall_chosen, "Okno " +gate_number)
+    this.side_menu.insertBefore(new_elem,document.querySelector("#doors-object") )
+    menu_controller.force_a_placed_object_update(friendly_door)
+    //Just force a click
+    new_elem.querySelector('input[name="wall-color"][value*="0A"]').click()
+
+    
+  }
+  add_doors(){
+    let width_of_gate=1.20;
+    let height_of_gate=1.90;
     
     const {message, position}=this.initial_window_logic(width_of_gate, height_of_gate)
     //console.log(message)
     //console.log(position)
 
     let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.025,0,0,0)
-   
-    main_house_outer.wall_front.place_a_box2(friendly_door);
+    //menu_controller.side_selecting(friendly_door,position, "front")
     
-    let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door)
-    this.side_menu.insertBefore(new_elem,document.querySelector("#doors-object") )
+    //Wow that's actually so smart you dont have to worry about passing the wall selected 
+    //You can just get id from the check form at creation time
+    let wall_chosen=document.querySelector("#door-wall[name='wall-chosen']").value
+    this.side_selecting(friendly_door, position, wall_chosen)
     
-    friendly_door.set_position(position.x,position.y,position.z)
-    menu_controller.force_a_placed_object_update(friendly_door)
+    let object_rotation=menu_controller.convert_side_to_rotation(wall_chosen)["object_rotation"]
+
+    //A base for rotations and ease of manipulations
+    let eigen=new THREE.Vector3(1,0,0)
+    let rotation_axis=new THREE.Vector3(0,1,0)
+    eigen.applyAxisAngle(rotation_axis,object_rotation)
+    //Now just make the logic of transformations adhere to proper rules
 
 
+    //console.log("friendly door:")
+    //console.log(friendly_door)
+    //this.gate_array.push(friendly_door)
+    //main_house_outer.wall_front.place_a_box2(friendly_door);
+    //friendly_door.set_position(position.x,position.y,position.z)
     
 
-    
-  }
-  add_doors(){
-    let width_of_gate=2;
-    let height_of_gate=2;
-    
-    const {message, position}=this.initial_gate_logic(width_of_gate, height_of_gate, this.door_array)
-    //console.log(message)
-    //console.log(position)
 
-    //IF it passes the logic tests
-  
-    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.05,0,0,0)
-    this.door_array.push(friendly_door)
-    main_house_outer.wall_front.place_a_box2(friendly_door);
-    friendly_door.set_position(position.x,position.y,position.z)
-
-    let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door)
+    let gate_number=""
+    if(menu_controller.gate_array.length>1)
+    {
+      gate_number=menu_controller.gate_array.length
+    }
+    let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door, wall_chosen, "Drzwi " +gate_number)
     this.side_menu.insertBefore(new_elem,document.querySelector("#canopy-object") )
     menu_controller.force_a_placed_object_update(friendly_door)
+
+
+
   }
   add_canopy(){
     let new_elem=this.add_node(null, null, "Front",'Wiata')

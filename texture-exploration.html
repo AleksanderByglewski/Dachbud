@@ -598,7 +598,22 @@
                 <div class="menu-elem-heading-title">Dodatkowe okna</div>
                 <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
             </div>    
-            <div class="menu-elem-content hide"><div id="add-windows" class="menu-elem-content-text">Dodaj okna</div></div>
+            <div class="menu-elem-content hide">
+              <div>
+                <div class="num-selector">
+                <label for="width">Wybór umiejscowienia okna:</label>
+                  <select id="window-wall" name="wall-chosen">
+                      <option value="front">Frontowa </option>
+                      <option value="left"> Lewa </option>
+                      <option value="right">Prawa </option>
+                      <option value="back"> Tylnia </option>
+
+                  </select>
+                </div>
+              </div>
+              <div id="add-windows" class="menu-elem-content-text">Dodaj okna</div>
+            
+            </div>
         </div>
 
         <div id="doors-object" class="menu-elem">
@@ -606,7 +621,25 @@
                 <div class="menu-elem-heading-title">Dodatkowe drzwi</div>
                 <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
             </div>    
-            <div class="menu-elem-content hide"><div id="add-doors" class="menu-elem-content-text">Dodatkowe drzwi</div></div>
+            <div class="menu-elem-content hide">
+              
+              <div>
+                <div class="num-selector">
+                <label for="width">Wybór umiejscowienia drzwi:</label>
+                  <select id="door-wall" name="wall-chosen">
+                      <option value="front">Frontowa </option>
+                      <option value="left"> Lewa </option>
+                      <option value="right">Prawa </option>
+                      <option value="back"> Tylnia </option>
+
+                  </select>
+                </div>
+              </div>
+              
+              <div id="add-doors" class="menu-elem-content-text">Dodatkowe drzwi</div>
+            
+            
+            </div>
         </div>
 
         
