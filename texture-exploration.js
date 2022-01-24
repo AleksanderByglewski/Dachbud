@@ -175,7 +175,7 @@ constructor(menu_id,object_interacted=null,created_object=null,width=0, height=0
   this.translation_x;
   this.translation_y;
   this.translation_z;
-  console.log("Hello")
+  ////console.log("Hello")
   this.create_a_cell()
 }
 create_a_cell(){ 
@@ -199,6 +199,10 @@ remove_self()
 
 class Displacement_object{
   constructor(parent="for now it is unnecesary",width, height, depth, translation_x, translation_y,translation_z){
+    this.width=width
+    this.height=height
+    this.depth=depth
+
     this.parent=parent
 
     this.translation_x=translation_x;
@@ -294,7 +298,7 @@ class Displacement_object{
   set_translation(){
     this.geometry.position=new THREE.Vector3(0,0,0);
     this.geometry.position.y=100;
-    console.log(this.geometry.position)
+    //console.log(this.geometry.position)
 
     this.user_translation=new THREE.Vector3(this.translation_x,this.translation_y,this.translation_z);
     let final_displacement=this.initial_displacement.add(this.user_translation);
@@ -313,6 +317,30 @@ class Displacement_object{
   check_overlap(){
    //You are good for now to not worry about overlap
    return false;
+  }
+  remodel_self(width, height, depth=0){
+    this.depth
+
+    //
+    this.material=[
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
+      new THREE.MeshBasicMaterial( { map: this.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
+    
+    ];
+    
+
+    this.geometry = new THREE.BoxGeometry(width, height, this.depth);
+    this.mesh.geometry=this.geometry
+
+    this.initial_displacement=new THREE.Vector3(0,-this.parent.depth/2+height/2,0);
+    this.user_translation=new THREE.Vector3(this.translation_x,this.translation_y,this.translation_z);
+    let final_displacement=this.initial_displacement.add(this.user_translation);
+    
+    this.geometry.translate(final_displacement.x,final_displacement.y,final_displacement.z);
   }
 }
 
@@ -365,7 +393,7 @@ class Garage_walls extends General_object{
   //this.add_components(door)
   
   door.name="alex"
-  console.log(door.id)
+  //console.log(door.id)
   //this.remove_component(door.id)
   this.geometry.rotateY(rotation)
   super.set_position(translate_x,translate_y,translate_z)
@@ -388,7 +416,7 @@ place_a_box2(a_box){
  // door.geometry.rotateY(this.rotation)
  // door.geometry.translate(0,+this.depth/2-5/2,0)
   this.add_components(a_box.return_self())
-  //console.log(door.id)
+  ////console.log(door.id)
   //return door.id
 }
 
@@ -399,7 +427,7 @@ place_a_box2(a_box){
     door.geometry.rotateY(this.rotation)
     door.geometry.translate(0,+this.depth/2-5/2,0)
     this.add_components(door)
-    console.log(door.id)
+    //console.log(door.id)
     return door.id
   }
 
@@ -434,7 +462,7 @@ place_a_box2(a_box){
     //this.material.needsUpdate=true;
     //let normalMap = new THREE.TextureLoader().load('NormalMap.png');
     //material.normalMap = normalMap;//normal map
-   // console.log("Siul la ruin")
+   // //console.log("Siul la ruin")
    
 
     //this.object  = new THREE.Mesh( this.geometry, this.material );
@@ -446,13 +474,13 @@ place_a_box2(a_box){
     this.object.material.color.setHSL(0, 1, Math.random()); 
   }
  add_components(component){
-  //console.log('Adding a component ')
+  ////console.log('Adding a component ')
   this.object.add(component)
  }
  remove_components(){
     let children=this.object.children
     for (const child of children){
-//      console.log(child)
+//      //console.log(child)
     this.object.remove(child)
     }
     //parent_element.object.remove(solarSystem)
@@ -460,7 +488,7 @@ place_a_box2(a_box){
   remove_component(id){
     let children=this.object.children
   //  for (const child of children){
-   //   console.log(child)
+   //   //console.log(child)
    // }
     let target =this.object.getObjectById(id)
     this.object.remove(target)
@@ -597,7 +625,7 @@ class Roof_walls extends General_object{
 
     reconstruct_material()
     {
-        console.log("Reconstructing")
+        //console.log("Reconstructing")
         const material = new THREE.MeshBasicMaterial( { map: texture ,color: 0xffffff, side: THREE.DoubleSide} );
         this.object.material=material;
         this.object.material.needsUpdate = true;
@@ -607,7 +635,7 @@ class Roof_walls extends General_object{
 
     recolor_material(r,g,b)
     {
-        console.log("Recolor")
+        //console.log("Recolor")
         //const material = new THREE.MeshBasicMaterial( { map: texture ,color: "color:rgb("+r+g+b+"", side: THREE.DoubleSide} );
         //this.object.material.color=`rgb("+${r},${r},${r})`;
         this.object.material.color=new THREE.Color(`rgb(${r}, ${g}, ${b})`);
@@ -733,7 +761,7 @@ class Roof_walls_square extends General_object{
     }
     reconstruct_material()
     {
-        console.log("Reconstructing roof wall")
+        //console.log("Reconstructing roof wall")
         const material = new THREE.MeshBasicMaterial( { map: texture ,color: 0xffffff, side: THREE.DoubleSide} );
         this.object.material=material;
         this.object.material.needsUpdate = true;
@@ -744,7 +772,7 @@ class Roof_walls_square extends General_object{
     
     recolor_material(r,g,b)
     {
-        console.log("Recolor")
+        //console.log("Recolor")
         //const material = new THREE.MeshBasicMaterial( { map: texture ,color: "color:rgb("+r+g+b+"", side: THREE.DoubleSide} );
         //this.object.material.color=`rgb("+${r},${r},${r})`;
         this.object.material.color=new THREE.Color(`rgb(${r}, ${g}, ${b})`);
@@ -850,7 +878,7 @@ class Roof extends General_object{
 
     reconstruct_material()
     {
-        console.log("Reconstructing")
+        //console.log("Reconstructing")
         const material = new THREE.MeshBasicMaterial( { map: texture ,color: 0xffffff, side: THREE.DoubleSide} );
         this.object.material=material;
         this.object.material.needsUpdate = true;
@@ -860,7 +888,7 @@ class Roof extends General_object{
 
     recolor_material(r,g,b)
     {
-        console.log("Recolor")
+        //console.log("Recolor")
         //const material = new THREE.MeshBasicMaterial( { map: texture ,color: "color:rgb("+r+g+b+"", side: THREE.DoubleSide} );
         //this.object.material.color=`rgb("+${r},${r},${r})`;
         this.object.material.color=new THREE.Color(`rgb(${r}, ${g}, ${b})`);
@@ -1044,7 +1072,7 @@ rebuild_roofs(roof_instance=0,constructor_width=this.constructor_width, construc
    this.roof_back.object.geometry.rotateY(Math.PI/2*roof_instance)  
    this.roof_right.object.geometry.rotateY(Math.PI/2*roof_instance)  
    this.roof.object.geometry.rotateY(Math.PI/2*roof_instance)  
-   console.log('1')
+   //console.log('1')
   break;
   }
     case 3:{
@@ -1367,8 +1395,8 @@ function animate() {
   requestAnimationFrame(animate);
   
   //uncode this
-  controls.autoRotate = true;
-  controls.autoRotateSpeed =0.5
+  //controls.autoRotate = true;
+  //controls.autoRotateSpeed =0.5
 
   //torus.rotation.x += 0.01;
   //torus.rotation.y += 0.005;
@@ -1519,10 +1547,11 @@ class Menu_control{
 
   constructor(){
 
-    this.gate_array=[];
-    this.window_arr=[];
-    this.door_array=[];
-    this.canopy_array=[];
+  this.gate_array=[];
+  this.window_arr=[];
+  this.door_array=[];
+  this.canopy_array=[];
+
 
   this.side_menu=document.querySelector(".side-menu");
   //let flooring_control=document.querySelector('input[name="flooring"]:checked')
@@ -1533,23 +1562,30 @@ class Menu_control{
   for (let elem of flooring_control){
   elem.addEventListener('change',this.radio_control_function)
   }
-}
+  }
   radio_control_function(){
     let current_value=document.querySelector('input[name="flooring"]:checked').value
-    console.log(current_value)
+    //console.log(current_value)
   }
 
   clear_menu(){
     this.side_menu.innerText="";
   }
 
-  add_node(element_id, element, wall_being_targeted="front", heading_title="Nowy element"){
+  add_node(element_id, element, wall_being_targeted_name="front", heading_title="Nowy element"){
 
-
-    wall_being_targeted= main_house_outer.wall_front;
+    
+    console.log("This is where i lie!:"+wall_being_targeted_name)
+    let wall_being_targeted=menu_controller.convert_side_to_rotation(wall_being_targeted_name)["wall_targeted"]
+    let object_rotation=menu_controller.convert_side_to_rotation(wall_being_targeted_name)["object_rotation"]
+    console.log("This is my name!:"+heading_title+":")
+    console.log(element)
+    console.log("This is my object rotation!:"+ object_rotation)
+    
 
     const loader = new THREE.TextureLoader();
-  
+
+
     //let texture_to_check=document.querySelector('input[name="wall-color"]:checked').value
     //let texture_rotated=document.querySelector('input[name="wall-type"]:checked').value
    
@@ -1569,52 +1605,20 @@ class Menu_control{
     <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
     `
     let base_menu=`<div>`+
-    `<div  class="num-selector"><label>Odchylenie od środka ściany (poziom)</label><input direction="left" type="number" step="0.1">  </input> </div>`+
-    `<!--<div  class="num-selector"><label>displacement value right</label><input direction="right" type="number" step="0.1">  </input> </div>-->`+
-    `<div  class="num-selector"><label>Odchylenie od środka ściany (pion)</label><input direction="top" type="number" step="0.1">  </input> </div>`+
-    `<!--<div  class="num-selector"><label>displacement value bottom</label><input direction="bottom" type="number" step="0.1">  </input> </div>-->`+
+    `<div  class="num-selector"><label>Odchylenie od środka ściany (poziom)</label><input class="direction" direction="left" type="number" step="0.1">  </input> </div>`+
+    `<!--<div  class="num-selector"><label>displacement value right</label><input class="direction" direction="right" type="number" step="0.1">  </input> </div>-->`+
+    `<div  class="num-selector"><label>Odchylenie od środka ściany (pion)</label><input class="direction" direction="top" type="number" step="0.1">  </input> </div>`+
+    `<!--<div  class="num-selector"><label>displacement value bottom</label><input class="direction" direction="bottom" type="number" step="0.1">  </input> </div>-->`+
     `</div>`
 
 
     let sizing_menu=`<div>`+
-    `<div  class="num-selector"><label>Szerokość elementu</label><input direction="width" type="number">  </input> </div>`+
-    `<div  class="num-selector"><label>Wysokość elementu</label><input direction="height" type="number">  </input> </div>`+
+    `<div  class="num-selector"><label>Szerokość elementu</label><input class="dimension" value="2" dimension="width" type="number" step="0.1">  </input> </div>`+
+    `<div  class="num-selector"><label>Wysokość elementu</label><input class="dimension" value="2" dimension="height" type="number" step="0.1">  </input> </div>`+
     `</div>`
-    let tiling_type_menu=
-    `<div class="image-based-selection grid-elem tiling-inner unmargined-sides">`+
-    `<label class="padded-element">
-    <input type="radio" name="wall-type" id="ocynk-roof-rotation" value="rotated" checked>
-    <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN.jpg">
-    <div class="image-description">Przetłoczenia pionowe</div>
-  </label>
-  
-  <label  class="padded-element">
-    <input type="radio" name="wall-type" value="standard">
-    <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN.jpg">
-    <div class="image-description">Przetłoczenia poziome</div>
-  </label>
 
 
-  <label class="padded-element">
-  <input type="radio" name="wall-type" value="rotated-dense">
-  <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN-DENSE.jpg">
-  <div class="image-description">Przetłoczenia pionowe wąskie</div>
-</label>
-
-<label  class="padded-element">
-  <input type="radio" name="wall-type" value="standard-dense">
-  <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg">
-  <div class="image-description">Przetłoczenia poziome wąskie</div>
-</label>`
-
-
-
-  
-+`</div>`
     let color_menu=`<div>`+
-
- 
-
 `<div class="image-based-selection grid-6-columns grid-elem color-inner unmargined-sides">
 <label class="padded-element">
         <input type="radio" name="wall-color" value="#D2B773" checked>
@@ -1694,10 +1698,57 @@ class Menu_control{
       </label>
   </div>`+
   `</div>`
+  
+
+    let tiling_type_menu=
+    `<div class="image-based-selection grid-elem tiling-inner unmargined-sides">`+
+    `<label class="padded-element">
+    <input type="radio" name="wall-type" id="ocynk-roof-rotation" value="rotated" checked>
+    <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN.jpg">
+    <div class="image-description">Przetłoczenia pionowe</div>
+  </label>
+  
+  <label  class="padded-element">
+    <input type="radio" name="wall-type" value="standard">
+    <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN.jpg">
+    <div class="image-description">Przetłoczenia poziome</div>
+  </label>
+
+
+  <label class="padded-element">
+  <input type="radio" name="wall-type" value="rotated-dense">
+  <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN-DENSE.jpg">
+  <div class="image-description">Przetłoczenia pionowe wąskie</div>
+</label>
+
+<label  class="padded-element">
+  <input type="radio" name="wall-type" value="standard-dense">
+  <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg">
+  <div class="image-description">Przetłoczenia poziome wąskie</div>
+</label>`  
++`</div>`
+
+
+
+  let visual_type_menu=
+  `<div class="image-based-selection grid-elem tiling-inner unmargined-sides">`+
+  `<label class="padded-element">
+  <input type="radio" name="visual-type" id="ocynk-roof-rotation" value="rotated" checked>
+  <img src="https://dummyimage.com/400x400/ccc/fff">
+  <div class="image-description">Brama uchylna</div>
+  </label>
+  
+  <label  class="padded-element">
+  <input type="radio" name="visual-type" value="standard">
+  <img src="https://dummyimage.com/400x400/ccc/fff">
+  <div class="image-description">Brama dwuskrzydłowa</div>
+  </label>` 
+  +`</div>`
+  
 
     div_elem.innerHTML=
     `<div class="menu-elem-content hide">`+
-    `<div class="menu-elem-content-text">`+base_menu + sizing_menu +color_menu+tiling_type_menu+`</div>`+
+    `<div class="menu-elem-content-text">`+base_menu + sizing_menu +color_menu+tiling_type_menu+visual_type_menu+`</div>`+
   
     `<div class="erase-button">Usuń element</div>
     </div>`
@@ -1717,7 +1768,6 @@ class Menu_control{
     div_elem.querySelector('.erase-button').addEventListener('click', ()=>{remove_composite_object(element_id)})
 
     //Presentation
-    
     div_elem.querySelector('.erase-button').addEventListener('click', ()=>{
       try {
         menu_controller.canopy_array=[]
@@ -1814,84 +1864,223 @@ class Menu_control{
   //menu_controller.change_wall_color()
   element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
   }
+
+  try {
+    element.set_position(0,0,0)  
+  } catch (error) {
+    console.log(error);
+    // expected output: ReferenceError: nonExistentFunction is not defined
+    // Note - error messages will vary depending on browser
+  }
+  function position_change_handler(evt){
+      
     
+    //console.log(evt.currentTarget.value)
+    let translation_value=evt.currentTarget.value
 
 
+    let direction=evt.currentTarget.getAttribute('direction')
+
+    let direction_x=element.translation_x;
+    let direction_y=element.translation_y;
+
+    //Make sure this isn't changed 
+    //I have no clue why i had some translations on the z_index anyway
+    let direction_z=element.translation_z;
+    direction_z=0;
+
+    //console.log(element)
+    function check_correctness_of_translation(allowable_margin=0.011){
+      
+      if (!(-parseFloat(wall_being_targeted.width)/2+parseFloat(allowable_margin)<parseFloat(direction_x)-parseFloat(element.geometry.parameters.width)/2 && parseFloat(direction_x)+parseFloat(element.geometry.parameters.width)/2 <parseFloat(wall_being_targeted.width)/2-parseFloat(allowable_margin))){
+        
+        //console.log("Scream stop")
+        return false;
+      }
+      allowable_margin=-0.01
+      //console.log(parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin))
+      //console.log(parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2)
+      if (!(-parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin)<=parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2 && parseFloat(direction_y)+parseFloat(element.geometry.parameters.height)/2 <parseFloat(wall_being_targeted.depth)/2-parseFloat(allowable_margin))){
+        
+        //console.log("Scream stop")
+        return false;
+      }
+
+      //console.log("Go on")
+      return true;
+      
+    }
+
+    //console.log(direction)
+    switch(direction){
+      case 'left':
+         direction_x=translation_value;
+         break;
+      case 'right':
+         break;
+      case 'top':
+          direction_y=translation_value;
+          break;
+      case 'bottom':
+          break;
+      //You can technically add the z-index and be happy with general solution
+      //This will make it much easier to just switch directions on off based on 
+      //wall you are actually on
+    }
+    if( check_correctness_of_translation() ){
+    //If you pass the movement test movement test to be implemented
+
+    let rotation_axis=new THREE.Vector3(0,1,0)
+    let modified_translations=new THREE.Vector3(direction_x,direction_y,direction_z)
+       
+    console.log(modified_translations)
+    console.log(object_rotation)
+    modified_translations.applyAxisAngle(rotation_axis,object_rotation)
+ 
+    console.log(modified_translations)
 
 
-    let input_arr=div_elem.querySelectorAll('input')
-for (let input of input_arr) {
+    direction_x=modified_translations.x
+    direction_y=modified_translations.y
+    direction_z=modified_translations.z
+
+    element.translation_x=direction_x;
+    element.translation_y=direction_y;
+    element.translation_z=direction_z;
+    element.set_position(direction_x,direction_y, direction_z)
+    }
+    else{
+      //Just prevent the change of value and maybe add an alert
+      switch(direction){
+
+        case 'left':
+          evt.currentTarget.value=element.translation_x
+          direction_x=translation_value;
+          break;
+       case 'right':
+          evt.currentTarget.value=element.translation_x
+          break;
+       case 'top':
+          evt.currentTarget.value=element.translation_y;
+           break;
+       case 'bottom':
+          evt.currentTarget.value=element.translation_y;
+           //direction_y=10-translation_value;
+           break;
+
+         
+      }
+    }
+    //console.log(element.mesh.position)
+    //main_house_outer.wall_front.place_a_box2(element);
+    
+  } 
+  let input_arr=div_elem.querySelectorAll('input.direction')
+  
+  for (let input of input_arr) {
+    input.value=0;  
+    
     input.addEventListener('change', (evt)=>{
 
-      console.log(evt.currentTarget.value)
+    position_change_handler(evt)
+
+    }
+    );
+  }
+  input_arr.value=0;
+  let input_dim_arr=div_elem.querySelectorAll('input.dimension')
+  for (let input of input_dim_arr) {
+
+
+    
+    input.addEventListener('change', (evt)=>{
+      //console.log("nyan")
+      //console.log(evt.currentTarget.value)
       let translation_value=evt.currentTarget.value
 
-
-      let direction=evt.currentTarget.getAttribute('direction')
+      let direction=evt.currentTarget.getAttribute('dimension')
 
       let direction_x=element.translation_x;
       let direction_y=element.translation_y;
       let direction_z=element.translation_z;
-      console.log(element)
+      //console.log(element)
       function check_correctness_of_translation(allowable_margin=0.011){
         //console.log(direction_x)
-        
-        //1console.log('aha')
-        //console.log(wall_being_targeted.width/2-allowable_margin)
-        //console.log('Skoro')
-        //console.log(parseFloat(direction_x))
-        //console.log(parseFloat(element.geometry.parameters.width/2))
-        //console.log('to')
-        //console.log(parseFloat(direction_x)+parseFloat(element.geometry.parameters.width/2))
-        //console.log(direction_x+element.geometry.parameters.width/2 <wall_being_targeted.width/2-allowable_margin)
-        //onsole.log(-wall_being_targeted.width/2+allowable_margin<direction_x-element.geometry.parameters.width/2)
-
         if (!(-parseFloat(wall_being_targeted.width)/2+parseFloat(allowable_margin)<parseFloat(direction_x)-parseFloat(element.geometry.parameters.width)/2 && parseFloat(direction_x)+parseFloat(element.geometry.parameters.width)/2 <parseFloat(wall_being_targeted.width)/2-parseFloat(allowable_margin))){
-          
           console.log("Scream stop")
           return false;
         }
         allowable_margin=-0.01
-        console.log(parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin))
-        console.log(parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2)
+        //console.log(parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin))
+        //console.log(parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2)
         if (!(-parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin)<=parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2 && parseFloat(direction_y)+parseFloat(element.geometry.parameters.height)/2 <parseFloat(wall_being_targeted.depth)/2-parseFloat(allowable_margin))){
           
-          console.log("Scream stop")
+          //console.log("Scream stop")
           return false;
         }
 
-        console.log("Go on")
+        //console.log("Go on")
         return true;
         
       }
+      //console.log("Mighty nyan")
+      //console.log(direction)
 
-      console.log(direction)
-      switch(direction){
-        case 'left':
+      let new_width = 0.4;
 
+ 
+      
+      function remodel_a_box(targeted_element=element,new_width=1, new_height=1 ){
+        //remove_composite_object(element_id)
+        element.remodel_self(1,1,0.04)
+        //element.geometry = new THREE.BoxGeometry(1, 1, 1);
+        //element.mesh =new THREE.Mesh(element.geometry, element.materials)
 
-
-           direction_x=translation_value;
-           break;
-        case 'right':
-          
+        // element.material=[
+        //   new THREE.MeshBasicMaterial( { map: element.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+        //   new THREE.MeshBasicMaterial( { map: element.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+        //   new THREE.MeshBasicMaterial( { map: element.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+        //   new THREE.MeshBasicMaterial( { map: element.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+        //   new THREE.MeshBasicMaterial( { map: element.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
+        //   new THREE.MeshBasicMaterial( { map: element.texture ,color: 0xffffff, side: THREE.DoubleSide} ),
         
+        // ];
+        
+        // element.mesh=[]
+        // element.geometry = new THREE.BoxGeometry(1, 1, 1);
+        // element.geometry.translate(0,0,10*Math.random());
+    
+        // element.mesh = new THREE.Mesh(element.geometry, element.material);
+
+      }
+      
+      let set_width=div_elem.querySelector('input.dimension[dimension="width"]').value
+      let set_height=div_elem.querySelector('input.dimension[dimension="height"]').value
+      switch(direction){
+      
+        case 'width':
+          element.remodel_self(set_width,set_height)
+          //element.texture.repeat.set( 1, element.geometry.parameters.height*1);
+          //inner_change_wall()
           //direction_x=10-translation_value;
            break;
-        case 'top':
-          
-            direction_y=translation_value;
-            break;
-        case 'bottom':
-      
+        case 'height':
+ 
+          element.remodel_self(set_width,set_height)
+          element.texture.repeat.set( 1, element.geometry.parameters.height*1);
+          //inner_change_wall()
             //direction_y=10-translation_value;
             break;
         //You can technically add the z-index and be happy with general solution
         //This will make it much easier to just switch directions on off based on 
         //wall you are actually on
       }
+
+
       if( check_correctness_of_translation() ){
       //If you pass the movement test movement test to be implemented
+       
+
       element.translation_x=direction_x;
       element.translation_y=direction_y;
       element.translation_z=direction_z;
@@ -1925,15 +2114,29 @@ for (let input of input_arr) {
            
         }
       }
-      console.log(element.mesh.position)
+      
+
       main_house_outer.wall_front.place_a_box2(element);
       
       
     });
   }
 
+
     return div_elem
   }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   initial_gate_logic(width,height, array_of_objects){
@@ -2035,27 +2238,107 @@ let three_color=new THREE.Color(color_value)
 //menu_controller.change_wall_color()
 element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
 }
+
+convert_side_to_rotation(side){
+  let object_rotation=0
+  let wall_targeted=""
+  //alert("i am here")
+  console.log(" I am here and my side is:"+side)
+  switch(side){
+    case "front":
+  
+      object_rotation=0
+      wall_targeted=main_house_outer.wall_front
+      break;
+    case "left":
+      object_rotation=Math.PI/2
+      wall_targeted=main_house_outer.wall_left
+      break;
+    case "back":
+      object_rotation=2*Math.PI/2
+      wall_targeted=main_house_outer.wall_back
+      break;
+
+    case "right":
+      object_rotation=3*Math.PI/2
+      wall_targeted=main_house_outer.wall_right
+      break;
+
+    default:
+      //alert("I entered")
+
+
+
+
+      wall_targeted=main_house_outer.wall_front
+
+  }
+  return {object_rotation:object_rotation, wall_targeted:wall_targeted}
+}
+
+side_selecting(friendly_door, position, side){
+  let wall_targeted
+  let object_rotation=0
+
+  object_rotation=menu_controller.convert_side_to_rotation(side)["object_rotation"]
+  wall_targeted=menu_controller.convert_side_to_rotation(side)["wall_targeted"]
+
+  friendly_door.geometry.rotateY(object_rotation)
+  menu_controller.gate_array.push(friendly_door)
+
+
+  wall_targeted.place_a_box2(friendly_door);
+  friendly_door.set_position(position.x,position.y,position.z)
+  
+ 
+}
+
   add_gate(){
+    
+
+
+
+
     let width_of_gate=2;
     let height_of_gate=2;
     
     const {message, position}=this.initial_gate_logic(width_of_gate, height_of_gate, this.gate_array)
-    console.log(message)
-    console.log(position)
+    //console.log(message)
+    //console.log(position)
 
     //IF it passes the logic tests
   
     let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.04,0,0,0)
-    this.gate_array.push(friendly_door)
-    main_house_outer.wall_front.place_a_box2(friendly_door);
-    friendly_door.set_position(position.x,position.y,position.z)
+    //menu_controller.side_selecting(friendly_door,position, "front")
+    
+    //Wow that's actually so smart you dont have to worry about passing the wall selected 
+    //You can just get id from the check form at creation time
+    let wall_chosen=document.querySelector("#gate-wall[name='wall-chosen']").value
+    this.side_selecting(friendly_door, position, wall_chosen)
+    
+    let object_rotation=menu_controller.convert_side_to_rotation(wall_chosen)["object_rotation"]
+
+    //A base for rotations and ease of manipulations
+    let eigen=new THREE.Vector3(1,0,0)
+    let rotation_axis=new THREE.Vector3(0,1,0)
+    eigen.applyAxisAngle(rotation_axis,object_rotation)
+    //Now just make the logic of transformations adhere to proper rules
+
+
+    //console.log("friendly door:")
+    //console.log(friendly_door)
+    //this.gate_array.push(friendly_door)
+    //main_house_outer.wall_front.place_a_box2(friendly_door);
+    //friendly_door.set_position(position.x,position.y,position.z)
+    
+
 
     let gate_number="główna"
     if(menu_controller.gate_array.length>1)
     {
       gate_number=menu_controller.gate_array.length
     }
-    let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door, "TODO", "Brama " +gate_number)
+    let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door, wall_chosen, "Brama " +gate_number)
     this.side_menu.insertBefore(new_elem,document.querySelector("#windows-object") )
     menu_controller.force_a_placed_object_update(friendly_door)
     
@@ -2066,7 +2349,7 @@ element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
   initial_window_logic(width, height){
     let message='Okno'
     let position=new THREE.Vector3(0,main_house_outer.constructor_height-height,0)
-    console.log(main_house_outer)
+    //console.log(main_house_outer)
     return{ 
       message:message,
       position:position
@@ -2078,8 +2361,8 @@ element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
     let height_of_gate=1.40;
     
     const {message, position}=this.initial_window_logic(width_of_gate, height_of_gate)
-    console.log(message)
-    console.log(position)
+    //console.log(message)
+    //console.log(position)
 
     let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.025,0,0,0)
    
@@ -2101,8 +2384,8 @@ element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
     let height_of_gate=2;
     
     const {message, position}=this.initial_gate_logic(width_of_gate, height_of_gate, this.door_array)
-    console.log(message)
-    console.log(position)
+    //console.log(message)
+    //console.log(position)
 
     //IF it passes the logic tests
   
@@ -2126,7 +2409,8 @@ element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
 
 
   add_node2(){
-    console.log(this.side_menu)
+    pass
+    //console.log(this.side_menu)
   }
 
   release_all_objects(){
@@ -2137,10 +2421,12 @@ element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
   }
 
   rebuild_garage_dimensions(){
+    
     this.gate_array=[];
-    this.window_arr=[];
+    this.window_array=[];
     this.door_array=[];
-    this.canopy_arr=[];
+    //TODO
+    //this.canopy_array=[];
 
     let constructor_width=parseFloat(document.querySelector(".num-selector [name='width']").value);
     let constructor_depth=parseFloat(document.querySelector(".num-selector [name='depth']").value);
@@ -2169,7 +2455,7 @@ element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
 
     //Canopy code TODO proper logic
     //Presentation
-  
+    this.canopy_array=["Coach hiii"]
     if(this.canopy_array.length>0){
 
     main_house_canopy=new Creation_controller_outer(constructor_width+2.01, constructor_depth-0.01, constructor_height, roof_width+2.01, roof_depth, roof_height, scene_outer,roof_type);
@@ -2184,8 +2470,8 @@ element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
     wall.texture.wrapS =  THREE.RepeatWrapping;
     wall.texture.wrapT =THREE.RepeatWrapping;
    let texture_rotated="false"
-   console.log(texture_rotated)
-   console.log(texture_rotated.includes("rotated"))
+   //console.log(texture_rotated)
+   //console.log(texture_rotated.includes("rotated"))
    if(texture_rotated.includes("rotated")){
  
      wall.texture.repeat.set( 1, 1 );
@@ -2268,6 +2554,8 @@ element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
     main_house_outer.roof=main_house_canopy.roof    
     main_house_outer.roof2=main_house_canopy.roof2
 
+    //That is pretty bad, but let it pass for now
+   
     
   }
 
@@ -2331,8 +2619,8 @@ element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
     wall.texture.wrapS =  THREE.ClampToEdgeWrapping;
     wall.texture.wrapT =THREE.RepeatWrapping;
 
-   console.log(texture_rotated)
-   console.log(texture_rotated.includes("rotated"))
+   //console.log(texture_rotated)
+   //console.log(texture_rotated.includes("rotated"))
    if(texture_rotated.includes("rotated")){
  
      wall.texture.repeat.set( 1, wall.width );
@@ -2365,6 +2653,7 @@ element.change_color(three_color.r*255, three_color.g*255, three_color.b*255)
 
   if(texture_to_check=='0' ||texture_to_check=='1' ||texture_to_check=='2')
   {
+
     console.log("special_case")
   }
   else{
@@ -2434,8 +2723,8 @@ change_roof_color(r=255,g=255,b=255){
     wall.texture.wrapS =  THREE.ClampToEdgeWrapping;
     wall.texture.wrapT =THREE.RepeatWrapping;
 
-   console.log(texture_rotated)
-   console.log(texture_rotated.includes("rotated"))
+   //console.log(texture_rotated)
+   //console.log(texture_rotated.includes("rotated"))
    if(texture_rotated.includes("rotated")){
  
      wall.texture.repeat.set( 1, wall.width );
@@ -2512,7 +2801,7 @@ change_roof_color(r=255,g=255,b=255){
 
 
 let menu_controller=new Menu_control()
-console.log(menu_controller)
+//console.log(menu_controller)
 
 
 //Interaction to add a new object
@@ -2561,8 +2850,8 @@ function call_me()
   wall.texture.wrapT =THREE.RepeatWrapping;
 
   
- console.log(texture_rotated)
- console.log(texture_rotated.includes("rotated"))
+ //console.log(texture_rotated)
+ //console.log(texture_rotated.includes("rotated"))
  if(texture_rotated.includes("rotated")){
 
    wall.texture.repeat.set( 1, wall.width );
@@ -2602,19 +2891,52 @@ remove_composite_object(friendly_door.provide_identification())
 
 //document.addEventListener('click',  ()=>{menu_controller.change_roof()})
 
-document.querySelector("#add-gates").addEventListener('click',  ()=>{menu_controller.add_gate()})
+document.querySelector("#add-gates").addEventListener(  'click',  ()=>{menu_controller.add_gate()})
 document.querySelector("#add-windows").addEventListener('click',  ()=>{menu_controller.add_window()})
-document.querySelector("#add-doors").addEventListener('click',  ()=>{menu_controller.add_doors()})
-document.querySelector("#add-canopy").addEventListener('click',  ()=>{menu_controller.add_canopy()})
+document.querySelector("#add-doors").addEventListener(  'click',  ()=>{menu_controller.add_doors()})
+document.querySelector("#add-canopy").addEventListener( 'click',  ()=>{menu_controller.add_canopy()})
 
 
 let roof_types=document.querySelectorAll('input[name="roof-type"]')
+for (let roof of roof_types){roof.addEventListener('change', (evt)=>{
+  //Modify the sizes of the garages based on the selection of the roof type
+    let garage_width_options=document.querySelectorAll(".num-selector select[name='depth'] option")
+  
+  
+    if(evt.target.value=="1" || evt.target.value=="3")
+    {
+      let j=garage_width_options.length-1;
+      for ( let i=0 ;i<4;i++){
+        //Get rid of 3 last options
+        
+        if( parseFloat(document.querySelector(".num-selector select[name='depth'] option:checked").value) > 7){
+        document.querySelector(".num-selector select[name='depth']").value="7"
+        
+        }
+        garage_width_options[j-i].setAttribute("hidden" , "")
+      }
+    }
+    else{
+      let j=garage_width_options.length-1;
+      for ( let i=0 ;i<4;i++){
+      garage_width_options[j-i].removeAttribute("hidden")
+      }
+    }
+   
+  
+   
+   })}
 for (let roof of roof_types){roof.addEventListener('change', menu_controller.rebuild_garage_dimensions)}
+
+
+
 
 
 let roof_types_orientation=document.querySelectorAll('input[name="roof-type-orientation"]')
 let roof_colors=document.querySelectorAll('input[name="roof-color"]')
 for (let roof_type_orientation of roof_types_orientation){roof_type_orientation.addEventListener('change', menu_controller.change_roof)}
+
+
 for (let roof_color of roof_colors){roof_color.addEventListener('change', menu_controller.change_roof)}
 for (let roof_color of roof_colors){roof_color.addEventListener('change', (evt)=>{
 
@@ -2638,7 +2960,7 @@ for (let roof_color of roof_colors){roof_color.addEventListener('change', (evt)=
 })}
 
 
-let garage_dimension_changers=document.querySelectorAll('.num-selector select')
+let garage_dimension_changers=document.querySelectorAll('.num-selector.garage-rebuild select')
 for (let garage_dimension of garage_dimension_changers){garage_dimension.addEventListener('change', menu_controller.rebuild_garage_dimensions)}
 for (let garage_dimension of garage_dimension_changers){garage_dimension.addEventListener('change', recreate_foundation)}
 
@@ -2681,6 +3003,7 @@ initiate_project()
 //Presentation
 menu_controller.add_canopy()
 //Presentation
+
 menu_controller.rebuild_garage_dimensions()
 
 
@@ -2726,8 +3049,8 @@ case 1:
     let displacement_array_y=[-1,0, 1]
     for (let displacement_x of displacement_array_x){
       for (let displacement_y of displacement_array_y){
-        console.log(displacement_x)
-        console.log(displacement_y)
+        //console.log(displacement_x)
+        //console.log(displacement_y)
 
         var geometry = new THREE.PlaneGeometry(block_width, block_depth,2 ,2 );
         geometry.translate(displacement_x*(this.width/2-block_width/2), displacement_y*(this.depth/2-block_depth/2),0)
@@ -2797,11 +3120,12 @@ case 3:
 }
 let found=new Foundation(3+1,3+1 ,1);
 function recreate_foundation(){
+
 //get the value from the selector
 let constructor_width=parseFloat(document.querySelector(".num-selector [name='width']").value);
 let constructor_depth=parseFloat(document.querySelector(".num-selector [name='depth']").value);
 let index=parseInt(document.querySelector("[name=foundation-type]:checked").value);
-console.log(index)
+//console.log(index)
 found.remove_components()
 found=new Foundation(constructor_width+1,constructor_depth+1 ,index);
 found.add_components_to_scene()
@@ -2813,6 +3137,6 @@ for (let foundation_type of foundation_types){foundation_type.addEventListener('
 
 
 menu_controller.add_gate()
-
+document.querySelector('input[name="roof-color"][value*="13"]').click()
 //menu_controller.gate_array[0].change_texture()
 

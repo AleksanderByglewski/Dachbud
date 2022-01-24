@@ -1,39 +1,15 @@
+Kontrola stanów[]
+
+
 Modelowanie[]
-    Stworzyć proste obiekty [x]
-        -Podłoże[x]
-        -Okna[x]
     Stworzyć skomplikowane obiekty[]
         -Drzwi[]
         -Kotwiczenie[]
         -Wiata[x]
         -Bramy[]
         -Rynny[]
-Data_filling
-    Data[]
-        -Przetłoczenia[x]
-        -Podłoża[x]
-        -Typy budynkow [[Dependant on final-rendering[x]] [x ] x]
-        -Kolory dachów[x]
-        -Typy dachów[x]
-        -Skasować stare dachy[x]
-    Grafiki[x]
-        -Grafiki kolory[x]
-        -Grafiki podłoże[[Dependent on final-rendering[x]x]
-    
-Menu[]
-    Logika
-        -Specjalne prawa dla ocynkowania; brak możliwości wyboru przetłoczeń[x]
-    -Dodawanie nowych podzakładek na podstawie poprzednich akcji[x]
-    -Tworzone elementy dołaczyć do stanów[x]
 
-Tworzenie budynków[]
-    -Zmiana szerokości, wysokości, głębokości garażu[x]
-    -Dodawanie obiektów drzwi, okna, bramy  na przód[x], na wszystko[]
-    -Rotacja tekstur[x]
 
-Three.js 
-    -Modyfikacja i ładniejsze tekstury[]
-    
 Dodatkowe funkcje[]
-    -Generowanie rzutów[]
     -Zmiana tła kolorystyki[]
+    -Generowanie rzutów[]

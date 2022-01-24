@@ -92,7 +92,7 @@
            
   
 
-        <div class="menu-elem">
+        <div class="menu-elem" style="display:none">
             <div class="menu-elem-heading">
                 <div class="menu-elem-heading-title">Materiał dach</div>
                 <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
@@ -134,7 +134,7 @@
                   <div class="image-description">RAL<br> 3005</div>
                 </label>
                 <label  class="padded-element">
-                    <input type="radio" name="roof-color" value="#13447C">
+                    <input type="radio" name="roof-color" value="#13447C" >
                     <img src="./resources/colors/RAL5010.gif">
                     <div class="image-description">RAL<br> 5010</div>
                   </label>
@@ -189,12 +189,12 @@
                     <div class="image-description">Ocynk<br> 9010</div>
                   </label>
   
-                  <label  class="padded-element">
-                    <input type="radio" name="roof-color" value="1" checked>
+                  <label  class="padded-element" style="display:none">
+                    <input type="radio" name="roof-color" value="1" >
                     <img src="./resources/colors/TEXTURE-ORZECH.jpg">
                     <div class="image-description image-description-widen">Orzech</div>
                   </label>
-                  <label  class="padded-element">
+                  <label  class="padded-element" style="display:none">
                     <input type="radio" name="roof-color" value="2">
                     <img src="./resources/colors/TEXTURE-DAB.jpg">
                     <div class="image-description image-description-widen">Złoty dąb<br> </div>
@@ -412,7 +412,7 @@
             <div class="menu-elem-content hide">
                 
 
-                    <div class="num-selector">
+                    <div class="num-selector garage-rebuild">
                     <label for="width" >Szerokość podstawy garażu:</label>
                     <select name="width">
                         <option value="3">   3.0 m </option>
@@ -428,21 +428,10 @@
                         <option value="8">   8.0 m </option>
                         <option value="8.5"> 8.5 m </option>
                         <option value="9">   9.0 m </option>
-                        <option value="9.5"> 9.5 m </option>
-                        <option value="10">  10.0 m</option>
-                        <option value="10.5">10.5 m</option>
-                        <option value="11">  11.0 m</option>
-                        <option value="11.5">11.5 m</option>
-                        <option value="12">  12.0 m</option>
-                        <option value="12.5">12.5 m</option>
-                        <option value="13">  13.0 m</option>
-                        <option value="13.5">13.5 m</option>
-                        <option value="14">  14.0 m</option>
-                        <option value="14.5">14.5 m</option>
-                        <option value="15">  15.0 m  </option>
+   
                     </select>
                     </div>
-                    <div class="num-selector">
+                    <div class="num-selector garage-rebuild">
                     <label for="depth">Głębokość podstawy garażu:</label>
                     <select name="depth">
                         <option value="3">   3.0 m </option>
@@ -458,22 +447,11 @@
                         <option value="8">   8.0 m </option>
                         <option value="8.5"> 8.5 m </option>
                         <option value="9">   9.0 m </option>
-                        <option value="9.5"> 9.5 m </option>
-                        <option value="10">  10.0 m</option>
-                        <option value="10.5">10.5 m</option>
-                        <option value="11">  11.0 m</option>
-                        <option value="11.5">11.5 m</option>
-                        <option value="12">  12.0 m</option>
-                        <option value="12.5">12.5 m</option>
-                        <option value="13">  13.0 m</option>
-                        <option value="13.5">13.5 m</option>
-                        <option value="14">  14.0 m</option>
-                        <option value="14.5">14.5 m</option>
-                        <option value="15">  15.0 m  </option>
+    
                     </select>
                     </div>
 
-                    <div class="num-selector">
+                    <div class="num-selector garage-rebuild">
                       <label for="wall-height">Wysokość ścian garażu:</label>
                       <select name="wall-height">
                           <option value="2">   2.0 m </option>
@@ -506,7 +484,7 @@
                       </select>
                       </div>
 
-                      <div class="num-selector">
+                      <div class="num-selector garage-rebuild">
                         <label for="total-height">Wysokość szczytu garażu:</label>
                         <select name="total-height">
                             <option value="0">   0.0 m </option>
@@ -592,7 +570,25 @@
                 <div class="menu-elem-heading-title">Dodatkowe bramy</div>
                 <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
             </div>    
-            <div class="menu-elem-content hide"><div id="add-gates" class="menu-elem-content-text">Dodaj bramy</div></div>
+            <div class="menu-elem-content hide">
+                
+                  
+              <div>
+                  <div class="num-selector">
+                  <label for="width">Wybór umiejscowienia bramy:</label>
+                    <select id="gate-wall" name="wall-chosen">
+                        <option value="front">Frontowa </option>
+                        <option value="left"> Lewa </option>
+                        <option value="right">Prawa </option>
+                        <option value="back"> Tylnia </option>
+
+                    </select>
+                  </div>
+              </div>
+              
+              <div id="add-gates" class="menu-elem-content-text">Dodaj bramy</div>
+            
+            </div>
         </div>
      
 
