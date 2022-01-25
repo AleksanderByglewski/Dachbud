@@ -342,44 +342,91 @@ class Displacement_object{
 
      {
       const gltfLoader = new GLTFLoader();
-      gltfLoader.load('./objects/door_handles/fox-1.gltf', (gltf) => {
-        const root = gltf.scene;
-        //gltf.scene.scale.set(0.1, 0.1, 0.1);
-        //gltf.scene.translate(0,0,0)
-        scene_outer.add(root);
-       // root.scale.x=0.01;
-       // root.scale.y=0.01;
-       // root.scale.z=0.01;
-        let handle1=root.getObjectByName('fox');
-        //handle1.rotateY(0.30)
-        handle1.translateY(+10)
-        //handle1.translateX(-100.30)
-        this.mesh.add(handle1)
-        handle1.scale.x=0.01
-        handle1.scale.y=0.01
-        handle1.scale.z=0.01
-       handle1.translateX(0)
-        //handle1.position.y=-30
-        //handle1.translate.y=-30;
-        console.log(handle1)
-        //handle1.position.z=20.1;
-        //this.mesh.add(handle1)
-        //handle1.rotation.y=Math.PI/2;
+    //   gltfLoader.load('./objects/door_handles/fox-1.gltf', (gltf) => {
+    //     const root = gltf.scene;
+    //     //gltf.scene.scale.set(0.1, 0.1, 0.1);
+    //     //gltf.scene.translate(0,0,0)
+    //     scene_outer.add(root);
+    //    // root.scale.x=0.01;
+    //    // root.scale.y=0.01;
+    //    // root.scale.z=0.01;
+    //     let handle1=root.getObjectByName('fox');
+    //     //handle1.rotateY(0.30)
+    //     handle1.translateY(+10)
+    //     //handle1.translateX(-100.30)
+    //     this.mesh.add(handle1)
+    //     handle1.scale.x=0.01
+    //     handle1.scale.y=0.01
+    //     handle1.scale.z=0.01
+    //    handle1.translateX(0)
+    //     //handle1.position.y=-30
+    //     //handle1.translate.y=-30;
+    //     console.log(handle1)
+    //     //handle1.position.z=20.1;
+    //     //this.mesh.add(handle1)
+    //     //handle1.rotation.y=Math.PI/2;
 
-        //this.mesh.add(handle1);
+    //     //this.mesh.add(handle1);
         
-     //handle1.position.x=-100
-     //handle1.position.y=+2
+    //  //handle1.position.x=-100
+    //  //handle1.position.y=+2
 
-      //console.log(handle1)
-       // handle1.position.x=-110
-       // handle1.position.y=+100
+    //   //console.log(handle1)
+    //    // handle1.position.x=-110
+    //    // handle1.position.y=+100
 
 
-        console.log(dumpObject(root).join('\n'));
-      });
+    //     console.log(dumpObject(root).join('\n'));
+    //   });
 
-      gltfLoader.load('./objects/door_handles/OSG_Scene.gltf', (gltf) => {
+    //   gltfLoader.load('./objects/door_handles/OSG_Scene.gltf', (gltf) => {
+    //     const root = gltf.scene;
+    //     //gltf.scene.scale.set(0.1, 0.1, 0.1);
+    //     //gltf.scene.translate(0,0,0)
+    //     scene_outer.add(root);
+    //    // root.scale.x=0.01;
+    //    // root.scale.y=0.01;
+    //     //root.scale.z=0.01;
+    //     console.log(dumpObject(root).join('\n'));
+    //     let handle1=root.getObjectByName('RootNode');
+    //     //handle1.rotateY(0.30)
+    //     console.log(this.mesh)
+    //     this.mesh.add(handle1)
+    //     //handle1.translateY(-1)
+    //     handle1.translateZ(0.025)
+       
+    //     handle1.rotateZ(-Math.PI/2)
+      
+    //     //handle1.translateX(-100.30)
+    //     this.mesh.add(handle1)
+    //     handle1.scale.x=0.01
+    //     handle1.scale.y=0.01
+    //     handle1.scale.z=0.01
+    //     //RETURN HERE
+    //     //handle1.translateX(-0.125)
+    //    //handle1.translateX(0)
+    //     //handle1.position.y=-30
+    //     //handle1.translate.y=-30;
+    //     console.log(handle1)
+    //     //handle1.position.z=20.1;
+    //     //this.mesh.add(handle1)
+    //     //handle1.rotation.y=Math.PI/2;
+
+    //     //this.mesh.add(handle1);
+        
+    //  //handle1.position.x=-100
+    //  //handle1.position.y=+2
+
+    //   //console.log(handle1)
+    //    // handle1.position.x=-110
+    //    // handle1.position.y=+100
+
+
+    //     console.log(dumpObject(root).join('\n'));
+    //   });
+
+      gltfLoader.load('./objects/door_handle3/scene.gltf', (gltf) => {
+        console.log("The end")
         const root = gltf.scene;
         //gltf.scene.scale.set(0.1, 0.1, 0.1);
         //gltf.scene.translate(0,0,0)
@@ -392,10 +439,10 @@ class Displacement_object{
         //handle1.rotateY(0.30)
         console.log(this.mesh)
         this.mesh.add(handle1)
-        handle1.translateY(-1)
-        //handle1.translateZ(0.025)
-       
-        //handle1.rotateY(-Math.PI/2)
+        //handle1.translateY(-1)
+        handle1.translateZ(0.025)
+       // handle1.rotateY(1.57)
+        //handle1.rotateZ(-Math.PI/2)
       
         //handle1.translateX(-100.30)
         this.mesh.add(handle1)
@@ -403,7 +450,7 @@ class Displacement_object{
         handle1.scale.y=0.01
         handle1.scale.z=0.01
         //RETURN HERE
-        handle1.translateX(-0.125)
+        //handle1.translateX(-0.125)
        //handle1.translateX(0)
         //handle1.position.y=-30
         //handle1.translate.y=-30;
@@ -424,6 +471,151 @@ class Displacement_object{
 
         console.log(dumpObject(root).join('\n'));
       });
+      gltfLoader.load('./objects/door_handle4/scene4.gltf', (gltf) => {
+        console.log("The end 2")
+        
+      
+        const root = gltf.scene;
+        console.log(dumpObject(root).join('\n'));
+        //gltf.scene.scale.set(0.1, 0.1, 0.1);
+        //gltf.scene.translate(0,0,0)
+        scene_outer.add(root);
+        
+       // root.scale.x=0.01;
+       // root.scale.y=0.01;
+        //root.scale.z=0.01;
+        console.log(dumpObject(root).join('\n'));
+        let handle1=root.getObjectByName('Sketchfab_model');
+        //handle1.rotateY(0.30)
+        console.log(this.mesh)
+        //this.mesh.add(handle1)
+        //handle1.translateY(-1)
+        //handle1.translateZ(0.025)
+       
+        //handle1.rotateZ(-Math.PI/2)
+      
+        //handle1.translateX(-100.30)
+        this.mesh.add(handle1)
+        
+        //handle1.scale.x=0.01
+        //handle1.scale.y=0.01
+        //handle1.scale.z=0.01
+        //RETURN HERE
+        //handle1.translateX(-0.125)
+       //handle1.translateX(0)
+        //handle1.position.y=-30
+        //handle1.translate.y=-30;
+        console.log(handle1)
+        //handle1.position.z=20.1;
+        //this.mesh.add(handle1)
+        //handle1.rotation.y=Math.PI/2;
+
+        //this.mesh.add(handle1);
+        
+     //handle1.position.x=-100
+     //handle1.position.y=+2
+
+      //console.log(handle1)
+       // handle1.position.x=-110
+       // handle1.position.y=+100
+
+
+        console.log(dumpObject(root).join('\n'));
+      });
+
+    //   gltfLoader.load('./objects/door_handles/OSG_Scene.gltf', (gltf) => {
+    //     const root = gltf.scene;
+    //     //gltf.scene.scale.set(0.1, 0.1, 0.1);
+    //     //gltf.scene.translate(0,0,0)
+    //     scene_outer.add(root);
+    //    // root.scale.x=0.01;
+    //    // root.scale.y=0.01;
+    //     //root.scale.z=0.01;
+    //     console.log(dumpObject(root).join('\n'));
+    //     let handle1=root.getObjectByName('RootNode');
+    //     //handle1.rotateY(0.30)
+    //     console.log(this.mesh)
+    //     this.mesh.add(handle1)
+    //     //handle1.translateY(-1)
+    //     //handle1.translateZ(0.025)
+       
+    //     //handle1.rotateZ(-Math.PI/2)
+      
+    //     //handle1.translateX(-100.30)
+    //     this.mesh.add(handle1)
+    //     handle1.scale.x=0.01
+    //     handle1.scale.y=0.01
+    //     handle1.scale.z=0.01
+    //     //RETURN HERE
+    //     //handle1.translateX(-0.125)
+    //    //handle1.translateX(0)
+    //     //handle1.position.y=-30
+    //     //handle1.translate.y=-30;
+    //     console.log(handle1)
+    //     //handle1.position.z=20.1;
+    //     //this.mesh.add(handle1)
+    //     //handle1.rotation.y=Math.PI/2;
+
+    //     //this.mesh.add(handle1);
+        
+    //  //handle1.position.x=-100
+    //  //handle1.position.y=+2
+
+    //   //console.log(handle1)
+    //    // handle1.position.x=-110
+    //    // handle1.position.y=+100
+
+
+    //     console.log(dumpObject(root).join('\n'));
+    //   });
+
+  //   gltfLoader.load('./objects/door_handles/kodiak.glb', (glb) => {
+  //     const root = glb.scene;
+  //     //gltf.scene.scale.set(0.1, 0.1, 0.1);
+  //     //gltf.scene.translate(0,0,0)
+  //     console.log("hi")
+  //     scene_outer.add(root);
+  //     console.log(root)
+  //     root.scale.x=10.0;
+  //     root.scale.y=10.01;
+  //     root.scale.z=0.01;
+  //     //console.log(dumpObject(root).join('\n'));
+  //    // let handle1=root.getObjectByName('RootNode');
+  //     //handle1.rotateY(0.30)
+  //    // console.log(this.mesh)
+  //    // this.mesh.add(handle1)
+  //     //handle1.translateY(-1)
+  //     //handle1.translateZ(0.025)
+     
+  //     //handle1.rotateZ(-Math.PI/2)
+    
+  //     //handle1.translateX(-100.30)
+  //    // this.mesh.add(handle1)
+  //    // handle1.scale.x=0.01
+  //    // handle1.scale.y=0.01
+  //    // handle1.scale.z=0.01
+  //     //RETURN HERE
+  //     //handle1.translateX(-0.125)
+  //    //handle1.translateX(0)
+  //     //handle1.position.y=-30
+  //     //handle1.translate.y=-30;
+  //    // console.log(handle1)
+  //     //handle1.position.z=20.1;
+  //     //this.mesh.add(handle1)
+  //     //handle1.rotation.y=Math.PI/2;
+
+  //     //this.mesh.add(handle1);
+      
+  //  //handle1.position.x=-100
+  //  //handle1.position.y=+2
+
+  //   //console.log(handle1)
+  //    // handle1.position.x=-110
+  //    // handle1.position.y=+100
+
+
+  //     console.log(dumpObject(root).join('\n'));
+  //   });
 
       // {
       //   const planeSize = 40;
@@ -446,22 +638,22 @@ class Displacement_object{
       //   scene_outer.add(mesh);
       // }
 
-      {
-        const mtlLoader = new MTLLoader();
-        mtlLoader.load('https://threejs.org/manual/examples/resources/models/windmill/windmill.mtl', (mtl) => {
-          mtl.preload();
-          const objLoader = new OBJLoader();
-          objLoader.setMaterials(mtl);
-          objLoader.load('https://threejs.org/manual/examples/resources/models/windmill/windmill.obj', (root) => {
-            console.log(root)
-            root.scale.x=0.10
-            root.scale.y=0.10
-            root.scale.z=0.10
-            root.translateX(10)
-            scene_outer.add(root);
-          });
-        });
-      }
+      // {
+      //   const mtlLoader = new MTLLoader();
+      //   mtlLoader.load('https://threejs.org/manual/examples/resources/models/windmill/windmill.mtl', (mtl) => {
+      //     mtl.preload();
+      //     const objLoader = new OBJLoader();
+      //     objLoader.setMaterials(mtl);
+      //     objLoader.load('https://threejs.org/manual/examples/resources/models/windmill/windmill.obj', (root) => {
+      //       console.log(root)
+      //       root.scale.x=0.10
+      //       root.scale.y=0.10
+      //       root.scale.z=0.10
+      //       root.translateX(10)
+      //       scene_outer.add(root);
+      //     });
+      //   });
+      // }
 
 
     }
