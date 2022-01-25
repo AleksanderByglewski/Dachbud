@@ -9,7 +9,11 @@ import * as THREE from 'https://threejs.org/build/three.module.js';
 import {OrbitControls} from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
 import {GUI} from 'https://threejs.org/examples/jsm/libs/lil-gui.module.min.js';
 
+import { GLTFLoader } from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
 
+
+import {OBJLoader} from 'https://threejs.org/examples/jsm/loaders/OBJLoader.js';
+import {MTLLoader} from 'https://threejs.org/examples/jsm/loaders/MTLLoader.js';
 //import './style.css';
 //import * as three from 'https://cdn.skypack.dev/pin/three@v0.135.0-pjGUcRG9Xt70OdXl97VF/mode=imports,min/optimized/three.js';
 //import * as three from 'https://unpkg.com/three@0.124.0/build/three.module.js';
@@ -313,6 +317,154 @@ class Displacement_object{
       insert_mesh.name="door_decoration"
       this.mesh.add(insert_mesh);
       console.log(this.mesh)
+
+
+      {
+        const gltfLoader = new GLTFLoader();
+        gltfLoader.load('https://threejs.org/manual/examples/resources/models/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) => {
+          const root = gltf.scene;
+          gltf.scene.scale.set(0.01, 0.01, 0.01);
+          //scene_outer.add(root);
+        });
+      }
+      function dumpObject(obj, lines = [], isLast = true, prefix = '') {
+        const localPrefix = isLast ? '└─' : '├─';
+        lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
+        const newPrefix = prefix + (isLast ? '  ' : '│ ');
+        const lastNdx = obj.children.length - 1;
+        obj.children.forEach((child, ndx) => {
+          const isLast = ndx === lastNdx;
+          dumpObject(child, lines, isLast, newPrefix);
+        });
+        return lines;
+      }
+
+
+     {
+      const gltfLoader = new GLTFLoader();
+      gltfLoader.load('./objects/door_handles/fox-1.gltf', (gltf) => {
+        const root = gltf.scene;
+        //gltf.scene.scale.set(0.1, 0.1, 0.1);
+        //gltf.scene.translate(0,0,0)
+        scene_outer.add(root);
+       // root.scale.x=0.01;
+       // root.scale.y=0.01;
+       // root.scale.z=0.01;
+        let handle1=root.getObjectByName('fox');
+        //handle1.rotateY(0.30)
+        handle1.translateY(+10)
+        //handle1.translateX(-100.30)
+        this.mesh.add(handle1)
+        handle1.scale.x=0.01
+        handle1.scale.y=0.01
+        handle1.scale.z=0.01
+       handle1.translateX(0)
+        //handle1.position.y=-30
+        //handle1.translate.y=-30;
+        console.log(handle1)
+        //handle1.position.z=20.1;
+        //this.mesh.add(handle1)
+        //handle1.rotation.y=Math.PI/2;
+
+        //this.mesh.add(handle1);
+        
+     //handle1.position.x=-100
+     //handle1.position.y=+2
+
+      //console.log(handle1)
+       // handle1.position.x=-110
+       // handle1.position.y=+100
+
+
+        console.log(dumpObject(root).join('\n'));
+      });
+
+      gltfLoader.load('./objects/door_handles/OSG_Scene.gltf', (gltf) => {
+        const root = gltf.scene;
+        //gltf.scene.scale.set(0.1, 0.1, 0.1);
+        //gltf.scene.translate(0,0,0)
+        scene_outer.add(root);
+       // root.scale.x=0.01;
+       // root.scale.y=0.01;
+        //root.scale.z=0.01;
+        console.log(dumpObject(root).join('\n'));
+        let handle1=root.getObjectByName('RootNode');
+        //handle1.rotateY(0.30)
+        console.log(this.mesh)
+        this.mesh.add(handle1)
+        handle1.translateY(-1)
+        //handle1.translateZ(0.025)
+       
+        //handle1.rotateY(-Math.PI/2)
+      
+        //handle1.translateX(-100.30)
+        this.mesh.add(handle1)
+        handle1.scale.x=0.01
+        handle1.scale.y=0.01
+        handle1.scale.z=0.01
+        //RETURN HERE
+        handle1.translateX(-0.125)
+       //handle1.translateX(0)
+        //handle1.position.y=-30
+        //handle1.translate.y=-30;
+        console.log(handle1)
+        //handle1.position.z=20.1;
+        //this.mesh.add(handle1)
+        //handle1.rotation.y=Math.PI/2;
+
+        //this.mesh.add(handle1);
+        
+     //handle1.position.x=-100
+     //handle1.position.y=+2
+
+      //console.log(handle1)
+       // handle1.position.x=-110
+       // handle1.position.y=+100
+
+
+        console.log(dumpObject(root).join('\n'));
+      });
+
+      // {
+      //   const planeSize = 40;
+    
+      //   const loader = new THREE.TextureLoader();
+      //   const texture = loader.load('https://threejs.org/manual/examples/resources/images/checker.png');
+      //   texture.wrapS = THREE.RepeatWrapping;
+      //   texture.wrapT = THREE.RepeatWrapping;
+      //   texture.magFilter = THREE.NearestFilter;
+      //   const repeats = planeSize / 2;
+      //   texture.repeat.set(repeats, repeats);
+    
+      //   const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
+      //   const planeMat = new THREE.MeshPhongMaterial({
+      //     map: texture,
+      //     side: THREE.DoubleSide,
+      //   });
+      //   const mesh = new THREE.Mesh(planeGeo, planeMat);
+      //   mesh.rotation.x = Math.PI * -.5;
+      //   scene_outer.add(mesh);
+      // }
+
+      {
+        const mtlLoader = new MTLLoader();
+        mtlLoader.load('https://threejs.org/manual/examples/resources/models/windmill/windmill.mtl', (mtl) => {
+          mtl.preload();
+          const objLoader = new OBJLoader();
+          objLoader.setMaterials(mtl);
+          objLoader.load('https://threejs.org/manual/examples/resources/models/windmill/windmill.obj', (root) => {
+            console.log(root)
+            root.scale.x=0.10
+            root.scale.y=0.10
+            root.scale.z=0.10
+            root.translateX(10)
+            scene_outer.add(root);
+          });
+        });
+      }
+
+
+    }
       //To access and change the door decoration later you can pass it in the menu and access it by the name "door-decoration"
 
     }
