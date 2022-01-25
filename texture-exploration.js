@@ -202,7 +202,7 @@ remove_self()
 
 
 class Displacement_object{
-  constructor(parent="for now it is unnecesary",width, height, depth, translation_x, translation_y,translation_z, name_type=""){
+  constructor(parent="for now it is unnecesary",width, height, depth, translation_x, translation_y,translation_z, name_type="", object_rotation=0){
     this.name_type=name_type
     
     
@@ -319,14 +319,7 @@ class Displacement_object{
       console.log(this.mesh)
 
 
-      {
-        const gltfLoader = new GLTFLoader();
-        gltfLoader.load('https://threejs.org/manual/examples/resources/models/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) => {
-          const root = gltf.scene;
-          gltf.scene.scale.set(0.01, 0.01, 0.01);
-          //scene_outer.add(root);
-        });
-      }
+
       function dumpObject(obj, lines = [], isLast = true, prefix = '') {
         const localPrefix = isLast ? '└─' : '├─';
         lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
@@ -338,10 +331,270 @@ class Displacement_object{
         });
         return lines;
       }
+      //Door handles 
+      //Door handles visibility based on state
+
+      {
+        const gltfLoader = new GLTFLoader();
+        gltfLoader.load('./objects/door_handle3/scene.gltf', (gltf) => {
 
 
+
+          console.log("The end")
+          const root = gltf.scene;
+          //gltf.scene.scale.set(0.1, 0.1, 0.1);
+          //gltf.scene.translate(0,0,0)
+          scene_outer.add(root);
+         // root.scale.x=0.01;
+         // root.scale.y=0.01;
+          //root.scale.z=0.01;
+          //console.log(dumpObject(root).join('\n'));
+          
+          let handle1=root.getObjectByName('RootNode');
+          handle1.name="handle1"
+          
+
+          //let children=element.children
+          //  for (const child of children){
+           //   //console.log(child)
+           // }
+          
+            //this.object.remove(target)
+            
+        
+
+          handle1.visible=false;
+          console.log(handle1)
+          //handle1.rotateY(0.30)
+          //console.log(this.mesh)
+          this.mesh.add(handle1)
+          //handle1.translateY(-1)
+         // handle1.translateZ(0.025)
+         // handle1.rotateY(1.57)
+          //handle1.rotateZ(-Math.PI/2)
+        
+          //handle1.translateX(-100.30)
+          this.mesh.add(handle1)
+
+
+
+          //Transformation part
+          handle1.scale.x=0.01
+          handle1.scale.y=0.01
+          handle1.scale.z=0.01
+          handle1.rotateY(3*object_rotation)
+
+
+          handle1.translateZ(0.025)
+          handle1.translateX(-0.10)
+          
+         
+          //RETURN HERE
+          //handle1.translateX(-0.125)
+         //handle1.translateX(0)
+          //handle1.position.y=-30
+          //handle1.translate.y=-30;
+          //console.log(handle1)
+          //handle1.position.z=20.1;
+          //this.mesh.add(handle1)
+          //handle1.rotation.y=Math.PI/2;
+  
+          //this.mesh.add(handle1);
+          
+       //handle1.position.x=-100
+       //handle1.position.y=+2
+  
+        //console.log(handle1)
+         // handle1.position.x=-110
+         // handle1.position.y=+100
+  
+            //The code needed to make the object invisible handle update
+            let target =this.mesh.getObjectByName("handle1")
+            target.visible=true;
+            
+            console.log(handle1)
+
+
+          console.log(dumpObject(root).join('\n'));
+        });
+        gltfLoader.load('./objects/door_handle4/scene4.gltf', (gltf) => {
+          console.log("The end 2")
+          
+        
+          const root = gltf.scene;
+          console.log(dumpObject(root).join('\n'));
+          //gltf.scene.scale.set(0.1, 0.1, 0.1);
+          //gltf.scene.translate(0,0,0)
+          scene_outer.add(root);
+          
+         // root.scale.x=0.01;
+         // root.scale.y=0.01;
+          //root.scale.z=0.01;
+          console.log(dumpObject(root).join('\n'));
+          let handle1=root.getObjectByName('Sketchfab_model');
+          handle1.name="handle2"
+          //handle1.rotateY(0.30)
+          console.log(this.mesh)
+          //this.mesh.add(handle1)
+          //handle1.translateY(-1)
+          //handle1.translateZ(0.025)
+         
+          //handle1.rotateZ(-Math.PI/2)
+        
+          //handle1.translateX(-100.30)
+          this.mesh.add(handle1)
+          
+
+          //Transformation part
+      
+       
+          handle1.rotateZ(3*object_rotation)
+          
+          handle1.translateZ(0.025)
+          handle1.translateX(+0.092)
+          
+          //handle1.scale.x=0.01
+          //handle1.scale.y=0.01
+          //handle1.scale.z=0.01
+          //RETURN HERE
+          //handle1.translateX(-0.125)
+         //handle1.translateX(0)
+          //handle1.position.y=-30
+          //handle1.translate.y=-30;
+          console.log(handle1)
+          //handle1.position.z=20.1;
+          //this.mesh.add(handle1)
+          //handle1.rotation.y=Math.PI/2;
+  
+          //this.mesh.add(handle1);
+          
+       //handle1.position.x=-100
+       //handle1.position.y=+2
+  
+        //console.log(handle1)
+         // handle1.position.x=-110
+         // handle1.position.y=+100
+         
+         //handle update
+         let target =this.mesh.getObjectByName("handle2")
+         target.visible=false;
+         
+
+  
+          console.log(dumpObject(root).join('\n'));
+        });
+
+      }
+
+
+      //Object graveyard
      {
-      const gltfLoader = new GLTFLoader();
+             // {
+      //   const gltfLoader = new GLTFLoader();
+      //   gltfLoader.load('https://threejs.org/manual/examples/resources/models/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) => {
+      //     const root = gltf.scene;
+      //     gltf.scene.scale.set(0.01, 0.01, 0.01);
+      //     //scene_outer.add(root);
+      //   });
+      // }
+    //   const gltfLoader = new GLTFLoader();
+    //   gltfLoader.load('./objects/door_handle3/scene.gltf', (gltf) => {
+    //     console.log("The end")
+    //     const root = gltf.scene;
+    //     //gltf.scene.scale.set(0.1, 0.1, 0.1);
+    //     //gltf.scene.translate(0,0,0)
+    //     scene_outer.add(root);
+    //    // root.scale.x=0.01;
+    //    // root.scale.y=0.01;
+    //     //root.scale.z=0.01;
+    //     console.log(dumpObject(root).join('\n'));
+    //     let handle1=root.getObjectByName('RootNode');
+    //     //handle1.rotateY(0.30)
+    //     console.log(this.mesh)
+    //     this.mesh.add(handle1)
+    //     //handle1.translateY(-1)
+    //     handle1.translateZ(0.025)
+    //    // handle1.rotateY(1.57)
+    //     //handle1.rotateZ(-Math.PI/2)
+      
+    //     //handle1.translateX(-100.30)
+    //     this.mesh.add(handle1)
+    //     handle1.scale.x=0.01
+    //     handle1.scale.y=0.01
+    //     handle1.scale.z=0.01
+    //     //RETURN HERE
+    //     //handle1.translateX(-0.125)
+    //    //handle1.translateX(0)
+    //     //handle1.position.y=-30
+    //     //handle1.translate.y=-30;
+    //     console.log(handle1)
+    //     //handle1.position.z=20.1;
+    //     //this.mesh.add(handle1)
+    //     //handle1.rotation.y=Math.PI/2;
+
+    //     //this.mesh.add(handle1);
+        
+    //  //handle1.position.x=-100
+    //  //handle1.position.y=+2
+
+    //   //console.log(handle1)
+    //    // handle1.position.x=-110
+    //    // handle1.position.y=+100
+
+
+    //     console.log(dumpObject(root).join('\n'));
+    //   });
+    //   gltfLoader.load('./objects/door_handle4/scene4.gltf', (gltf) => {
+    //     console.log("The end 2")
+        
+      
+    //     const root = gltf.scene;
+    //     console.log(dumpObject(root).join('\n'));
+    //     //gltf.scene.scale.set(0.1, 0.1, 0.1);
+    //     //gltf.scene.translate(0,0,0)
+    //     scene_outer.add(root);
+        
+    //    // root.scale.x=0.01;
+    //    // root.scale.y=0.01;
+    //     //root.scale.z=0.01;
+    //     console.log(dumpObject(root).join('\n'));
+    //     let handle1=root.getObjectByName('Sketchfab_model');
+    //     //handle1.rotateY(0.30)
+    //     console.log(this.mesh)
+    //     //this.mesh.add(handle1)
+    //     //handle1.translateY(-1)
+    //     //handle1.translateZ(0.025)
+       
+    //     //handle1.rotateZ(-Math.PI/2)
+      
+    //     //handle1.translateX(-100.30)
+    //     this.mesh.add(handle1)
+        
+    //     //handle1.scale.x=0.01
+    //     //handle1.scale.y=0.01
+    //     //handle1.scale.z=0.01
+    //     //RETURN HERE
+    //     //handle1.translateX(-0.125)
+    //    //handle1.translateX(0)
+    //     //handle1.position.y=-30
+    //     //handle1.translate.y=-30;
+    //     console.log(handle1)
+    //     //handle1.position.z=20.1;
+    //     //this.mesh.add(handle1)
+    //     //handle1.rotation.y=Math.PI/2;
+
+    //     //this.mesh.add(handle1);
+        
+    //  //handle1.position.x=-100
+    //  //handle1.position.y=+2
+
+    //   //console.log(handle1)
+    //    // handle1.position.x=-110
+    //    // handle1.position.y=+100
+
+
+    //     console.log(dumpObject(root).join('\n'));
+    //   });
     //   gltfLoader.load('./objects/door_handles/fox-1.gltf', (gltf) => {
     //     const root = gltf.scene;
     //     //gltf.scene.scale.set(0.1, 0.1, 0.1);
@@ -425,103 +678,7 @@ class Displacement_object{
     //     console.log(dumpObject(root).join('\n'));
     //   });
 
-      gltfLoader.load('./objects/door_handle3/scene.gltf', (gltf) => {
-        console.log("The end")
-        const root = gltf.scene;
-        //gltf.scene.scale.set(0.1, 0.1, 0.1);
-        //gltf.scene.translate(0,0,0)
-        scene_outer.add(root);
-       // root.scale.x=0.01;
-       // root.scale.y=0.01;
-        //root.scale.z=0.01;
-        console.log(dumpObject(root).join('\n'));
-        let handle1=root.getObjectByName('RootNode');
-        //handle1.rotateY(0.30)
-        console.log(this.mesh)
-        this.mesh.add(handle1)
-        //handle1.translateY(-1)
-        handle1.translateZ(0.025)
-       // handle1.rotateY(1.57)
-        //handle1.rotateZ(-Math.PI/2)
-      
-        //handle1.translateX(-100.30)
-        this.mesh.add(handle1)
-        handle1.scale.x=0.01
-        handle1.scale.y=0.01
-        handle1.scale.z=0.01
-        //RETURN HERE
-        //handle1.translateX(-0.125)
-       //handle1.translateX(0)
-        //handle1.position.y=-30
-        //handle1.translate.y=-30;
-        console.log(handle1)
-        //handle1.position.z=20.1;
-        //this.mesh.add(handle1)
-        //handle1.rotation.y=Math.PI/2;
-
-        //this.mesh.add(handle1);
-        
-     //handle1.position.x=-100
-     //handle1.position.y=+2
-
-      //console.log(handle1)
-       // handle1.position.x=-110
-       // handle1.position.y=+100
-
-
-        console.log(dumpObject(root).join('\n'));
-      });
-      gltfLoader.load('./objects/door_handle4/scene4.gltf', (gltf) => {
-        console.log("The end 2")
-        
-      
-        const root = gltf.scene;
-        console.log(dumpObject(root).join('\n'));
-        //gltf.scene.scale.set(0.1, 0.1, 0.1);
-        //gltf.scene.translate(0,0,0)
-        scene_outer.add(root);
-        
-       // root.scale.x=0.01;
-       // root.scale.y=0.01;
-        //root.scale.z=0.01;
-        console.log(dumpObject(root).join('\n'));
-        let handle1=root.getObjectByName('Sketchfab_model');
-        //handle1.rotateY(0.30)
-        console.log(this.mesh)
-        //this.mesh.add(handle1)
-        //handle1.translateY(-1)
-        //handle1.translateZ(0.025)
-       
-        //handle1.rotateZ(-Math.PI/2)
-      
-        //handle1.translateX(-100.30)
-        this.mesh.add(handle1)
-        
-        //handle1.scale.x=0.01
-        //handle1.scale.y=0.01
-        //handle1.scale.z=0.01
-        //RETURN HERE
-        //handle1.translateX(-0.125)
-       //handle1.translateX(0)
-        //handle1.position.y=-30
-        //handle1.translate.y=-30;
-        console.log(handle1)
-        //handle1.position.z=20.1;
-        //this.mesh.add(handle1)
-        //handle1.rotation.y=Math.PI/2;
-
-        //this.mesh.add(handle1);
-        
-     //handle1.position.x=-100
-     //handle1.position.y=+2
-
-      //console.log(handle1)
-       // handle1.position.x=-110
-       // handle1.position.y=+100
-
-
-        console.log(dumpObject(root).join('\n'));
-      });
+ 
 
     //   gltfLoader.load('./objects/door_handles/OSG_Scene.gltf', (gltf) => {
     //     const root = gltf.scene;
@@ -656,11 +813,35 @@ class Displacement_object{
       // }
 
 
-    }
+      }
       //To access and change the door decoration later you can pass it in the menu and access it by the name "door-decoration"
 
     }
   }
+  remodel_a_stupid_piece_of_gate(width, height=0, depth=0, object_rotation=0){
+
+    this.initial_displacement=new THREE.Vector3(0,-this.parent.depth/2+height/2,0);
+    this.user_translation=new THREE.Vector3(this.translation_x,this.translation_y,this.translation_z);
+    let final_displacement=this.initial_displacement.add(this.user_translation);
+    console.log(this.final_displacement)
+
+
+    let insert_material = new THREE.MeshBasicMaterial( { color: 0x272727, side: THREE.DoubleSide} );
+    let insert_geometry = new THREE.BoxGeometry(0.02,height+0.01,this.depth+0.02);
+    let insert_mesh = new THREE.Mesh(insert_geometry, insert_material);
+    insert_geometry.translate(final_displacement.x,final_displacement.y,final_displacement.z);
+    
+    insert_mesh.name="door_decoration"
+    
+    this.mesh.add(insert_mesh);
+    console.log(this.mesh)
+
+    let target =this.mesh.getObjectByName("door_decoration")
+    insert_mesh.visible=target.visible
+    this.mesh.remove(target)
+
+  }
+
   change_texture()
   {
     const loader = new THREE.TextureLoader();
@@ -735,8 +916,8 @@ class Displacement_object{
    return false;
   }
   remodel_self(width, height, depth=0, object_rotation=0){
-    this.depth
-
+    //this.depth=0.04
+    
     //
     this.material=[
       new THREE.MeshBasicMaterial( { map: this.texture ,color: 0x000000, side: THREE.DoubleSide} ),
@@ -757,8 +938,12 @@ class Displacement_object{
     this.initial_displacement=new THREE.Vector3(0,-this.parent.depth/2+height/2,0);
     this.user_translation=new THREE.Vector3(this.translation_x,this.translation_y,this.translation_z);
     let final_displacement=this.initial_displacement.add(this.user_translation);
-    
+    console.log(final_displacement)
     this.geometry.translate(final_displacement.x,final_displacement.y,final_displacement.z);
+  
+  //decoration part
+
+
   }
 }
 
@@ -2128,7 +2313,7 @@ class Menu_control{
   
 
     let tiling_type_menu=
-    `<div class="image-based-selection grid-elem tiling-inner unmargined-sides">`+
+    `<div class="image-based-selection grid-elem  tiling-inner unmargined-sides">`+
     `<label class="padded-element">
     <input type="radio" name="wall-type" id="ocynk-roof-rotation" value="rotated" checked>
     <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN.jpg">
@@ -2158,15 +2343,15 @@ class Menu_control{
 
 
   let visual_type_menu=
-  `<div class="image-based-selection grid-elem tiling-inner unmargined-sides">`+
+  `<div class="image-based-selection grid-elem gate-type-inner unmargined-sides">`+
   `<label class="padded-element">
-  <input type="radio" name="visual-type" id="ocynk-roof-rotation" value="rotated" checked>
+  <input type="radio" name="visual-type"  value="handle1" checked>
   <img src="https://dummyimage.com/400x400/ccc/fff">
   <div class="image-description">Brama uchylna</div>
   </label>
   
   <label  class="padded-element">
-  <input type="radio" name="visual-type" value="standard">
+  <input type="radio" name="visual-type" value="handle2">
   <img src="https://dummyimage.com/400x400/ccc/fff">
   <div class="image-description">Brama dwuskrzydłowa</div>
   </label>` 
@@ -2208,6 +2393,32 @@ class Menu_control{
     })
 
     //this.side_menu.appendChild(div_elem)
+    let gate_type_handle_arr=div_elem.querySelectorAll('.gate-type-inner input')
+    for (let gate_type of gate_type_handle_arr){gate_type.addEventListener('change', (evt)=>{
+
+      let gate_choosen=evt.currentTarget.value
+      console.log(gate_choosen)
+      if(gate_choosen=="handle1"){
+        var target =element.mesh.getObjectByName("handle1")
+        target.visible=true;
+        var target =element.mesh.getObjectByName("handle2")
+        target.visible=false;
+
+
+        element.mesh.getObjectByName("door_decoration").visible=true;
+      }
+      else{
+        var target =element.mesh.getObjectByName("handle1")
+        target.visible=false;
+        var target =element.mesh.getObjectByName("handle2")
+        target.visible=true;
+
+
+        element.mesh.getObjectByName("door_decoration").visible=false;
+      }
+
+
+    })}
 
     let color_input_arr=div_elem.querySelectorAll('.color-inner input')
     for (let colored_thing of color_input_arr){colored_thing.addEventListener('change', inner_change_wall)}
@@ -2505,9 +2716,9 @@ class Menu_control{
       let new_width = 0.4;
 
       
-      function remodel_a_box(targeted_element=element,new_width=1, new_height=1 ){
+      //function remodel_a_box(targeted_element=element,new_width=1, new_height=1 ){
         //remove_composite_object(element_id)
-        element.remodel_self(1,1,0.04)
+       // element.remodel_self(1,1,0.04)
         //element.geometry = new THREE.BoxGeometry(1, 1, 1);
         //element.mesh =new THREE.Mesh(element.geometry, element.materials)
 
@@ -2527,14 +2738,22 @@ class Menu_control{
     
         // element.mesh = new THREE.Mesh(element.geometry, element.material);
 
-      }
+      //}
       
-      let set_width=div_elem.querySelector('input.dimension[dimension="width"]').value
-      let set_height=div_elem.querySelector('input.dimension[dimension="height"]').value
+      let set_width=parseFloat(div_elem.querySelector('input.dimension[dimension="width"]').value)
+      let set_height=parseFloat(div_elem.querySelector('input.dimension[dimension="height"]').value)
       switch(direction){
       
         case 'width':
           element.remodel_self(set_width,set_height, element.geometry.depth, object_rotation);
+          // try {
+          //   var target =element.mesh.getObjectByName("door_decoration")
+          // } catch (error) {
+          //   console.error(error);
+          // }
+
+          // target.visible=true;
+  
           //element.texture.repeat.set( 1, element.geometry.parameters.height*1);
           //inner_change_wall()
           //direction_x=10-translation_value;
@@ -2542,7 +2761,9 @@ class Menu_control{
         case 'height':
  
           element.remodel_self(set_width,set_height,element.geometry.depth, object_rotation)
+          element.remodel_a_stupid_piece_of_gate(set_width,set_height, element.geometry.depth, object_rotation)
           element.texture.repeat.set( 1, element.geometry.parameters.height*1);
+      
           //inner_change_wall()
             //direction_y=10-translation_value;
             break;
@@ -2785,16 +3006,18 @@ side_selecting(friendly_door, position, side){
 
     //IF it passes the logic tests
   
-    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.04,0,0,0, "BRAMA")
+   
     
     //menu_controller.side_selecting(friendly_door,position, "front")
     
     //Wow that's actually so smart you dont have to worry about passing the wall selected 
     //You can just get id from the check form at creation time
     let wall_chosen=document.querySelector("#gate-wall[name='wall-chosen']").value
+    let object_rotation=menu_controller.convert_side_to_rotation(wall_chosen)["object_rotation"]
+    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.04,0,0,0, "BRAMA", object_rotation)
     this.side_selecting(friendly_door, position, wall_chosen)
     
-    let object_rotation=menu_controller.convert_side_to_rotation(wall_chosen)["object_rotation"]
+   
 
     //A base for rotations and ease of manipulations
     let eigen=new THREE.Vector3(1,0,0)
