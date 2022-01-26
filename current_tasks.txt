@@ -3,7 +3,7 @@ Kontrola stanów[]
 
 Modelowanie[]
     Stworzyć skomplikowane obiekty[]
-        -Drzwi[]
+        -Drzwi[x]
         -Kotwiczenie[]
         -Wiata[x]
         -Bramy[x]
@@ -15,4 +15,4 @@ Dodatkowe funkcje[]
     -Generowanie rzutów[]
 
 
-Make doors, doors are basicaly gates of type 1 so it is nearly finished 
+Configure the canopies

@@ -336,7 +336,7 @@ class Displacement_object{
 
       {
         const gltfLoader = new GLTFLoader();
-        gltfLoader.load('./objects/door_handle3/scene.gltf', (gltf) => {
+        gltfLoader.load('./objects/door_handle3/scene-right.gltf', (gltf) => {
 
 
 
@@ -386,7 +386,7 @@ class Displacement_object{
 
 
           handle1.translateZ(0.025)
-          handle1.translateX(-0.10)
+          handle1.translateX(+0.10)
           
          
           //RETURN HERE
@@ -816,6 +816,186 @@ class Displacement_object{
       }
       //To access and change the door decoration later you can pass it in the menu and access it by the name "door-decoration"
 
+    }
+    if(this.name_type.toUpperCase().includes("DRZWI"))
+    {
+
+      //let insert_material = new THREE.MeshBasicMaterial( { color: 0x272727, side: THREE.DoubleSide} );
+      //let insert_geometry = new THREE.BoxGeometry(0.02,this.height+0.01,this.depth+0.02);
+      //insert_geometry.translate(final_displacement.x,final_displacement.y,final_displacement.z);
+      //let insert_mesh = new THREE.Mesh(insert_geometry, insert_material);
+      //insert_mesh.name="door_decoration"
+      //this.mesh.add(insert_mesh);
+      //console.log(this.mesh)
+
+
+
+      function dumpObject(obj, lines = [], isLast = true, prefix = '') {
+        const localPrefix = isLast ? '└─' : '├─';
+        lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
+        const newPrefix = prefix + (isLast ? '  ' : '│ ');
+        const lastNdx = obj.children.length - 1;
+        obj.children.forEach((child, ndx) => {
+          const isLast = ndx === lastNdx;
+          dumpObject(child, lines, isLast, newPrefix);
+        });
+        return lines;
+      }
+      //Door handles 
+      //Door handles visibility based on state
+
+      {
+        const gltfLoader = new GLTFLoader();
+        gltfLoader.load('./objects/door_handle3/scene-right.gltf', (gltf) => {
+
+
+
+          console.log("The end")
+          const root = gltf.scene;
+          //gltf.scene.scale.set(0.1, 0.1, 0.1);
+          //gltf.scene.translate(0,0,0)
+          scene_outer.add(root);
+         // root.scale.x=0.01;
+         // root.scale.y=0.01;
+          //root.scale.z=0.01;
+          //console.log(dumpObject(root).join('\n'));
+          
+          let handle1=root.getObjectByName('RootNode');
+          handle1.name="handle1"
+          
+
+          //let children=element.children
+          //  for (const child of children){
+           //   //console.log(child)
+           // }
+          
+            //this.object.remove(target)
+            
+        
+
+          handle1.visible=true;
+          console.log(handle1)
+          //handle1.rotateY(0.30)
+          //console.log(this.mesh)
+          this.mesh.add(handle1)
+          //handle1.translateY(-1)
+         // handle1.translateZ(0.025)
+         // handle1.rotateY(1.57)
+          //handle1.rotateZ(-Math.PI/2)
+        
+          //handle1.translateX(-100.30)
+          this.mesh.add(handle1)
+
+
+
+          //Transformation part
+          handle1.scale.x=0.01
+          handle1.scale.y=0.01
+          handle1.scale.z=0.01
+          handle1.rotateY(3*object_rotation)
+
+
+          handle1.translateZ(0.025)
+          handle1.translateX(-this.width/2+0.1)
+          
+         
+          //RETURN HERE
+          //handle1.translateX(-0.125)
+         //handle1.translateX(0)
+          //handle1.position.y=-30
+          //handle1.translate.y=-30;
+          //console.log(handle1)
+          //handle1.position.z=20.1;
+          //this.mesh.add(handle1)
+          //handle1.rotation.y=Math.PI/2;
+  
+          //this.mesh.add(handle1);
+          
+       //handle1.position.x=-100
+       //handle1.position.y=+2
+  
+        //console.log(handle1)
+         // handle1.position.x=-110
+         // handle1.position.y=+100
+  
+            //The code needed to make the object invisible handle update
+            let target =this.mesh.getObjectByName("handle1")
+            target.visible=true;
+            
+            console.log(handle1)
+
+
+          console.log(dumpObject(root).join('\n'));
+        });
+        gltfLoader.load('./objects/door_handle4/scene4.gltf', (gltf) => {
+          console.log("The end 2")
+          
+        
+          const root = gltf.scene;
+          console.log(dumpObject(root).join('\n'));
+          //gltf.scene.scale.set(0.1, 0.1, 0.1);
+          //gltf.scene.translate(0,0,0)
+          scene_outer.add(root);
+          
+         // root.scale.x=0.01;
+         // root.scale.y=0.01;
+          //root.scale.z=0.01;
+          console.log(dumpObject(root).join('\n'));
+          let handle1=root.getObjectByName('Sketchfab_model');
+          handle1.name="handle2"
+          //handle1.rotateY(0.30)
+          console.log(this.mesh)
+          //this.mesh.add(handle1)
+          //handle1.translateY(-1)
+          //handle1.translateZ(0.025)
+         
+          //handle1.rotateZ(-Math.PI/2)
+        
+          //handle1.translateX(-100.30)
+          this.mesh.add(handle1)
+          
+
+          //Transformation part
+      
+       
+          handle1.rotateZ(3*object_rotation)
+          
+          handle1.translateZ(0.025)
+          handle1.translateX(+0.092)
+          
+          //handle1.scale.x=0.01
+          //handle1.scale.y=0.01
+          //handle1.scale.z=0.01
+          //RETURN HERE
+          //handle1.translateX(-0.125)
+         //handle1.translateX(0)
+          //handle1.position.y=-30
+          //handle1.translate.y=-30;
+          console.log(handle1)
+          //handle1.position.z=20.1;
+          //this.mesh.add(handle1)
+          //handle1.rotation.y=Math.PI/2;
+  
+          //this.mesh.add(handle1);
+          
+       //handle1.position.x=-100
+       //handle1.position.y=+2
+  
+        //console.log(handle1)
+         // handle1.position.x=-110
+         // handle1.position.y=+100
+         
+         //handle update
+         let target =this.mesh.getObjectByName("handle2")
+         target.visible=false;
+         
+
+  
+          console.log(dumpObject(root).join('\n'));
+        });
+
+      }
+  
     }
   }
   remodel_a_stupid_piece_of_gate(width, height=0, depth=0, object_rotation=0){
@@ -2125,11 +2305,7 @@ animate();
 
    
   }
-  function change_roof(){
-  
-    main_house.release()
-    main_house=new Creation_controller(constructor_width-10, constructor_depth, constructor_height, roof_width-10, roof_depth, roof_height, scene,roof_index);
-  }
+
 
 
 
@@ -2153,11 +2329,34 @@ main()
 main_house_outer.release();
 main_house_outer=new Creation_controller_outer(10, 10, 10, 10, 10, 10, scene_outer,4);
 
+class Canopy_container{
+  constructor(front_size=0,left_size=0,back_size=0, right_size=0){
+    //A canopy object is a really simple object containing 4 pieces of information
+    //what side and if it is what is the dimension of that side; and some simple logic
+    this.front_size=0
 
+    this.back_size=0
+
+    this.left_size=0
+
+    this.right_size=0
+  }
+    
+  canopy_exists(){
+    return Boolean(this.front_size+this.back_size+this.left_size+this.right_size)
+  }
+  canopy_translation(){
+  return new THREE.Vector3(this.left_size*-1+this.right_size*1,0, this.front_size*1+this.back_size*-1)
+  }
+  }
+  
+  let canopy_container=new Canopy_container(0,0,0,0)
 class Menu_control{
 
   constructor(){
-
+  
+  //this.canopy_container=""
+ 
   this.gate_array=[];
   this.window_arr=[];
   this.door_array=[];
@@ -2382,7 +2581,7 @@ class Menu_control{
     //Presentation
     div_elem.querySelector('.erase-button').addEventListener('click', ()=>{
       try {
-        menu_controller.canopy_array=[]
+        //menu_controller.canopy_array=[]
         menu_controller.rebuild_garage_dimensions()
       } catch (error) {
         console.error(error);
@@ -2499,33 +2698,42 @@ class Menu_control{
 
    //const normalMap4 =  new THREE.TextureLoader().load( './textures/golfball2.jpg' );
   // const clearcoatNormaMap =  new THREE.TextureLoader().load( './textures/scratched.png' );
-   let material2 = new THREE.MeshPhysicalMaterial( {
-    metalness: 0.5,
-    roughness: 0.0,
-    clearcoat: 1.0,
-    roughness: 0,  
-    transmission: 1,
-    thickness: 0.1,
-    opacity:0.6,
-    //normalMap: normalMap4,
-    //bumpMap:normalMap4,
-    //clearcoatNormalMap: clearcoatNormaMap,
-    // y scale is negated to compensate for normal map handedness.
-    //clearcoatNormalScale: new THREE.Vector2( 2.0, - 2.0 )
-  } );
+  //  let material2 = new THREE.MeshPhysicalMaterial( {
+  //   metalness: 0.5,
+  //   roughness: 0.0,
+  //   clearcoat: 1.0,
+  //   roughness: 0,  
+  //   transmission: 1,
+  //   thickness: 0.1,
+  //   opacity:0.6,
+  //   //normalMap: normalMap4,
+  //   //bumpMap:normalMap4,
+  //   //clearcoatNormalMap: clearcoatNormaMap,
+  //   // y scale is negated to compensate for normal map handedness.
+  //   //clearcoatNormalScale: new THREE.Vector2( 2.0, - 2.0 )
+  // } );
 
-   wall.mesh.material =  [
-    new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
-    new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
-    new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
-    new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
-    material2,
-    material2,
-    ];
+  //  wall.mesh.material =  [
+  //   new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+  //   new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+  //   new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+  //   new THREE.MeshBasicMaterial( { map:wall.texture ,color: 0x000000, side: THREE.DoubleSide} ),
+  //   material2,
+  //   material2,
+  //   ];
 
 
-  
-  //If you want to add custom textures
+    //Boiler plate for different elements
+    //Initial logic
+    if(heading_title.toUpperCase().includes("OKNO"))
+    {
+
+      console.log(div_elem.querySelector(".num-selector input[direction='top']"))
+      div_elem.querySelector(".num-selector input[direction='top']").value=1.2
+
+      div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
+     
+    }
 
    
    
@@ -2670,7 +2878,76 @@ class Menu_control{
     );
   }
   input_arr.value=0;
+
   let input_dim_arr=div_elem.querySelectorAll('input.dimension')
+
+  if(heading_title.toUpperCase().includes("WIATA")){
+
+    for (let input of input_dim_arr) {
+
+
+    
+      input.addEventListener('change', (evt)=>{
+        //alert("Hi I am canopy")
+        
+        //console.log(evt.currentTarget.value)
+        let translation_value=evt.currentTarget.value
+        //console.log(translation_value)
+        let set_width=parseFloat(div_elem.querySelector('input.dimension[dimension="width"]').value)
+        let set_height=parseFloat(div_elem.querySelector('input.dimension[dimension="height"]').value)
+        let direction=wall_being_targeted_name
+        console.log(direction)
+        console.log("nyan:"+direction)
+        switch(direction){
+        
+           //Custom logic to be implemented
+           
+            
+            case 'left':
+              canopy_container.left_size=set_width;
+              //main_house_canopy.release()
+              
+              console.log("nyaaan")
+              this.rebuild_garage_dimensions()
+              //evt.currentTarget.value=element.translation_x
+  
+  
+  
+              //direction_x=translation_value;
+              break;
+           case 'right':
+            canopy_container.right_size=set_width;
+            //evt.currentTarget.value=element.translation_x
+  
+           
+             //direction_x=10-translation_value;
+              break;
+           case 'front':
+            canopy_container.front_size=set_width;
+               break;
+           case 'back':
+            canopy_container.back_size=set_width;
+            //evt.currentTarget.value=element.translation_y;
+               //direction_y=10-translation_value;
+               break;
+  
+             
+      
+          //You can technically add the z-index and be happy with general solution
+          //This will make it much easier to just switch directions on off based on 
+          //wall you are actually on
+        }
+  
+       
+
+        
+      });
+    }
+
+  }
+
+  else{
+
   for (let input of input_dim_arr) {
 
 
@@ -2814,7 +3091,7 @@ class Menu_control{
     });
   }
 
-  
+  }  
   try {
     //alert("helllo")
     element.change_color(10,10,10)
@@ -3047,7 +3324,7 @@ side_selecting(friendly_door, position, side){
 
   initial_window_logic(width, height){
     let message='Okno'
-    let position=new THREE.Vector3(0,main_house_outer.constructor_height-height,0)
+    let position=new THREE.Vector3(0,main_house_outer.constructor_height-height/2,0)
     //console.log(main_house_outer)
     return{ 
       message:message,
@@ -3114,19 +3391,25 @@ side_selecting(friendly_door, position, side){
     let width_of_gate=1.20;
     let height_of_gate=1.90;
     
-    const {message, position}=this.initial_window_logic(width_of_gate, height_of_gate)
+
+    const {message, position}=this.initial_gate_logic(width_of_gate, height_of_gate, this.gate_array)
     //console.log(message)
     //console.log(position)
 
-    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.025,0,0,0)
+    //IF it passes the logic tests
+  
+   
+    
     //menu_controller.side_selecting(friendly_door,position, "front")
     
     //Wow that's actually so smart you dont have to worry about passing the wall selected 
     //You can just get id from the check form at creation time
     let wall_chosen=document.querySelector("#door-wall[name='wall-chosen']").value
+    let object_rotation=menu_controller.convert_side_to_rotation(wall_chosen)["object_rotation"]
+    let friendly_door=new Displacement_object(main_house_outer.wall_front,width_of_gate,height_of_gate,0.06,0,0,0, "DRZWI", object_rotation)
     this.side_selecting(friendly_door, position, wall_chosen)
     
-    let object_rotation=menu_controller.convert_side_to_rotation(wall_chosen)["object_rotation"]
+   
 
     //A base for rotations and ease of manipulations
     let eigen=new THREE.Vector3(1,0,0)
@@ -3143,22 +3426,49 @@ side_selecting(friendly_door, position, side){
     
 
 
-    let gate_number=""
+    let gate_number=" "
     if(menu_controller.gate_array.length>1)
     {
       gate_number=menu_controller.gate_array.length
     }
     let new_elem=this.add_node(friendly_door.provide_identification(), friendly_door, wall_chosen, "Drzwi " +gate_number)
+
     this.side_menu.insertBefore(new_elem,document.querySelector("#canopy-object") )
     menu_controller.force_a_placed_object_update(friendly_door)
+
+  
 
 
 
   }
   add_canopy(){
-    let new_elem=this.add_node(null, null, "Front",'Wiata')
+    //let new_elem=this.add_node(null, null, "Front",'Wiata')
     //TODO
-    
+    let wall_chosen=document.querySelector("#canopy-wall[name='wall-chosen']").value
+    let width_of_canopy=1.20;
+    switch(wall_chosen){
+      case "front":
+        canopy_container.front_size=width_of_canopy
+        break;
+      case "left":
+        canopy_container.left_size=width_of_canopy
+        break;
+      case "back":
+        canopy_container.back_size=width_of_canopy
+        break;
+      case "right":
+        canopy_container.right_size=0
+        break;
+  
+      default:
+
+        //alert("I entered")
+  
+  
+    }
+
+    let new_elem=this.add_node(null, null, wall_chosen, "Wiata " + wall_chosen)
+
     this.canopy_array.push("elem")
     this.rebuild_garage_dimensions()
     this.side_menu.insertBefore(new_elem,document.querySelector("#final-object") )
@@ -3192,8 +3502,11 @@ side_selecting(friendly_door, position, side){
     let roof_depth=parseFloat(document.querySelector(".num-selector [name='depth']").value); 
     let roof_height=parseFloat(document.querySelector(".num-selector [name='total-height']").value); 
     let roof_type=parseInt(document.querySelector('input[name="roof-type"]:checked').value);
-    
+    try{
     main_house_outer.release();
+    } catch(error){
+      console.log(error)
+    }
 //main_house_outer=new Creation_controller_outer(30, 10, 10, 10, 10, 10, scene_outer,4);
     main_house_outer=new Creation_controller_outer(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene_outer,roof_type);
 
@@ -3212,10 +3525,19 @@ side_selecting(friendly_door, position, side){
 
     //Canopy code TODO proper logic
     //Presentation
-    this.canopy_array=["Coach hiii"]
-    if(this.canopy_array.length>0){
+    //this.canopy_array=["Coach hiii"]
+    console.log("Attenzione")
+    console.log(canopy_container)
+    let canopy_flag=false;
+    try{
+    canopy_flag=canopy_container.canopy_exists()
+    }
+    catch(error){
+      console.log(error)
+    }
+    if(canopy_flag){
 
-    main_house_canopy=new Creation_controller_outer(constructor_width+2.01, constructor_depth-0.01, constructor_height, roof_width+2.01, roof_depth, roof_height, scene_outer,roof_type);
+    main_house_canopy=new Creation_controller_outer(constructor_width+canopy_container.left_size+canopy_container.right_size, constructor_depth+canopy_container.back_size+canopy_container.front_size, constructor_height, roof_width+canopy_container.left_size+canopy_container.right_size, roof_depth+canopy_container.back_size+canopy_container.front_size, roof_height, scene_outer,roof_type);
     main_house_canopy.wall_front.object.material.color.setRGB(1.0, 0, 0);
 
     function wall_repaint_canopy(wall){
@@ -3256,23 +3578,30 @@ side_selecting(friendly_door, position, side){
     wall_repaint_canopy(main_house_canopy.wall_left)
     wall_repaint_canopy(main_house_canopy.wall_back)
 
-    
-    main_house_canopy.wall_back.geometry.translate(-1,0,0)
-    main_house_canopy.wall_front.geometry.translate(-1,0,0)
-    main_house_canopy.wall_left.geometry.translate(-1,0,0)
-    main_house_canopy.wall_right.geometry.translate(-1,0,0)
-
-    main_house_canopy.roof_front.geometry.translate(-1,0,0)
-    main_house_canopy.roof_back.geometry.translate(-1,0,0)
-    main_house_canopy.roof_right.geometry.translate(-1,0,0)
 
     
-    main_house_canopy.roof_front2.geometry.translate(-1,0,0)
-    main_house_canopy.roof_right2.geometry.translate(-1,0,0)
-    main_house_canopy.roof_back2.geometry.translate(-1,0,0)
+    let canopy_translation=canopy_container.canopy_translation()
+    //See appendix_1.pdf
+    canopy_translation=canopy_translation.multiplyScalar(0.5)
+    //If roof consists of two slopes translate the center just by one half, otherwise go full
+    
 
-    main_house_canopy.roof.geometry.translate(-1,0,0)    
-    main_house_canopy.roof2.geometry.translate(-1,0,0)
+    main_house_canopy.wall_back.geometry.translate(canopy_translation.x, canopy_translation.y,canopy_translation.z)
+    main_house_canopy.wall_front.geometry.translate(canopy_translation.x, canopy_translation.y,canopy_translation.z)
+    main_house_canopy.wall_left.geometry.translate(canopy_translation.x, canopy_translation.y,canopy_translation.z)
+    main_house_canopy.wall_right.geometry.translate(canopy_translation.x, canopy_translation.y,canopy_translation.z)
+
+    main_house_canopy.roof_front.geometry.translate(canopy_translation.x, canopy_translation.y,canopy_translation.z)
+    main_house_canopy.roof_back.geometry.translate(canopy_translation.x, canopy_translation.y,canopy_translation.z)
+    main_house_canopy.roof_right.geometry.translate(canopy_translation.x, canopy_translation.y,canopy_translation.z)
+
+    
+    main_house_canopy.roof_front2.geometry.translate(canopy_translation.x, canopy_translation.y,canopy_translation.z)
+    main_house_canopy.roof_right2.geometry.translate(canopy_translation.x, canopy_translation.y,canopy_translation.z)
+    main_house_canopy.roof_back2.geometry.translate(canopy_translation.x, canopy_translation.y,canopy_translation.z)
+
+    main_house_canopy.roof.geometry.translate(canopy_translation.x, canopy_translation.y,canopy_translation.z)    
+    main_house_canopy.roof2.geometry.translate(canopy_translation.x, canopy_translation.y,canopy_translation.z)
     
     main_house_outer.roof.object.removeFromParent()
     main_house_outer.roof2.object.removeFromParent()
@@ -3294,9 +3623,14 @@ side_selecting(friendly_door, position, side){
     //TODO
     //Based on what type of canopy is being added remove certain parts of the canopy
     //main_house_canopy.wall_front.object.removeFromParent()
-    //main_house_canopy.wall_back.object.removeFromParent()
-    //main_house_canopy.wall_left.object.removeFromParent()
-    main_house_canopy.wall_right.object.removeFromParent()
+    if(!canopy_container.front_size){
+      main_house_canopy.wall_front.object.removeFromParent()}
+    if(!canopy_container.back_size){
+      main_house_canopy.wall_back.object.removeFromParent()}
+    if(!canopy_container.left_size){
+      main_house_canopy.wall_left.object.removeFromParent()}
+    if(!canopy_container.right_size){
+    main_house_canopy.wall_right.object.removeFromParent()}
     
 
 
@@ -3312,7 +3646,7 @@ side_selecting(friendly_door, position, side){
     main_house_outer.roof2=main_house_canopy.roof2
 
     //That is pretty bad, but let it pass for now
-   
+    menu_controller.change_roof()
     
   }
 
@@ -3434,7 +3768,7 @@ side_selecting(friendly_door, position, side){
    
    //wall_repaint_inner(main_house_outer.roof_left)
  
- 
+
  
 
 
@@ -3449,10 +3783,18 @@ change_roof_color(r=255,g=255,b=255){
   }
 
   change_roof(){
-
+    
     const loader = new THREE.TextureLoader();
-  
-    let texture_to_check=document.querySelector('input[name="roof-color"]:checked').value
+    let texture_to_check="#13447C"
+    try{
+     texture_to_check=document.querySelector('input[name="roof-color"]:checked').value
+    }
+    catch(error){
+      console.log("this is expected we choose the default")
+    }
+ 
+
+
     let texture_rotated=document.querySelector('input[name="roof-type-orientation"]:checked').value
    
     function wall_repaint_inner(wall){
@@ -3507,7 +3849,19 @@ change_roof_color(r=255,g=255,b=255){
     console.log("special_case")
   }
   else{
-   let color_value=document.querySelector('input[name="roof-color"]:checked').value
+    console.log("normal_case")
+
+    let color_value="#13447C"
+    try{
+     color_value=document.querySelector('input[name="roof-color"]:checked').value
+    }
+    catch(error){
+      console.log("this is expected we choose the default")
+    }
+    //let color_value=document.querySelector('input[name="roof-color"]:checked').value
+
+
+
    let three_color=new THREE.Color(color_value)
    menu_controller.change_roof_color(three_color.r*255, three_color.g*255, three_color.b*255)
   }
@@ -3585,7 +3939,7 @@ function initiate_project(){
   menu_controller=new Menu_control()
 
 }
-menu_controller.ohmawgawd()
+//menu_controller.ohmawgawd()
 function call_me()
 {
 
@@ -3757,9 +4111,9 @@ for (let wall_color of wall_colors){wall_color.addEventListener('change', (evt)=
 release_resources()
 initiate_project()
 
-//Presentation
+//Presentation-unpresentation
 menu_controller.add_canopy()
-//Presentation
+
 
 menu_controller.rebuild_garage_dimensions()
 
