@@ -15,4 +15,4 @@ Dodatkowe funkcje[]
     -Generowanie rzutów[]
 
 
-Configure the canopies
+Configure the canopies[]
