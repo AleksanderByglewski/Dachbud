@@ -399,6 +399,79 @@ class Displacement_object {
 
       {
         const gltfLoader = new GLTFLoader();
+        gltfLoader.load('./objects/gutter/scene6.gltf', (gltf) => {
+
+          const root = gltf.scene;
+     
+          scene_outer.add(root);
+  
+          console.log(dumpObject(root).join('\n'));
+
+          let handle1 = root.getObjectByName('root');
+          handle1.name = "hand1"
+
+          let object_height=2.0
+          
+          handle1.scale.y = object_height*0.95
+          //handle1.visible = false;
+          handle1.translateY(-object_height/2)
+          
+
+          this.mesh.add(handle1)
+      
+
+          //Potrzebny bedzie jakis przelicznik
+          console.log("Show me the norm")
+          //handle1.scale.y=2;
+          console.log(handle1)
+          console.log("End of the norm")
+          //Transformation part
+
+          let target = this.mesh.getObjectByName("hand1")
+          target.visible = true;
+
+        });
+
+
+      }
+
+      {
+        const gltfLoader = new GLTFLoader();
+        gltfLoader.load('./objects/gutter-top/scene1.gltf', (gltf) => {
+
+          const root = gltf.scene;
+
+          scene_outer.add(root);
+    
+
+
+
+          let handle1 = root.getObjectByName('root');
+          handle1.name = "hand3"
+          this.mesh.add(handle1)
+    
+          console.log("Show me the norm")
+          console.log(handle1)
+          console.log("End of the norm")
+          //Transformation part
+          handle1.scale.x = 1.0
+          handle1.scale.y = 1.0
+          handle1.scale.z = 1.0
+          
+          let object_height=2.0
+          
+          //handle1.scale.y = object_height*0.95
+          //handle1.visible = false;
+          handle1.translateY(+object_height/2)
+          
+        });
+      }
+
+
+
+      //Door handles
+      {
+        const gltfLoader = new GLTFLoader();
         gltfLoader.load('./objects/door_handle3/scene-right.gltf', (gltf) => {
 
 
