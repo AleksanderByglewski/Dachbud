@@ -221,3 +221,13 @@ div#roof-material {
       margin-right: -1em;
       margin-left: -1em;
   }
+
+  .check-selector{
+  display: grid !important;
+  grid-template-columns: 1fr 30px !important;
+  align-content: center;
+  align-items: center
+  }
+  [type="checkbox"]{
+      margin-left: 2em;
+  }

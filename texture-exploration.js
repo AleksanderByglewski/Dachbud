@@ -403,7 +403,7 @@ class Displacement_object {
 
 
 
-          console.log("The end")
+        //  console.log("The end")
           const root = gltf.scene;
           //gltf.scene.scale.set(0.1, 0.1, 0.1);
           //gltf.scene.translate(0,0,0)
@@ -427,7 +427,7 @@ class Displacement_object {
 
 
           handle1.visible = false;
-          console.log(handle1)
+       //   console.log(handle1)
           //handle1.rotateY(0.30)
           //console.log(this.mesh)
           this.mesh.add(handle1)
@@ -475,17 +475,17 @@ class Displacement_object {
           let target = this.mesh.getObjectByName("handle1")
           target.visible = true;
 
-          console.log(handle1)
+        //  console.log(handle1)
 
 
-          console.log(dumpObject(root).join('\n'));
+         // console.log(dumpObject(root).join('\n'));
         });
         gltfLoader.load('./objects/door_handle4/scene4.gltf', (gltf) => {
-          console.log("The end 2")
+        //  console.log("The end 2")
 
 
           const root = gltf.scene;
-          console.log(dumpObject(root).join('\n'));
+       //   console.log(dumpObject(root).join('\n'));
           //gltf.scene.scale.set(0.1, 0.1, 0.1);
           //gltf.scene.translate(0,0,0)
           scene_outer.add(root);
@@ -493,13 +493,13 @@ class Displacement_object {
           // root.scale.x=0.01;
           // root.scale.y=0.01;
           //root.scale.z=0.01;
-          console.log(dumpObject(root).join('\n'));
+      //    console.log(dumpObject(root).join('\n'));
           let handle1 = root.getObjectByName('Sketchfab_model');
           handle1.name = "handle2"
           //handle1.rotateY(0.30)
 
-          console.log("hey change the color")
-          console.log(this.mesh)
+       //   console.log("hey change the color")
+       //   console.log(this.mesh)
         
           //this.mesh.add(handle1)
           //handle1.translateY(-1)
@@ -527,7 +527,7 @@ class Displacement_object {
           //handle1.translateX(0)
           //handle1.position.y=-30
           //handle1.translate.y=-30;
-          console.log(handle1)
+       //   console.log(handle1)
           //handle1.position.z=20.1;
           //this.mesh.add(handle1)
           //handle1.rotation.y=Math.PI/2;
@@ -547,7 +547,7 @@ class Displacement_object {
 
 
 
-          console.log(dumpObject(root).join('\n'));
+        //  console.log(dumpObject(root).join('\n'));
         });
 
       }
@@ -1084,7 +1084,7 @@ class Displacement_object {
     insert_mesh.name = "door_decoration"
 
     this.mesh.add(insert_mesh);
-    console.log(this.mesh)
+    //console.log(this.mesh)
 
     let target = this.mesh.getObjectByName("door_decoration")
     insert_mesh.visible = target.visible
@@ -2265,10 +2265,11 @@ function main() {
   let wall_left = new Garage_walls(constructor_depth, constructor_height, -constructor_width / 2, constructor_height / 2, 0, Math.PI / 2)
   let wall_right = new Garage_walls(constructor_depth, constructor_height, constructor_width / 2, constructor_height / 2, 0, Math.PI / 2)
 
+  //FIX
   {
     const color = 0xFFFFFF; // white
     const near = 10;
-    const far = 70;
+    const far = 120;
     scene.fog = new THREE.Fog(color, near, far);
   }
 
@@ -2328,7 +2329,7 @@ function main() {
 
   {
     const color = 0xFFFFFF;
-    const intensity = 1;
+    const intensity = 0.2;
     const light = new THREE.DirectionalLight(color, intensity);
 
     //glass update
@@ -2656,7 +2657,7 @@ class Menu_control {
 
       visibility_position_menu=''
       visibility_position_menu_x= ''
-      visibility_position_menu_y= 'style="display:none"'
+      visibility_position_menu_y= 'style="display:none !important"'
       
       visibility_sizing_menu=''
       visibility_sizing_menu_x=''
@@ -3242,7 +3243,7 @@ class Menu_control {
 
             case 'left':
               canopy_container.left_size = set_width;
-              this.rebuild_garage_dimensions()
+              this.rebuild_garage_dimensions_hold_the_children()
               //evt.currentTarget.value=element.translation_x
 
 
@@ -3251,7 +3252,7 @@ class Menu_control {
               break;
             case 'right':
               canopy_container.right_size = set_width;
-              this.rebuild_garage_dimensions()
+              this.rebuild_garage_dimensions_hold_the_children()
               //evt.currentTarget.value=element.translation_x
 
 
@@ -3259,11 +3260,11 @@ class Menu_control {
               break;
             case 'front':
               canopy_container.front_size = set_width;
-              this.rebuild_garage_dimensions()
+              this.rebuild_garage_dimensions_hold_the_children()
               break;
             case 'back':
               canopy_container.back_size = set_width;
-              this.rebuild_garage_dimensions()
+              this.rebuild_garage_dimensions_hold_the_children()
               //evt.currentTarget.value=element.translation_y;
               //direction_y=10-translation_value;
               break;
@@ -3899,7 +3900,7 @@ class Menu_control {
     let new_elem = this.add_node(null, null, wall_chosen, "Wiata " + wall_chosen)
 
     this.canopy_array.push("elem")
-    this.rebuild_garage_dimensions()
+    this.rebuild_garage_dimensions_hold_the_children()
     this.side_menu.insertBefore(new_elem, document.querySelector("#final-object"))
   }
 
@@ -3915,6 +3916,49 @@ class Menu_control {
     main_house_outer.wall_left.remove_components()
     main_house_outer.wall_right.remove_components()
   }
+
+  //Future improvements
+  hold_all_the_children(){
+    
+    return [
+    menu_controller.hold_children(main_house_outer.wall_front),
+    menu_controller.hold_children(main_house_outer.wall_left),
+    menu_controller.hold_children(main_house_outer.wall_back),
+    menu_controller.hold_children(main_house_outer.wall_right)
+    ]
+
+  }
+  
+  readd_all_the_children(container_of_children){
+    menu_controller.readd_the_children(main_house_outer.wall_front, container_of_children[0])
+    menu_controller.readd_the_children(main_house_outer.wall_left, container_of_children[1])
+    menu_controller.readd_the_children(main_house_outer.wall_back, container_of_children[2])
+    menu_controller.readd_the_children(main_house_outer.wall_right, container_of_children[3])
+  }
+
+  rebuild_garage_dimensions_hold_the_children(){
+let big_box_of_friends=menu_controller.hold_all_the_children()
+menu_controller.rebuild_garage_dimensions()
+menu_controller.readd_all_the_children(big_box_of_friends)
+  }
+
+  hold_children(wall_targeted){
+
+    console.log("Copy the children")
+
+    console.log(wall_targeted.object.children)
+
+
+    return wall_targeted.object.children
+  }
+
+  readd_the_children( wall_targeted,wall_container){
+      for (let child of wall_container)
+      {
+        wall_targeted.object.add(child)
+      }
+
+    }
 
   rebuild_garage_dimensions() {
 
@@ -4511,7 +4555,7 @@ for (let roof of roof_types) {
 }
 for (let roof of roof_types) {
   roof.addEventListener('change', roof_recalculation)
-  roof.addEventListener('change', menu_controller.rebuild_garage_dimensions)
+  roof.addEventListener('change', menu_controller.rebuild_garage_dimensions_hold_the_children)
 }
 
 
@@ -4559,7 +4603,7 @@ for (let garage_dimension of garage_dimension_changers) {
 
 for (let garage_dimension of garage_dimension_changers) {
  
-  garage_dimension.addEventListener('change', menu_controller.rebuild_garage_dimensions)
+  garage_dimension.addEventListener('change', menu_controller.rebuild_garage_dimensions_hold_the_children)
 }
 
 for (let garage_dimension of garage_dimension_changers) {
@@ -4637,7 +4681,7 @@ class Foundation extends General_object {
         //This is kinda a quick fix but it works
         texture.repeat.set(this.width / 2, this.depth / 2);
         texture.rotation = (0)
-        var material = new THREE.MeshStandardMaterial({
+        var material = new THREE.MeshBasicMaterial({
           color: 0xffffff,
           wireframe: false,
           side: THREE.DoubleSide,
@@ -4667,7 +4711,7 @@ class Foundation extends General_object {
             var geometry = new THREE.PlaneGeometry(block_width, block_depth, 2, 2);
             geometry.translate(displacement_x * (this.width / 2 - block_width / 2), displacement_y * (this.depth / 2 - block_depth / 2), 0)
             geometry.rotateX(Math.PI / 2)
-            var material = new THREE.MeshStandardMaterial({
+            var material = new THREE.MeshBasicMaterial({
               color: 0xff6347,
               wireframe: false,
               side: THREE.DoubleSide,
@@ -4690,7 +4734,7 @@ class Foundation extends General_object {
 
         texture.repeat.set(this.width, this.depth);
         texture.rotation = (0)
-        var material = new THREE.MeshStandardMaterial({
+        var material = new THREE.MeshBasicMaterial({
           color: 0xffffff,
           wireframe: false,
           side: THREE.DoubleSide,
@@ -4714,7 +4758,7 @@ class Foundation extends General_object {
         //This is kinda a quick fix but it works
         texture.repeat.set(this.width, this.depth);
         texture.rotation = (0)
-        var material = new THREE.MeshStandardMaterial({
+        var material = new THREE.MeshBasicMaterial({
           color: 0xffffff,
           wireframe: false,
           side: THREE.DoubleSide,
@@ -4787,3 +4831,78 @@ menu_controller.change_wall()
 // main_house_outer.roof_right2.object.removeFromParent()
 // main_house_outer.roof.object.removeFromParent()
 // main_house_outer.roof.object.removeFromParent()
+
+
+
+
+
+
+
+
+// const skyGeo2 = new THREE.SphereGeometry( 100, 32, 15 );
+// const skyMat2=new THREE.MeshBasicMaterial({
+//   //map: wall.texture,
+//   color: 0x87ceeb,
+//   side: THREE.DoubleSide
+// })
+
+// let sky2= new THREE.Mesh( skyGeo2, skyMat2 );
+// scene_outer.add( sky2 );
+
+
+
+// let grass_texture = loader.load('grass2.jpg');
+// grass_texture.repeat.set(20, 20);
+
+// grass_texture.wrapS = THREE.RepeatWrapping;
+// grass_texture.wrapT = THREE.RepeatWrapping;
+// grass_texture.wrapT = THREE.RepeatWrapping
+// grass_texture.wrapS = THREE.RepeatWrapping;
+
+// grass_texture.repeat.set(25.0, 25.0);
+
+// let dp_map = loader.load('displacement.jpg');
+// dp_map.repeat.set(50.0, 50.0);
+
+// const planeGeo = new THREE.PlaneGeometry( 50, 50 );
+// planeGeo.rotateX(Math.PI / 2);
+
+// let planeMat=new THREE.MeshPhysicalMaterial({
+
+// })
+//  dp_map = loader.load('dpmap.png');
+//     const normalMap4 =  new THREE.TextureLoader().load( './textures/golfball2.jpg' );
+//         const clearcoatNormaMap =  new THREE.TextureLoader().load( './textures/scratched.png' );
+//          planeMat = new THREE.MeshBasicMaterial( {
+          
+//           //roughness: 0.5,
+         
+//           side: THREE.DoubleSide,
+//           //normalMap: dp_map,
+//           //bumpMap:dp_map,
+//           map:grass_texture
+//           //clearcoatNormalMap: clearcoatNormaMap,
+//           // y scale is negated to compensate for normal map handedness.
+//           //clearcoatNormalScale: new THREE.Vector2( 2.0, - 2.0 )
+//         } );
+
+
+// let plane= new THREE.Mesh( planeGeo, planeMat );
+// plane.position.y=-0.05
+// console.log(plane)
+// console.log("heyy")
+// scene_outer.add( plane );
+
+
+//let big_box_of_friends=menu_controller.hold_all_the_children()
+//console.log(big_box_of_friends)
+
+//menu_controller.rebuild_garage_dimensions()
+
+//menu_controller.readd_all_the_children(big_box_of_friends)
+
+
+
+
+//a big_box_of_friends=menu_controller.hold_all_the_children()
+//menu_controller.readd_all_the_children(big_box_of_friends)
