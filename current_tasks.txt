@@ -1,5 +1,5 @@
 Rewizja
-    1.//ANSWER DEPENDANT
+    1.//ANSWER DEPENDANT "Dzień dobry jaki kąt nachlenia dachu"
     2.RESOLVED
     3.RESOLVED
     4.RESOLVED COULD HAVE CAUSED ISSUES WITH PREVIOUS REVISION CHECK IF EVERYTHING IS CORRECT ANSWER DEPENDANDANT
@@ -14,7 +14,7 @@ Rewizja
     10.//RESOLVED
     11.//PENDING Gutters
     12.//RESOLVED
-    13.//PENDING Obrobki blacharskie
+    13.//RESOLVED
     15.//RESOLVED
     16.//RESOLVED
     17.//RESOLVED "Wprowadzilismy tez braki z poprzedniej rewizji czyli poprawe modelu wiaty

@@ -3005,6 +3005,8 @@ class Beams{
 }
 
 
+let external_arr=""
+
 class Menu_control {
 
   constructor() {
@@ -4952,7 +4954,7 @@ if(false){
 
 
 }
-      //let external_arr=new Reinforcements_boys()
+      
 
 
 
@@ -4972,11 +4974,13 @@ if(false){
 
       //Careful with making a cyclical call
       document.querySelector('input[name="wall-type"]').dispatchEvent(new Event('change'));
-      
+      //external_arr=new Reinforcements_boys()
 
     }
 
   }
+
+  
   rebuild_roof() {
     //This code causes bugs for unknown reasons so lets get rid of it
     //main_house_outer.release_roof();
@@ -5236,52 +5240,779 @@ class Reinforcements_boys{
   let reinforcement_depth=0.02 
   let compensation=(reinforcement_width-reinforcement_depth)/2
 
-  let insert_geometry = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
-  let insert_geometry_left = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
-  let insert_geometry_right = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
-  let insert_geometry_back = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
+  let index_roof=parseInt(document.querySelector('input[name="roof-type"]:checked').value)
+  //Change the heights based of the canopies selected
+    
+  let height_multiplier=0.5
+  let front_size=canopy_container.left_size+canopy_container.right_size
+  let side_size=canopy_container.back_size+canopy_container.front_size
+  let base_beam_height_modifier=Array(4).fill(0)
+  
+
+
+  if(index_roof==5 || index_roof==4){
+    height_multiplier=0.25*0.4
+   }
+  if(index_roof==1 || index_roof==3){
+     height_multiplier=0.087
+    }
+  if(index_roof==0 || index_roof==2){
+      //RESPONSE DEPENDANT
+     height_multiplier=0.1 //or 0.2 if blue was chosen
+  }
+
+
+  if(index_roof==0 && canopy_container.right_size==0)
+  {
+    
+    console.log(height_multiplier)
+    console.log(height_multiplier*front_size)
+    base_beam_height_modifier[1]=parseFloat(document.querySelector(".num-selector [name='total-height']").value)
+    base_beam_height_modifier[3]=parseFloat(document.querySelector(".num-selector [name='total-height']").value)
+    
+  }
+
+  if(index_roof==2 && canopy_container.left_size==0)
+  {
+    
+    console.log(height_multiplier)
+    console.log(height_multiplier*front_size)
+    base_beam_height_modifier[0]=parseFloat(document.querySelector(".num-selector [name='total-height']").value)
+    base_beam_height_modifier[2]=parseFloat(document.querySelector(".num-selector [name='total-height']").value)
+    
+  }
+
+
+
+  let insert_geometry = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height+base_beam_height_modifier[0],  0.10);
+  let insert_geometry_left = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height+base_beam_height_modifier[1],  0.10);
+  let insert_geometry_right = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height+base_beam_height_modifier[2],  0.10);
+  let insert_geometry_back = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height+base_beam_height_modifier[3],  0.10);
   let insert_material = new THREE.MeshBasicMaterial({
     color: 0x272727,
     side: THREE.DoubleSide
   });
   
 
-  let container=new Array(4)
-  container[0]=new THREE.Mesh(insert_geometry, insert_material);
-  container[1]=new THREE.Mesh(insert_geometry_left, insert_material);
-  container[2]=new THREE.Mesh(insert_geometry_right, insert_material);
-  container[3]=new THREE.Mesh(insert_geometry_back, insert_material);
+  this.container=new Array(8)
 
 
-  console.log("Okay idk:")
-  //console.log(main_house_outer.wall_front.object)
+  this.container[0]=new THREE.Mesh(insert_geometry, insert_material);
+  this.container[1]=new THREE.Mesh(insert_geometry_left, insert_material);
+  this.container[2]=new THREE.Mesh(insert_geometry_right, insert_material);
+  this.container[3]=new THREE.Mesh(insert_geometry_back, insert_material);
 
-
- 
+  this.container[0].geometry.translate(0,base_beam_height_modifier[0]*0.5,0)
+  this.container[1].geometry.translate(0,base_beam_height_modifier[1]*0.5,0)
+  this.container[2].geometry.translate(0,base_beam_height_modifier[2]*0.5,0)
+  this.container[3].geometry.translate(0,base_beam_height_modifier[3]*0.5,0)
   
 
-  //reinforcements_container.container[2].name="reinforcement-wall3"
-  //reinforcements_container.container[3].name="reinforcement-wall4"
-
-  main_house_outer.wall_front.object.add(container[0]);
-  main_house_outer.wall_front.object.add(container[1]);
-  main_house_outer.wall_back.object.add(container[2]);
-  main_house_outer.wall_back.object.add(container[3]);
-
-  let rotation_0=new THREE.Vector3(-(main_house_outer.wall_front.width/2-compensation),0,-compensation)
-  let rotation_1=new THREE.Vector3(+(main_house_outer.wall_front.width/2-compensation),0,-compensation )
-  let rotation_2=new THREE.Vector3(-(main_house_outer.wall_front.width/2-compensation),0,+compensation)
-  let rotation_3=new THREE.Vector3(+(main_house_outer.wall_front.width/2-compensation),0,+compensation)
-
-  container[0].geometry.translate(rotation_0.x,rotation_0.y,rotation_0.z)
-  container[1].geometry.translate(rotation_1.x,rotation_1.y,rotation_1.z)
-  container[2].geometry.translate(rotation_2.x,rotation_2.y,rotation_2.z)
-  container[3].geometry.translate(rotation_3.x,rotation_3.y,rotation_3.z)
+  //console.log("Okay now i know:")
+  //console.log(main_house_canopy.roof_front)
+  
 
 
- }
+
+if(index_roof==4 ||index_roof==5 ){
+  let geometry_up=new THREE.Vector3(0,0.05,0)
+  let geometry_front=new THREE.Vector3(main_house_outer.wall_front.width/2, 0, 0.05)
+  let geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+  let wow=new THREE.Mesh(insert_geometry_roof_back, insert_material);
+  main_house_outer.wall_front.object.add(wow)
+  wow.geometry.rotateZ(-0.2006)
+  //console.log(parseFloat(document.querySelector(".num-selector [name='total-height']").value))
+
+  let translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0.30,0)
+  let translation_front=new THREE.Vector3(0, 0, 0)
+  let translation_side=new THREE.Vector3(0, 0, 0)
+  //IN this case unncessary
+  translation_side.x=0
+  
+  
+  let translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up)
+  //console.log(translation_total)
+  wow.geometry.translate(translation_total.x,translation_total.y,translation_total.z)
+  //wow.geometry.rotateZ(1.57-0.0717)
+  }
+if(index_roof==2){
+  let box_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+
+  let geometry_up=new THREE.Vector3(0,0.05,0)
+  let geometry_front=new THREE.Vector3(box_width, 0, 0.05)
+  let geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+  let wow=new THREE.Mesh(insert_geometry_roof_back, insert_material);
+  let wow2=new THREE.Mesh(insert_geometry_roof_back.clone(), insert_material);
+
+
+  wow.name="BAD-CHILD"
+  wow2.name="BAD-CHILD"
+
+  
+
+  main_house_outer.wall_front.object.add(wow)
+  main_house_outer.wall_front.object.add(wow2)
+  
+  wow.geometry.rotateZ(-0.1006)
+  wow2.geometry.rotateZ(-0.1006)
+
+  let total_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+  let translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+height_multiplier*total_width/2,0)
+  let translation_front=new THREE.Vector3(0, 0, 0)
+  let translation_side=new THREE.Vector3(0, 0, 0)
+  let canopy_offset=(canopy_container.canopy_translation()).multiplyScalar(0.5)
+  
+  let translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up).add(canopy_offset)
+  wow.geometry.translate(translation_total.x,translation_total.y,translation_total.z)
+  wow2.geometry.translate(translation_total.x,translation_total.y,-main_house_outer.wall_left.width)
+  
+
+  let box_depth=canopy_container.front_size+canopy_container.back_size+main_house_outer.wall_front.width
+
+  geometry_up=new THREE.Vector3(0,0.05,0)
+  geometry_front=new THREE.Vector3(box_depth, 0, 0.05)
+  geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back2 = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+
+  let wow3=new THREE.Mesh(insert_geometry_roof_back2.clone(), insert_material);
+  let wow4=new THREE.Mesh(insert_geometry_roof_back2.clone(), insert_material);
+  wow3.name="BAD-CHILD"
+  wow4.name="BAD-CHILD"
+
+
+  wow3.geometry.rotateY(1.57)
+  wow4.geometry.rotateY(1.57)
+
+  main_house_outer.wall_right.object.add(wow3)
+  main_house_outer.wall_left.object.add(wow4)
+
+   total_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+   translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0*height_multiplier*total_width/2,0)
+   translation_front=new THREE.Vector3(0, 0, 0)
+   translation_side=new THREE.Vector3(0, 0, 0)
+   canopy_offset=(canopy_container.canopy_translation()).multiplyScalar(0.5)
+  
+
+   wow3.visible=true
+   wow4.visible=true
+   
+
+   let main_side_roof_up=0
+   if(!canopy_container.left_size){
+    main_side_roof_up=main_house_outer.roof_height
+   
+    }
+    if(!canopy_container.right_size){
+      wow3.visible=false
+      
+      }
+       
+
+    
+
+  translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up).add(canopy_offset)
+  wow3.geometry.translate(0,translation_total.y,0)
+  wow4.geometry.translate(0,translation_total.y+main_side_roof_up,0)
+
+
+
+
 
 }
+
+if(index_roof==0)
+{
+  let box_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+
+  let geometry_up=new THREE.Vector3(0,0.05,0)
+  let geometry_front=new THREE.Vector3(box_width, 0, 0.05)
+  let geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+  let wow=new THREE.Mesh(insert_geometry_roof_back, insert_material);
+  let wow2=new THREE.Mesh(insert_geometry_roof_back.clone(), insert_material);
+
+
+  wow.name="BAD-CHILD"
+  wow2.name="BAD-CHILD"
+
+  
+
+  main_house_outer.wall_front.object.add(wow)
+  main_house_outer.wall_front.object.add(wow2)
+  
+  wow.geometry.rotateZ(+0.1006)
+  wow2.geometry.rotateZ(+0.1006)
+
+  let total_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+  let translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+height_multiplier*total_width/2,0)
+  let translation_front=new THREE.Vector3(0, 0, 0)
+  let translation_side=new THREE.Vector3(0, 0, 0)
+  let canopy_offset=(canopy_container.canopy_translation()).multiplyScalar(0.5)
+  
+  let translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up).add(canopy_offset)
+  wow.geometry.translate(translation_total.x,translation_total.y,translation_total.z)
+  wow2.geometry.translate(translation_total.x,translation_total.y,-main_house_outer.wall_left.width)
+  
+
+  let box_depth=canopy_container.front_size+canopy_container.back_size+main_house_outer.wall_front.width
+
+  geometry_up=new THREE.Vector3(0,0.05,0)
+  geometry_front=new THREE.Vector3(box_depth, 0, 0.05)
+  geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back2 = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+
+  let wow3=new THREE.Mesh(insert_geometry_roof_back2.clone(), insert_material);
+  let wow4=new THREE.Mesh(insert_geometry_roof_back2.clone(), insert_material);
+  wow3.name="BAD-CHILD"
+  wow4.name="BAD-CHILD"
+
+
+  wow3.geometry.rotateY(1.57)
+  wow4.geometry.rotateY(1.57)
+
+  main_house_outer.wall_right.object.add(wow3)
+  main_house_outer.wall_left.object.add(wow4)
+
+   total_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+   translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0*height_multiplier*total_width/2,0)
+   translation_front=new THREE.Vector3(0, 0, 0)
+   translation_side=new THREE.Vector3(0, 0, 0)
+   canopy_offset=(canopy_container.canopy_translation()).multiplyScalar(0.5)
+  
+   //console.log(main_house_outer)
+  let main_side_roof_up=0
+  if(!canopy_container.right_size){
+  main_side_roof_up=main_house_outer.roof_height
+  }
+  translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up).add(canopy_offset)
+  wow3.geometry.translate(0,translation_total.y+main_side_roof_up,0)
+  wow4.geometry.translate(0,translation_total.y,0)
+
+  wow3.visible=true
+  wow4.visible=true
+  if(!canopy_container.left_size){
+    wow4.visible=false
+    }
+
+}
+
+if(index_roof==1)
+{
+  let box_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+  let geometry_up=new THREE.Vector3(0,0.05,0)
+  let geometry_front=new THREE.Vector3(box_width, 0, 0.05)
+  let geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+  let wow=new THREE.Mesh(insert_geometry_roof_back, insert_material);
+  let wow2=new THREE.Mesh(insert_geometry_roof_back.clone(), insert_material);
+
+
+  wow.name="BAD-CHILD"
+  wow2.name="BAD-CHILD"
+
+  
+
+  main_house_outer.wall_front.object.add(wow)
+  main_house_outer.wall_front.object.add(wow2)
+  
+  //wow.geometry.rotateZ(+0.1006)
+  //wow2.geometry.rotateZ(+0.1006)
+
+  let total_width=canopy_container.front_size+canopy_container.back_size+main_house_outer.wall_front.width
+  let translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0*height_multiplier*total_width/2,0)
+  let translation_front=new THREE.Vector3(0, 0, 0)
+  let translation_side=new THREE.Vector3(0, 0, 0)
+  let canopy_offset=(canopy_container.canopy_translation()).multiplyScalar(0.5)
+  
+  let main_side_roof_up=0
+  if(!canopy_container.front_size){
+  main_side_roof_up=main_house_outer.roof_height
+  }
+
+  let translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up).add(canopy_offset)
+  wow.geometry.translate(translation_total.x,translation_total.y,translation_total.z)
+  wow2.geometry.translate(translation_total.x,translation_total.y+main_side_roof_up,-main_house_outer.wall_left.width)
+  
+  if(!canopy_container.front_size){
+   
+  wow.visible=false;
+}
+
+  let box_depth=canopy_container.front_size+canopy_container.back_size+main_house_outer.wall_front.width
+
+  geometry_up=new THREE.Vector3(0,0.05,0)
+  geometry_front=new THREE.Vector3(box_depth, 0, 0.05)
+  geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back2 = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+
+  let wow3=new THREE.Mesh(insert_geometry_roof_back2.clone(), insert_material);
+  let wow4=new THREE.Mesh(insert_geometry_roof_back2.clone(), insert_material);
+  wow3.name="BAD-CHILD"
+  wow4.name="BAD-CHILD"
+
+
+  wow3.geometry.rotateY(1.57)
+  wow4.geometry.rotateY(1.57)
+
+  let wow3_side_up=0
+  if(!canopy_container.right_size){
+  wow3.geometry.rotateX(0.08711)
+  wow3_side_up=1}
+  
+  let wow4_side_up=0
+  if(!canopy_container.left_size){
+  wow4.geometry.rotateX(0.08711)
+  wow4_side_up=1
+
+}
+
+
+  main_house_outer.wall_right.object.add(wow3)
+  main_house_outer.wall_left.object.add(wow4)
+
+   total_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+   translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0*height_multiplier*total_width/2,0)
+   translation_front=new THREE.Vector3(0, 0, 0)
+   translation_side=new THREE.Vector3(0, 0, 0)
+   canopy_offset=(canopy_container.canopy_translation()).multiplyScalar(0.5)
+  
+   //console.log(main_house_outer)
+
+  translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up).add(canopy_offset)
+  wow3.geometry.translate(0,translation_total.y+wow3_side_up*main_side_roof_up/2,0)
+  wow4.geometry.translate(0,translation_total.y+wow4_side_up*main_side_roof_up/2,0)
+
+  wow3.visible=true
+  wow4.visible=true
+
+}
+
+if(index_roof==3)
+{
+  let box_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+
+  let geometry_up=new THREE.Vector3(0,0.05,0)
+  let geometry_front=new THREE.Vector3(box_width, 0, 0.05)
+  let geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+  let wow=new THREE.Mesh(insert_geometry_roof_back, insert_material);
+  let wow2=new THREE.Mesh(insert_geometry_roof_back.clone(), insert_material);
+
+
+  wow.name="BAD-CHILD"
+  wow2.name="BAD-CHILD"
+
+  
+
+  main_house_outer.wall_front.object.add(wow)
+  main_house_outer.wall_front.object.add(wow2)
+  
+  //wow.geometry.rotateZ(+0.1006)
+  //wow2.geometry.rotateZ(+0.1006)
+
+  let total_width=canopy_container.front_size+canopy_container.back_size+main_house_outer.wall_front.width
+  let translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0*height_multiplier*total_width/2,0)
+  let translation_front=new THREE.Vector3(0, 0, 0)
+  let translation_side=new THREE.Vector3(0, 0, 0)
+  let canopy_offset=(canopy_container.canopy_translation()).multiplyScalar(0.5)
+  
+  let main_side_roof_up=0
+  if(!canopy_container.front_size){
+  main_side_roof_up=main_house_outer.roof_height
+  }
+
+  let translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up).add(canopy_offset)
+  wow.geometry.translate(translation_total.x,translation_total.y+main_side_roof_up,translation_total.z)
+  wow2.geometry.translate(translation_total.x,translation_total.y,-main_house_outer.wall_left.width)
+  
+  wow2.visible=false;
+
+
+  let box_depth=canopy_container.front_size+canopy_container.back_size+main_house_outer.wall_front.width
+
+  geometry_up=new THREE.Vector3(0,0.05,0)
+  geometry_front=new THREE.Vector3(box_depth, 0, 0.05)
+  geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back2 = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+
+  let wow3=new THREE.Mesh(insert_geometry_roof_back2.clone(), insert_material);
+  let wow4=new THREE.Mesh(insert_geometry_roof_back2.clone(), insert_material);
+  wow3.name="BAD-CHILD"
+  wow4.name="BAD-CHILD"
+
+
+  wow3.geometry.rotateY(1.57)
+  wow4.geometry.rotateY(1.57)
+
+  let wow3_side_up=0
+  if(!canopy_container.right_size){
+  wow3.geometry.rotateX(-0.08711)
+  wow3_side_up=1}
+  
+  let wow4_side_up=0
+  if(!canopy_container.left_size){
+  wow4.geometry.rotateX(-0.08711)
+  wow4_side_up=1
+
+}
+
+
+  main_house_outer.wall_right.object.add(wow3)
+  main_house_outer.wall_left.object.add(wow4)
+
+   total_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+   translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0*height_multiplier*total_width/2,0)
+   translation_front=new THREE.Vector3(0, 0, 0)
+   translation_side=new THREE.Vector3(0, 0, 0)
+   canopy_offset=(canopy_container.canopy_translation()).multiplyScalar(0.5)
+  
+   //console.log(main_house_outer)
+
+  translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up).add(canopy_offset)
+  wow3.geometry.translate(0,translation_total.y+wow3_side_up*main_side_roof_up/2,0)
+  wow4.geometry.translate(0,translation_total.y+wow4_side_up*main_side_roof_up/2,0)
+
+  wow3.visible=true
+  wow4.visible=true
+
+
+}
+
+if(index_roof==5)
+{
+  let box_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+
+  let geometry_up=new THREE.Vector3(0,0.05,0)
+  let geometry_front=new THREE.Vector3(box_width, 0, 0.05)
+  let geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+  let wow=new THREE.Mesh(insert_geometry_roof_back, insert_material);
+  let wow2=new THREE.Mesh(insert_geometry_roof_back.clone(), insert_material);
+
+
+  wow.name="BAD-CHILD"
+  wow2.name="BAD-CHILD"
+
+  
+
+  //main_house_outer.wall_front.object.add(wow)
+  //main_house_outer.wall_front.object.add(wow2)
+  
+  //wow.geometry.rotateZ(+0.1006)
+  //wow2.geometry.rotateZ(+0.1006)
+
+  let total_width=canopy_container.front_size+canopy_container.back_size+main_house_outer.wall_front.width
+  let translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0*height_multiplier*total_width/2,0)
+  let translation_front=new THREE.Vector3(0, 0, 0)
+  let translation_side=new THREE.Vector3(0, 0, 0)
+  let canopy_offset=(canopy_container.canopy_translation()).multiplyScalar(0.5)
+  
+  let main_side_roof_up=0
+  if(canopy_container.front_size){
+    //main_house_outer.wall_front.object.add(wow)
+  }
+  if(canopy_container.back_size){
+    //main_house_outer.wall_front.object.add(wow2)
+    }
+
+  let translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up).add(canopy_offset)
+  wow.geometry.translate(translation_total.x,translation_total.y+main_side_roof_up,translation_total.z)
+  wow2.geometry.translate(translation_total.x,translation_total.y,-main_house_outer.wall_left.width)
+  
+
+  
+
+  let box_depth=canopy_container.front_size+canopy_container.back_size+main_house_outer.wall_front.width
+
+
+  geometry_up=new THREE.Vector3(0,0.05,0)
+  geometry_front=new THREE.Vector3(0.5*box_depth, 0, 0.05)
+  geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back2 = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+
+  let wow3=new THREE.Mesh(insert_geometry_roof_back2.clone(), insert_material);
+  let wow4=new THREE.Mesh(insert_geometry_roof_back2.clone(), insert_material);
+  wow3.name="BAD-CHILD"
+  wow4.name="BAD-CHILD"
+
+
+  wow3.geometry.rotateY(1.57)
+  wow4.geometry.rotateY(1.57)
+
+  let wow3_side_up=0
+ 
+  main_side_roof_up=main_house_outer.roof_height
+  if(!canopy_container.right_size){
+    wow3.geometry.rotateX(0.201)
+    wow3_side_up=1}
+  
+  let wow4_side_up=0
+  if(!canopy_container.left_size){
+    wow4.geometry.rotateX(0.201)
+    wow4_side_up=1
+  }
+
+
+  main_house_outer.wall_right.object.add(wow3)
+  main_house_outer.wall_left.object.add(wow4)
+
+   total_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+   translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0*height_multiplier*total_width/2,0)
+   translation_front=new THREE.Vector3(0, 0, 0)
+   translation_side=new THREE.Vector3(0, 0, 0)
+   canopy_offset=(canopy_container.canopy_translation()).multiplyScalar(0.5)
+  
+   //console.log(main_house_outer)
+
+  translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up).add(canopy_offset)
+
+  wow3.visible=true
+  wow4.visible=true
+
+  let wow5=new THREE.Mesh(wow3.geometry.clone(), insert_material);
+  let wow6=new THREE.Mesh(wow4.geometry.clone(), insert_material);
+
+  wow5.name="BAD-CHILD"
+  wow6.name="BAD-CHILD"
+
+  main_house_outer.wall_right.object.add(wow5)
+  main_house_outer.wall_left.object.add(wow6)
+
+ 
+  if(!canopy_container.right_size){
+    wow5.geometry.rotateX(-2*0.201)
+    }
+  
+  
+  if(!canopy_container.left_size){
+    wow6.geometry.rotateX(-2*0.201)
+    
+  }
+
+
+  wow3.geometry.translate(0,translation_total.y+wow3_side_up*main_side_roof_up/2,translation_total.z+box_depth/4)
+  wow4.geometry.translate(0,translation_total.y+wow4_side_up*main_side_roof_up/2,translation_total.z+box_depth/4)
+
+  wow5.geometry.translate(0,translation_total.y+wow3_side_up*main_side_roof_up/2,translation_total.z-box_depth/4)
+  wow6.geometry.translate(0,translation_total.y+wow4_side_up*main_side_roof_up/2,translation_total.z-box_depth/4)
+
+
+}
+
+
+if(index_roof==4)
+{
+  let box_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+
+  let geometry_up=new THREE.Vector3(0,0.05,0)
+  let geometry_front=new THREE.Vector3(box_width, 0, 0.05)
+  let geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+  let wow=new THREE.Mesh(insert_geometry_roof_back, insert_material);
+  let wow2=new THREE.Mesh(insert_geometry_roof_back.clone(), insert_material);
+
+
+  wow.name="BAD-CHILD"
+  wow2.name="BAD-CHILD"
+
+  
+
+  //main_house_outer.wall_front.object.add(wow)
+  //main_house_outer.wall_front.object.add(wow2)
+  
+  //wow.geometry.rotateZ(+0.1006)
+  //wow2.geometry.rotateZ(+0.1006)
+
+  let total_width=canopy_container.front_size+canopy_container.back_size+main_house_outer.wall_front.width
+  let translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0*height_multiplier*total_width/2,0)
+  let translation_front=new THREE.Vector3(0, 0, 0)
+  let translation_side=new THREE.Vector3(0, 0, 0)
+  let canopy_offset=(canopy_container.canopy_translation()).multiplyScalar(0.5)
+  
+  let main_side_roof_up=0
+  if(canopy_container.front_size){
+    //main_house_outer.wall_front.object.add(wow)
+  }
+  if(canopy_container.back_size){
+    //main_house_outer.wall_front.object.add(wow2)
+    }
+
+  let translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up).add(canopy_offset)
+  wow.geometry.translate(translation_total.x,translation_total.y+main_side_roof_up,translation_total.z)
+  wow2.geometry.translate(translation_total.x,translation_total.y,-main_house_outer.wall_left.width)
+  
+
+  
+
+  let box_depth=canopy_container.front_size+canopy_container.back_size+main_house_outer.wall_front.width
+
+
+  geometry_up=new THREE.Vector3(0,0.05,0)
+  geometry_front=new THREE.Vector3(0.5*box_width, 0, 0.05)
+  geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  
+  let insert_geometry_roof_back2 = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+
+  let wow3=new THREE.Mesh(insert_geometry_roof_back2.clone(), insert_material);
+  let wow4=new THREE.Mesh(insert_geometry_roof_back2.clone(), insert_material);
+  wow3.name="BAD-CHILD"
+  wow4.name="BAD-CHILD"
+
+
+
+
+  let wow3_side_up=0
+ 
+  main_side_roof_up=main_house_outer.roof_height
+  if(!canopy_container.front_size){
+    wow3.geometry.rotateZ(-0.201)
+    wow3_side_up=1}
+  
+  let wow4_side_up=0
+  if(!canopy_container.back_size){
+    wow4.geometry.rotateZ(-0.201)
+    wow4_side_up=1
+  }
+
+
+  main_house_outer.wall_front.object.add(wow3)
+  main_house_outer.wall_back.object.add(wow4)
+
+   total_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
+   translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0*height_multiplier*total_width/2,0)
+   translation_front=new THREE.Vector3(0, 0, 0)
+   translation_side=new THREE.Vector3(0, 0, 0)
+   canopy_offset=(canopy_container.canopy_translation()).multiplyScalar(0.5)
+  
+   //console.log(main_house_outer)
+
+  translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up).add(canopy_offset)
+
+  wow3.visible=true
+  wow4.visible=true
+
+  let wow5=new THREE.Mesh(wow3.geometry.clone(), insert_material);
+  let wow6=new THREE.Mesh(wow4.geometry.clone(), insert_material);
+
+  wow5.name="BAD-CHILD"
+  wow6.name="BAD-CHILD"
+
+  main_house_outer.wall_front.object.add(wow5)
+  main_house_outer.wall_back.object.add(wow6)
+
+ 
+  if(!canopy_container.front_size){
+    wow5.geometry.rotateZ(+2*0.201)
+    }
+  
+  
+  if(!canopy_container.back_size){
+    wow6.geometry.rotateZ(+2*0.201)
+    
+  }
+
+
+  wow3.geometry.translate(translation_total.x+box_width/4,translation_total.y+wow3_side_up*main_side_roof_up/2,0*translation_total.z+0*box_depth/4)
+  wow4.geometry.translate(translation_total.x+box_width/4,translation_total.y+wow4_side_up*main_side_roof_up/2,0*translation_total.z+0*box_depth/4)
+
+  console.log(box_width/4)
+  wow5.geometry.translate(translation_total.x-box_width/4,translation_total.y+wow3_side_up*main_side_roof_up/2,0*translation_total.z-0*box_depth/4)
+  wow6.geometry.translate(translation_total.x-box_width/4,translation_total.y+wow4_side_up*main_side_roof_up/2,0*translation_total.z-0*box_depth/4)
+
+
+}
+
+
+
+
+
+}
+ hide(){
+
+
+  this.container[0].visible=false
+  this.container[1].visible=false
+
+  this.container[2].visible=false
+  this.container[3].visible=false
+  this.rebuild_garage_dimensions_hold_the_children()
+ }
+
+ readd_the_children( wall_targeted,wall_container){
+  for (let child of wall_container)
+  {
+    wall_targeted.object.add(child)
+  }
+
+}
+
+
+ readd_all_the_children(container_of_children){
+  this.readd_the_children(main_house_outer.wall_front, container_of_children[0])
+  this.readd_the_children(main_house_outer.wall_left, container_of_children[1])
+  this.readd_the_children(main_house_outer.wall_back, container_of_children[2])
+  this.readd_the_children(main_house_outer.wall_right, container_of_children[3])
+
+  this.readd_the_children(main_house_canopy.wall_front, container_of_children[4])
+  this.readd_the_children(main_house_canopy.wall_left, container_of_children[5])
+  this.readd_the_children(main_house_canopy.wall_back, container_of_children[6])
+  this.readd_the_children(main_house_canopy.wall_right, container_of_children[7])
+
+}
+rebuild_garage_dimensions_hold_the_children(){
+
+  let big_box_of_friends=this.hold_all_the_children()
+  menu_controller.rebuild_garage_dimensions()
+  this.readd_all_the_children(big_box_of_friends)
+  
+}  
+
+hold_children(wall_targeted){
+
+  //console.log("Eliminate really bad children")
+
+  //console.log(wall_targeted.object.children)
+  //console.log(wall_targeted.object.children.filter(elem => !elem.name.includes("BAD")))
+
+   return wall_targeted.object.children.filter(elem => !elem.name.includes("BAD"))
+ }
+ hold_all_the_children(){
+    
+  return [
+  this.hold_children(main_house_outer.wall_front),
+  this.hold_children(main_house_outer.wall_left),
+  this.hold_children(main_house_outer.wall_back),
+  this.hold_children(main_house_outer.wall_right),
+
+
+  this.hold_children(main_house_canopy.wall_front),
+  this.hold_children(main_house_canopy.wall_left), 
+  this.hold_children(main_house_canopy.wall_back), 
+  this.hold_children(main_house_canopy.wall_right),
+
+  ]
+
+}
+
+
+}
+let hide_switch=false
+
+
 
 //Klasa odseparowujaca rendering od placementu
 //Kontroller logiki scian
@@ -5423,10 +6154,13 @@ document.querySelector("#add-canopy").addEventListener('click', () => {
 
 document.querySelector("#reinforcements").addEventListener('click', () => {
   reinforcement=document.querySelector("#reinforcements").checked
+  let external_arr=new Reinforcements_boys()
   if(reinforcement){request_clean=false}
-  else{request_clean=true}
+  else{
+   
+    external_arr.hide()}
   //alert(reinforcement)
-  menu_controller.rebuild_garage_dimensions_hold_the_children()
+  //menu_controller.rebuild_garage_dimensions_hold_the_children()
 })
 
 
@@ -5725,5 +6459,7 @@ menu_controller.change_wall()
 
 document.querySelector("#add-gates").click()
 
-let external_arr="";
+
 //let external_arr=new Reinforcements_boys()
+document.querySelector('input[name="roof-type"][value="4"]').click()
+document.querySelector("#reinforcements").click()
