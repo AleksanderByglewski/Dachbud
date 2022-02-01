@@ -5315,27 +5315,27 @@ class Reinforcements_boys{
 
 
 if(index_roof==4 ||index_roof==5 ){
-  let geometry_up=new THREE.Vector3(0,0.05,0)
-  let geometry_front=new THREE.Vector3(main_house_outer.wall_front.width/2, 0, 0.05)
-  let geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
+  // let geometry_up=new THREE.Vector3(0,0.05,0)
+  // let geometry_front=new THREE.Vector3(main_house_outer.wall_front.width/2, 0, 0.05)
+  // let geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
   
-  let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
-  let wow=new THREE.Mesh(insert_geometry_roof_back, insert_material);
-  main_house_outer.wall_front.object.add(wow)
-  wow.geometry.rotateZ(-0.2006)
-  //console.log(parseFloat(document.querySelector(".num-selector [name='total-height']").value))
+  // let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
+  // let wow=new THREE.Mesh(insert_geometry_roof_back, insert_material);
+  // main_house_outer.wall_front.object.add(wow)
+  // wow.geometry.rotateZ(-0.2006)
+  // //console.log(parseFloat(document.querySelector(".num-selector [name='total-height']").value))
 
-  let translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0.30,0)
-  let translation_front=new THREE.Vector3(0, 0, 0)
-  let translation_side=new THREE.Vector3(0, 0, 0)
-  //IN this case unncessary
-  translation_side.x=0
+  // let translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0.30,0)
+  // let translation_front=new THREE.Vector3(0, 0, 0)
+  // let translation_side=new THREE.Vector3(0, 0, 0)
+  // //IN this case unncessary
+  // translation_side.x=0
   
   
-  let translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up)
-  //console.log(translation_total)
-  wow.geometry.translate(translation_total.x,translation_total.y,translation_total.z)
-  //wow.geometry.rotateZ(1.57-0.0717)
+  // let translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up)
+  // //console.log(translation_total)
+  // wow.geometry.translate(translation_total.x,translation_total.y,translation_total.z)
+  // //wow.geometry.rotateZ(1.57-0.0717)
   }
 if(index_roof==2){
   let box_width=canopy_container.left_size+canopy_container.right_size+main_house_outer.wall_front.width
