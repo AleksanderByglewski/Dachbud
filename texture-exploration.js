@@ -368,8 +368,7 @@ class Displacement_object {
     }
     //If an object is on the side then you also need to rotate it
     //this.geometry.rotateY(1.701)
-    if (this.name_type.toUpperCase().includes("BRAMA")) {
-
+    if(this.name_type.toUpperCase().includes("RYNNA")){
       let insert_material = new THREE.MeshBasicMaterial({
         color: 0x272727,
         side: THREE.DoubleSide
@@ -379,8 +378,9 @@ class Displacement_object {
       let insert_mesh = new THREE.Mesh(insert_geometry, insert_material);
       insert_mesh.name = "door_decoration"
       this.mesh.add(insert_mesh);
-      console.log(this.mesh)
+     //console.log(this.mesh)
 
+      
 
 
       function dumpObject(obj, lines = [], isLast = true, prefix = '') {
@@ -405,10 +405,10 @@ class Displacement_object {
      
           scene_outer.add(root);
   
-          console.log(dumpObject(root).join('\n'));
+         //console.log(dumpObject(root).join('\n'));
 
           let handle1 = root.getObjectByName('root');
-          handle1.name = "hand1"
+          handle1.name = "hand111"
 
           let object_height=2.0
           
@@ -416,20 +416,31 @@ class Displacement_object {
           //handle1.visible = false;
           handle1.translateY(-object_height/2)
           
+         
 
           this.mesh.add(handle1)
-      
+          //Kick the child
+          
+          //handle1.translateZ(Math.PI/2+object_rotation)
+         
+          handle1.children[0].rotateZ(Math.PI/2+object_rotation)
 
-          //Potrzebny bedzie jakis przelicznik
-          console.log("Show me the norm")
-          //handle1.scale.y=2;
-          console.log(handle1)
-          console.log("End of the norm")
-          //Transformation part
+          //alert(-main_house_outer.wall_left.width/2)
+          let eigen = new THREE.Vector3(-main_house_outer.wall_left.width/2, 0, 0.05)
+          let rotation_axis = new THREE.Vector3(0, 1, 0)
+          eigen.applyAxisAngle(rotation_axis, 3*object_rotation)
 
-          let target = this.mesh.getObjectByName("hand1")
-          target.visible = true;
+    
+          let target = scene_outer.getObjectByName("hand111")
 
+          handle1.translateX(eigen.x)
+          handle1.translateY(eigen.y+0.1)
+          handle1.translateZ(eigen.z)
+         
+         //console.log(target)
+          handle1.visible = true;
+          
+         
         });
 
 
@@ -437,7 +448,7 @@ class Displacement_object {
 
       {
         const gltfLoader = new GLTFLoader();
-        gltfLoader.load('./objects/gutter-top/scene1.gltf', (gltf) => {
+        gltfLoader.load('./objects/gutter-top/scene2.gltf', (gltf) => {
 
           const root = gltf.scene;
 
@@ -447,25 +458,164 @@ class Displacement_object {
 
 
           let handle1 = root.getObjectByName('root');
-          handle1.name = "hand3"
+          handle1.name = "gutter_top"
+
+          //handle1.translateZ(0.1)
           this.mesh.add(handle1)
     
-          console.log("Show me the norm")
-          console.log(handle1)
-          console.log("End of the norm")
+          //Kick the child but by how much 
+          //Just by the object rotation
+          
+          handle1.children[0].rotateY(3*object_rotation)
+          
+          //console.log("Show me the norm")
+          //console.log(handle1)
+          //console.log("End of the norm")
+
+
           //Transformation part
           handle1.scale.x = 1.0
           handle1.scale.y = 1.0
-          handle1.scale.z = 1.0
-          
+    
+          handle1.scale.z =main_house_outer.wall_left.width/(1.5)
           let object_height=2.0
           
           //handle1.scale.y = object_height*0.95
           //handle1.visible = false;
           handle1.translateY(+object_height/2)
+
+          let eigen = new THREE.Vector3(0, 0, 0.10)
+          let rotation_axis = new THREE.Vector3(0, 1, 0)
+          eigen.applyAxisAngle(rotation_axis, 3*object_rotation)
+          handle1.translateX(eigen.x)
+          handle1.translateY(eigen.y)
+          //handle1.translateZ(eigen.z+(handle1.scale.z-1)*1.76)
+         handle1.translateZ(0.40+eigen.z+(+(handle1.scale.z-1))*1.76+(main_house_outer.wall_left.width-3)*0.11)
           
         });
       }
+
+
+
+
+    }
+
+    if (this.name_type.toUpperCase().includes("BRAMA")) {
+
+      let insert_material = new THREE.MeshBasicMaterial({
+        color: 0x272727,
+        side: THREE.DoubleSide
+      });
+      let insert_geometry = new THREE.BoxGeometry(0.02, this.height + 0.01, this.depth + 0.02);
+      insert_geometry.translate(final_displacement.x, final_displacement.y, final_displacement.z);
+      let insert_mesh = new THREE.Mesh(insert_geometry, insert_material);
+      insert_mesh.name = "door_decoration"
+      this.mesh.add(insert_mesh);
+     //console.log(this.mesh)
+
+
+
+      function dumpObject(obj, lines = [], isLast = true, prefix = '') {
+        const localPrefix = isLast ? '└─' : '├─';
+        lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
+        const newPrefix = prefix + (isLast ? '  ' : '│ ');
+        const lastNdx = obj.children.length - 1;
+        obj.children.forEach((child, ndx) => {
+          const isLast = ndx === lastNdx;
+          dumpObject(child, lines, isLast, newPrefix);
+        });
+        return lines;
+      }
+      //Door handles 
+      //Door handles visibility based on state
+
+      // {
+      //   const gltfLoader = new GLTFLoader();
+      //   gltfLoader.load('./objects/gutter/scene6.gltf', (gltf) => {
+
+      //     const root = gltf.scene;
+     
+      //     scene_outer.add(root);
+  
+      //    //console.log(dumpObject(root).join('\n'));
+
+      //     let handle1 = root.getObjectByName('root');
+      //     handle1.name = "hand111"
+
+      //     let object_height=2.0
+          
+      //     handle1.scale.y = object_height*0.95
+      //     //handle1.visible = false;
+      //     handle1.translateY(-object_height/2)
+          
+         
+
+      //     this.mesh.add(handle1)
+      //     //Kick the child
+          
+      //     //handle1.translateZ(Math.PI/2+object_rotation)
+         
+      //     handle1.children[0].rotateZ(Math.PI/2+object_rotation)
+      //     //handle1.translateZ(0.1)
+      //     //Potrzebny bedzie jakis przelicznik
+      //    //console.log("Show me the norm gutter")
+      //     //handle1.scale.y=2;
+      //    //console.log(handle1)
+      //    //console.log("End of the norm what is your z-index")
+      //     //Transformation part
+          
+      //    //console.log("wait wait a second")
+      //     let target = scene_outer.getObjectByName("hand111")
+      //     target.translateZ(0.8)
+      //    //console.log(target)
+      //     target.visible = true;
+          
+         
+      //   });
+
+
+      // }
+
+      // {
+      //   const gltfLoader = new GLTFLoader();
+      //   gltfLoader.load('./objects/gutter-top/scene1.gltf', (gltf) => {
+
+      //     const root = gltf.scene;
+
+      //     scene_outer.add(root);
+    
+
+
+
+      //     let handle1 = root.getObjectByName('root');
+      //     handle1.name = "hand3"
+
+      //     //handle1.translateZ(0.1)
+      //     this.mesh.add(handle1)
+    
+      //     //Kick the child but by how much 
+      //     //Just by the object rotation
+          
+      //     handle1.children[0].rotateY(3*object_rotation)
+          
+      //     //console.log("Show me the norm")
+      //     //console.log(handle1)
+      //     //console.log("End of the norm")
+
+
+      //     //Transformation part
+      //     handle1.scale.x = 1.0
+      //     handle1.scale.y = 1.0
+      //     handle1.scale.z = 1.0
+          
+      //     let object_height=2.0
+          
+      //     //handle1.scale.y = object_height*0.95
+      //     //handle1.visible = false;
+      //     handle1.translateY(+object_height/2)
+          
+      //   });
+      // }
 
 
 
@@ -476,7 +626,7 @@ class Displacement_object {
 
 
 
-        //  console.log("The end")
+        // //console.log("The end")
           const root = gltf.scene;
           //gltf.scene.scale.set(0.1, 0.1, 0.1);
           //gltf.scene.translate(0,0,0)
@@ -500,7 +650,7 @@ class Displacement_object {
 
 
           handle1.visible = false;
-       //   console.log(handle1)
+       //  //console.log(handle1)
           //handle1.rotateY(0.30)
           //console.log(this.mesh)
           this.mesh.add(handle1)
@@ -523,7 +673,10 @@ class Displacement_object {
 
           handle1.translateZ(0.025)
           handle1.translateX(+0.10)
-
+          handle1.translateY(-main_house_outer.wall_front.geometry.parameters.height/2+1.05)
+          
+         //console.log("Standard displacement")
+         //console.log(main_house_outer.wall_front.geometry)
 
           //RETURN HERE
           //handle1.translateX(-0.125)
@@ -548,17 +701,17 @@ class Displacement_object {
           let target = this.mesh.getObjectByName("handle1")
           target.visible = true;
 
-        //  console.log(handle1)
+        // //console.log(handle1)
 
 
-         // console.log(dumpObject(root).join('\n'));
+         ////console.log(dumpObject(root).join('\n'));
         });
         gltfLoader.load('./objects/door_handle4/scene4.gltf', (gltf) => {
-        //  console.log("The end 2")
+        // //console.log("The end 2")
 
 
           const root = gltf.scene;
-       //   console.log(dumpObject(root).join('\n'));
+       //  //console.log(dumpObject(root).join('\n'));
           //gltf.scene.scale.set(0.1, 0.1, 0.1);
           //gltf.scene.translate(0,0,0)
           scene_outer.add(root);
@@ -566,13 +719,13 @@ class Displacement_object {
           // root.scale.x=0.01;
           // root.scale.y=0.01;
           //root.scale.z=0.01;
-      //    console.log(dumpObject(root).join('\n'));
+      //   //console.log(dumpObject(root).join('\n'));
           let handle1 = root.getObjectByName('Sketchfab_model');
           handle1.name = "handle2"
           //handle1.rotateY(0.30)
 
-       //   console.log("hey change the color")
-       //   console.log(this.mesh)
+       //  //console.log("hey change the color")
+       //  //console.log(this.mesh)
         
           //this.mesh.add(handle1)
           //handle1.translateY(-1)
@@ -600,7 +753,7 @@ class Displacement_object {
           //handle1.translateX(0)
           //handle1.position.y=-30
           //handle1.translate.y=-30;
-       //   console.log(handle1)
+       //  //console.log(handle1)
           //handle1.position.z=20.1;
           //this.mesh.add(handle1)
           //handle1.rotation.y=Math.PI/2;
@@ -620,7 +773,7 @@ class Displacement_object {
 
 
 
-        //  console.log(dumpObject(root).join('\n'));
+        // //console.log(dumpObject(root).join('\n'));
         });
 
       }
@@ -638,7 +791,7 @@ class Displacement_object {
         // }
         //   const gltfLoader = new GLTFLoader();
         //   gltfLoader.load('./objects/door_handle3/scene.gltf', (gltf) => {
-        //     console.log("The end")
+        //    //console.log("The end")
         //     const root = gltf.scene;
         //     //gltf.scene.scale.set(0.1, 0.1, 0.1);
         //     //gltf.scene.translate(0,0,0)
@@ -646,10 +799,10 @@ class Displacement_object {
         //    // root.scale.x=0.01;
         //    // root.scale.y=0.01;
         //     //root.scale.z=0.01;
-        //     console.log(dumpObject(root).join('\n'));
+        //    //console.log(dumpObject(root).join('\n'));
         //     let handle1=root.getObjectByName('RootNode');
         //     //handle1.rotateY(0.30)
-        //     console.log(this.mesh)
+        //    //console.log(this.mesh)
         //     this.mesh.add(handle1)
         //     //handle1.translateY(-1)
         //     handle1.translateZ(0.025)
@@ -666,7 +819,7 @@ class Displacement_object {
         //    //handle1.translateX(0)
         //     //handle1.position.y=-30
         //     //handle1.translate.y=-30;
-        //     console.log(handle1)
+        //    //console.log(handle1)
         //     //handle1.position.z=20.1;
         //     //this.mesh.add(handle1)
         //     //handle1.rotation.y=Math.PI/2;
@@ -681,14 +834,14 @@ class Displacement_object {
         //    // handle1.position.y=+100
 
 
-        //     console.log(dumpObject(root).join('\n'));
+        //    //console.log(dumpObject(root).join('\n'));
         //   });
         //   gltfLoader.load('./objects/door_handle4/scene4.gltf', (gltf) => {
-        //     console.log("The end 2")
+        //    //console.log("The end 2")
 
 
         //     const root = gltf.scene;
-        //     console.log(dumpObject(root).join('\n'));
+        //    //console.log(dumpObject(root).join('\n'));
         //     //gltf.scene.scale.set(0.1, 0.1, 0.1);
         //     //gltf.scene.translate(0,0,0)
         //     scene_outer.add(root);
@@ -696,10 +849,10 @@ class Displacement_object {
         //    // root.scale.x=0.01;
         //    // root.scale.y=0.01;
         //     //root.scale.z=0.01;
-        //     console.log(dumpObject(root).join('\n'));
+        //    //console.log(dumpObject(root).join('\n'));
         //     let handle1=root.getObjectByName('Sketchfab_model');
         //     //handle1.rotateY(0.30)
-        //     console.log(this.mesh)
+        //    //console.log(this.mesh)
         //     //this.mesh.add(handle1)
         //     //handle1.translateY(-1)
         //     //handle1.translateZ(0.025)
@@ -717,7 +870,7 @@ class Displacement_object {
         //    //handle1.translateX(0)
         //     //handle1.position.y=-30
         //     //handle1.translate.y=-30;
-        //     console.log(handle1)
+        //    //console.log(handle1)
         //     //handle1.position.z=20.1;
         //     //this.mesh.add(handle1)
         //     //handle1.rotation.y=Math.PI/2;
@@ -732,7 +885,7 @@ class Displacement_object {
         //    // handle1.position.y=+100
 
 
-        //     console.log(dumpObject(root).join('\n'));
+        //    //console.log(dumpObject(root).join('\n'));
         //   });
         //   gltfLoader.load('./objects/door_handles/fox-1.gltf', (gltf) => {
         //     const root = gltf.scene;
@@ -753,7 +906,7 @@ class Displacement_object {
         //    handle1.translateX(0)
         //     //handle1.position.y=-30
         //     //handle1.translate.y=-30;
-        //     console.log(handle1)
+        //    //console.log(handle1)
         //     //handle1.position.z=20.1;
         //     //this.mesh.add(handle1)
         //     //handle1.rotation.y=Math.PI/2;
@@ -768,7 +921,7 @@ class Displacement_object {
         //    // handle1.position.y=+100
 
 
-        //     console.log(dumpObject(root).join('\n'));
+        //    //console.log(dumpObject(root).join('\n'));
         //   });
 
         //   gltfLoader.load('./objects/door_handles/OSG_Scene.gltf', (gltf) => {
@@ -779,10 +932,10 @@ class Displacement_object {
         //    // root.scale.x=0.01;
         //    // root.scale.y=0.01;
         //     //root.scale.z=0.01;
-        //     console.log(dumpObject(root).join('\n'));
+        //    //console.log(dumpObject(root).join('\n'));
         //     let handle1=root.getObjectByName('RootNode');
         //     //handle1.rotateY(0.30)
-        //     console.log(this.mesh)
+        //    //console.log(this.mesh)
         //     this.mesh.add(handle1)
         //     //handle1.translateY(-1)
         //     handle1.translateZ(0.025)
@@ -799,7 +952,7 @@ class Displacement_object {
         //    //handle1.translateX(0)
         //     //handle1.position.y=-30
         //     //handle1.translate.y=-30;
-        //     console.log(handle1)
+        //    //console.log(handle1)
         //     //handle1.position.z=20.1;
         //     //this.mesh.add(handle1)
         //     //handle1.rotation.y=Math.PI/2;
@@ -814,7 +967,7 @@ class Displacement_object {
         //    // handle1.position.y=+100
 
 
-        //     console.log(dumpObject(root).join('\n'));
+        //    //console.log(dumpObject(root).join('\n'));
         //   });
 
 
@@ -827,10 +980,10 @@ class Displacement_object {
         //    // root.scale.x=0.01;
         //    // root.scale.y=0.01;
         //     //root.scale.z=0.01;
-        //     console.log(dumpObject(root).join('\n'));
+        //    //console.log(dumpObject(root).join('\n'));
         //     let handle1=root.getObjectByName('RootNode');
         //     //handle1.rotateY(0.30)
-        //     console.log(this.mesh)
+        //    //console.log(this.mesh)
         //     this.mesh.add(handle1)
         //     //handle1.translateY(-1)
         //     //handle1.translateZ(0.025)
@@ -847,7 +1000,7 @@ class Displacement_object {
         //    //handle1.translateX(0)
         //     //handle1.position.y=-30
         //     //handle1.translate.y=-30;
-        //     console.log(handle1)
+        //    //console.log(handle1)
         //     //handle1.position.z=20.1;
         //     //this.mesh.add(handle1)
         //     //handle1.rotation.y=Math.PI/2;
@@ -862,23 +1015,23 @@ class Displacement_object {
         //    // handle1.position.y=+100
 
 
-        //     console.log(dumpObject(root).join('\n'));
+        //    //console.log(dumpObject(root).join('\n'));
         //   });
 
         //   gltfLoader.load('./objects/door_handles/kodiak.glb', (glb) => {
         //     const root = glb.scene;
         //     //gltf.scene.scale.set(0.1, 0.1, 0.1);
         //     //gltf.scene.translate(0,0,0)
-        //     console.log("hi")
+        //    //console.log("hi")
         //     scene_outer.add(root);
-        //     console.log(root)
+        //    //console.log(root)
         //     root.scale.x=10.0;
         //     root.scale.y=10.01;
         //     root.scale.z=0.01;
         //     //console.log(dumpObject(root).join('\n'));
         //    // let handle1=root.getObjectByName('RootNode');
         //     //handle1.rotateY(0.30)
-        //    // console.log(this.mesh)
+        //    ////console.log(this.mesh)
         //    // this.mesh.add(handle1)
         //     //handle1.translateY(-1)
         //     //handle1.translateZ(0.025)
@@ -895,7 +1048,7 @@ class Displacement_object {
         //    //handle1.translateX(0)
         //     //handle1.position.y=-30
         //     //handle1.translate.y=-30;
-        //    // console.log(handle1)
+        //    ////console.log(handle1)
         //     //handle1.position.z=20.1;
         //     //this.mesh.add(handle1)
         //     //handle1.rotation.y=Math.PI/2;
@@ -910,7 +1063,7 @@ class Displacement_object {
         //    // handle1.position.y=+100
 
 
-        //     console.log(dumpObject(root).join('\n'));
+        //    //console.log(dumpObject(root).join('\n'));
         //   });
 
         // {
@@ -941,7 +1094,7 @@ class Displacement_object {
         //     const objLoader = new OBJLoader();
         //     objLoader.setMaterials(mtl);
         //     objLoader.load('https://threejs.org/manual/examples/resources/models/windmill/windmill.obj', (root) => {
-        //       console.log(root)
+        //      //console.log(root)
         //       root.scale.x=0.10
         //       root.scale.y=0.10
         //       root.scale.z=0.10
@@ -988,7 +1141,7 @@ class Displacement_object {
 
 
 
-          console.log("The end")
+         //console.log("The end")
           const root = gltf.scene;
           //gltf.scene.scale.set(0.1, 0.1, 0.1);
           //gltf.scene.translate(0,0,0)
@@ -1012,7 +1165,7 @@ class Displacement_object {
 
 
           handle1.visible = true;
-          console.log(handle1)
+         //console.log(handle1)
           //handle1.rotateY(0.30)
           //console.log(this.mesh)
           this.mesh.add(handle1)
@@ -1060,17 +1213,17 @@ class Displacement_object {
           let target = this.mesh.getObjectByName("handle1")
           target.visible = true;
 
-          console.log(handle1)
+         //console.log(handle1)
 
 
-          console.log(dumpObject(root).join('\n'));
+         //console.log(dumpObject(root).join('\n'));
         });
         gltfLoader.load('./objects/door_handle4/scene4.gltf', (gltf) => {
-          console.log("The end 2")
+         //console.log("The end 2")
 
 
           const root = gltf.scene;
-          console.log(dumpObject(root).join('\n'));
+         //console.log(dumpObject(root).join('\n'));
           //gltf.scene.scale.set(0.1, 0.1, 0.1);
           //gltf.scene.translate(0,0,0)
           scene_outer.add(root);
@@ -1078,12 +1231,12 @@ class Displacement_object {
           // root.scale.x=0.01;
           // root.scale.y=0.01;
           //root.scale.z=0.01;
-          console.log(dumpObject(root).join('\n'));
+         //console.log(dumpObject(root).join('\n'));
           let handle1 = root.getObjectByName('Sketchfab_model');
           handle1.name = "handle2"
           //handle1.rotateY(0.30)
       
-          console.log(this.mesh)
+         //console.log(this.mesh)
           //this.mesh.add(handle1)
           //handle1.translateY(-1)
           //handle1.translateZ(0.025)
@@ -1111,7 +1264,7 @@ class Displacement_object {
           //handle1.translateX(0)
           //handle1.position.y=-30
           //handle1.translate.y=-30;
-          console.log(handle1)
+         //console.log(handle1)
           //handle1.position.z=20.1;
           //this.mesh.add(handle1)
           //handle1.rotation.y=Math.PI/2;
@@ -1131,7 +1284,7 @@ class Displacement_object {
 
 
 
-          console.log(dumpObject(root).join('\n'));
+         //console.log(dumpObject(root).join('\n'));
         });
 
       }
@@ -1143,7 +1296,7 @@ class Displacement_object {
     this.initial_displacement = new THREE.Vector3(0, -this.parent.depth / 2 + height / 2, 0);
     this.user_translation = new THREE.Vector3(this.translation_x, this.translation_y, this.translation_z);
     let final_displacement = this.initial_displacement.add(this.user_translation);
-    console.log(this.final_displacement)
+   //console.log(this.final_displacement)
 
 
     let insert_material = new THREE.MeshBasicMaterial({
@@ -1298,7 +1451,7 @@ class Displacement_object {
 
     ];
 
-    console.log(this.geometry)
+   //console.log(this.geometry)
 
     this.geometry = new THREE.BoxGeometry(width, height, this.depth);
     this.geometry.rotateY(object_rotation)
@@ -1307,7 +1460,7 @@ class Displacement_object {
     this.initial_displacement = new THREE.Vector3(0, -this.parent.depth / 2 + height / 2, 0);
     this.user_translation = new THREE.Vector3(this.translation_x, this.translation_y, this.translation_z);
     let final_displacement = this.initial_displacement.add(this.user_translation);
-    console.log(final_displacement)
+   //console.log(final_displacement)
     this.geometry.translate(final_displacement.x, final_displacement.y, final_displacement.z);
 
     //decoration part
@@ -2460,6 +2613,7 @@ function main() {
 
   // Animation Loop
 
+  //PRESENTATION CODE
   function animate() {
     requestAnimationFrame(animate);
 
@@ -2609,14 +2763,22 @@ class Canopy_container {
   constructor(front_size = 0, left_size = 0, back_size = 0, right_size = 0) {
     //A canopy object is a really simple object containing 4 pieces of information
     //what side and if it is what is the dimension of that side; and some simple logic
+
+
     this.front_size = 0
-
+    this.back_container=new Array(3)
+    
     this.back_size = 0
-
+    this.front_container=new Array(3)
+    
     this.left_size = 0
-
+    this.left_container=new Array(3)
+    
     this.right_size = 0
+    this.right_container=new Array(3)
   }
+
+
 
   canopy_exists() {
     return Boolean(this.front_size + this.back_size + this.left_size + this.right_size)
@@ -2625,8 +2787,224 @@ class Canopy_container {
     return new THREE.Vector3(this.left_size * -1 + this.right_size * 1, 0, this.front_size * 1 + this.back_size * -1)
   }
 }
+class Reinforcements_container{
 
+  constructor() {
+   
+    this.container=new Array(4)
+}
+}
+
+let reinforcements_container=new Reinforcements_container()
+let reinforcement=false
+let request_clean=false
 let canopy_container = new Canopy_container(0, 0, 0, 0)
+
+class Foundation extends General_object {
+
+
+  constructor(width, depth, index) {
+    super();
+    this.components = [];
+    this.width = width+canopy_container.left_size+canopy_container.right_size;
+    this.depth = depth+canopy_container.front_size+canopy_container.back_size;
+    this.index = index;
+  }
+  add_components_to_scene() {
+
+//main_house_canopy = new Creation_controller_outer(constructor_width + canopy_container.left_size + canopy_container.right_size, constructor_depth + canopy_container.back_size + canopy_container.front_size, constructor_height, roof_width + canopy_container.left_size + canopy_container.right_size, roof_depth + canopy_container.back_size + canopy_container.front_size, roof_height, scene_outer, roof_type);
+
+    //Define geometry based on the index
+    switch (this.index) {
+      case 0:
+        var geometry = new THREE.PlaneGeometry(this.width, this.depth, 2, 2);
+
+        geometry.rotateX(Math.PI / 2)
+
+                //CURRENT
+                try{
+                  let canopy_translation=canopy_container.canopy_translation()
+                  canopy_translation = canopy_translation.multiplyScalar(0.5)
+                  geometry.translate(canopy_translation.x, canopy_translation.y, canopy_translation.z);
+                  }
+                  catch(error){
+                   //console.log("ooo")
+                   //console.log(error)
+                  }
+        var texture = loader.load('./resources/images/foundation0.jpg');
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        //This is kinda a quick fix but it works
+        texture.repeat.set(this.width / 2, this.depth / 2);
+        texture.rotation = (0)
+        var material = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          wireframe: false,
+          side: THREE.DoubleSide,
+          map: texture
+        });
+        var torus = new THREE.Mesh(geometry, material);
+        this.components.push(torus);
+        break;
+      case 1:
+        var block_width = 1;
+        var block_depth = 1;
+
+        var texture = loader.load('./resources/images/foundation1.jpg');
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+
+        texture.repeat.set(block_width, block_depth);
+        texture.rotation = (0)
+
+        let displacement_array_x = [-1, 0, 1]
+        let displacement_array_y = [-1, 0, 1]
+        for (let displacement_x of displacement_array_x) {
+          for (let displacement_y of displacement_array_y) {
+            //console.log(displacement_x)
+            //console.log(displacement_y)
+
+            var geometry = new THREE.PlaneGeometry(block_width, block_depth, 2, 2);
+            geometry.translate(displacement_x * (this.width / 2 - block_width / 2), displacement_y * (this.depth / 2 - block_depth / 2), 0)
+            geometry.rotateX(Math.PI / 2)
+
+                    //CURRENT
+        try{
+          let canopy_translation=canopy_container.canopy_translation()
+          canopy_translation = canopy_translation.multiplyScalar(0.5)
+          geometry.translate(canopy_translation.x, canopy_translation.y, canopy_translation.z);
+          }
+          catch(error){
+           //console.log("ooo")
+           //console.log(error)
+          }
+            
+            var material = new THREE.MeshBasicMaterial({
+              color: 0xff6347,
+              wireframe: false,
+              side: THREE.DoubleSide,
+              map: texture
+            });
+            var mesh = new THREE.Mesh(geometry, material);
+            this.components.push(mesh);
+
+          }
+        }
+        break;
+
+
+      case 2:
+        var geometry = new THREE.PlaneGeometry(this.width, this.depth, 2, 2);
+        geometry.rotateX(Math.PI / 2)
+
+                    //CURRENT
+                    try{
+                      let canopy_translation=canopy_container.canopy_translation()
+                      canopy_translation = canopy_translation.multiplyScalar(0.5)
+                      geometry.translate(canopy_translation.x, canopy_translation.y, canopy_translation.z);
+                      }
+                      catch(error){
+                       //console.log("ooo")
+                       //console.log(error)
+                      }
+                        
+
+        var texture = loader.load('./resources/images/foundation2.jpg');
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+
+        texture.repeat.set(this.width, this.depth);
+        texture.rotation = (0)
+        var material = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          wireframe: false,
+          side: THREE.DoubleSide,
+          map: texture
+        });
+        
+        var torus = new THREE.Mesh(geometry, material);
+        this.components.push(torus);
+        //this.add_components();
+
+
+
+
+
+        break;
+      case 3:
+        var geometry = new THREE.PlaneGeometry(this.width, this.depth, 2, 2);
+        geometry.rotateX(Math.PI / 2)
+
+                            //CURRENT
+                            try{
+                              let canopy_translation=canopy_container.canopy_translation()
+                              canopy_translation = canopy_translation.multiplyScalar(0.5)
+                              geometry.translate(canopy_translation.x, canopy_translation.y, canopy_translation.z);
+                              }
+                              catch(error){
+                               //console.log("ooo")
+                               //console.log(error)
+                              }
+                                
+        var texture = loader.load('./resources/images/foundation1.jpg');
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        //This is kinda a quick fix but it works
+        texture.repeat.set(this.width, this.depth);
+        texture.rotation = (0)
+        var material = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          wireframe: false,
+          side: THREE.DoubleSide,
+          map: texture
+        });
+        var torus = new THREE.Mesh(geometry, material);
+        this.components.push(torus);
+        //this.add_components();
+
+
+
+        break;
+
+
+    }
+    this.add_components();
+  }
+  remove_components() {
+    for (const elem of this.components) {
+      scene_outer.remove(elem);
+    }
+  }
+  add_components() {
+    for (const elem of this.components) {
+      scene_outer.add(elem);
+    }
+
+  }
+
+}
+class Beams{
+  constructor(){
+  this.left_wall_canopy_beams=[]
+  this.right_wall_canopy_beams=[]
+  this.back_wall_canopy_beams=[]
+  this.front_wall_canopy_beams=[]
+ }
+
+ fill_in_wall(){
+
+
+ }
+
+ clean_wall(canopy_wall){
+ let children = canopy_wall
+ for (const child of children) {
+   this.object.remove(child)
+ }
+ }
+}
+
+
 class Menu_control {
 
   constructor() {
@@ -2664,17 +3042,26 @@ class Menu_control {
 
     this.custom_counter += 1
     let custom_counter_closure=this.custom_counter
-    console.log("This is where i lie!:" + wall_being_targeted_name)
+   //console.log("This is where i lie!:" + wall_being_targeted_name)
     let wall_being_targeted = menu_controller.convert_side_to_rotation(wall_being_targeted_name)["wall_targeted"]
     let object_rotation = menu_controller.convert_side_to_rotation(wall_being_targeted_name)["object_rotation"]
-    console.log("This is my name!:" + heading_title + ":")
-    console.log(element)
-    console.log("This is my object rotation!:" + object_rotation)
+   //console.log("This is my name!:" + heading_title + ":")
+   //console.log(element)
+   //console.log("This is my object rotation!:" + object_rotation)
 
     const loader = new THREE.TextureLoader();
 
+    //Label elements values
+    let width_element_label="szerokość elementu"
+    let height_element_label="wysokość elementu"
+
+    let height_element_disable="";
+
     //Display flags based on the type of the added object
     let  metal_tilling_vertical_thin='style="visibility:hidden"'
+    let  metal_tilling_vertical='style="visibility:hidden !important"'
+
+
 
     let visibility_color_menu= 'style="display:none"'
 
@@ -2715,13 +3102,17 @@ class Menu_control {
       
       visibility_sizing_menu=''
       visibility_sizing_menu_x=''
-      visibility_sizing_menu_y=''
+      visibility_sizing_menu_y=' '
       
       visibility_tiling_menu=''
       visibility_visual_menu=''
 
 
       metal_tilling_vertical_thin=''
+
+      width_element_label="Szerokość wjazdu bramy"
+      height_element_label="Wysokość wjazdu bramy"
+      height_element_disable="disabled"
     }
 
     if(heading_title.toUpperCase().includes("DRZWI"))
@@ -2788,8 +3179,8 @@ class Menu_control {
 
 
     let sizing_menu = `<div ${visibility_sizing_menu}>` +
-      `<div ${visibility_sizing_menu_x} class="num-selector"><label>Szerokość elementu</label><input class="dimension" value="2" dimension="width" type="number" step="0.1">  </input> </div>` +
-      `<div ${visibility_sizing_menu_y} class="num-selector"><label>Wysokość elementu</label><input class="dimension" value="2" dimension="height" type="number" step="0.1">  </input> </div>` +
+      `<div ${visibility_sizing_menu_x} class="num-selector"><label>${width_element_label}</label><input class="dimension" value="2" dimension="width" type="number" step="0.1">  </input> </div>` +
+      `<div ${visibility_sizing_menu_y} class="num-selector"><label>${height_element_label}</label><input class="dimension" value="2" dimension="height" type="number" step="0.1" ${height_element_disable}>  </input> </div>` +
       `</div>`
 
     //alert(`wall-color${this.custom_counter}`)
@@ -2893,7 +3284,7 @@ class Menu_control {
   <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg">
   <div class="image-description">Przetłoczenia poziome wąskie</div>
 </label>
-  <label class="padded-element" ${metal_tilling_vertical_thin}>
+  <label class="padded-element" ${metal_tilling_vertical}>
   <input type="radio" name="wall-type${custom_counter_closure}" id="ocynk-roof-rotation" value="rotated">
   <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN.jpg">
   <div class="image-description">Przetłoczenia pionowe</div>
@@ -2941,7 +3332,7 @@ class Menu_control {
       if(heading_title.toUpperCase().includes("WIATA"))
       {
       
-        console.log(div_elem.querySelector('input.dimension[dimension="width"]'))
+       //console.log(div_elem.querySelector('input.dimension[dimension="width"]'))
         div_elem.querySelector('input.dimension[dimension="width"]').value=0
         
         div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
@@ -2955,7 +3346,7 @@ class Menu_control {
     //Presentation
     div_elem.querySelector('.erase-button').addEventListener('click', () => {
       try {
-        console.log("what happened")
+       //console.log("what happened")
         //menu_controller.canopy_array=[]
         //menu_controller.rebuild_garage_dimensions()
       } catch (error) {
@@ -2972,7 +3363,7 @@ class Menu_control {
       gate_type.addEventListener('change', (evt) => {
 
         let gate_choosen = evt.currentTarget.value
-        console.log(gate_choosen)
+       //console.log(gate_choosen)
         if (gate_choosen == "handle1") {
       
           var target = element.mesh.getObjectByName("handle1")
@@ -3008,7 +3399,7 @@ class Menu_control {
     try {
       type_input_arr = div_elem.querySelectorAll(`input[name="wall-type${custom_counter_closure}"]`)
     } catch (error) {
-      console.log(error);
+     //console.log(error);
     }
 
     for (let type_thing of type_input_arr) {
@@ -3024,12 +3415,12 @@ class Menu_control {
       try {
         texture_to_check = div_elem.querySelector(selector).value
       } catch (error) {
-        console.log("just issuing the default one")
+       //console.log("just issuing the default one")
 
       }
      
       let select_wall_type=`input[name="wall-type${custom_counter_closure}"]:checked`
-      console.log(select_wall_type)
+     //console.log(select_wall_type)
       let texture_rotated = div_elem.querySelector(select_wall_type).value
 
       function wall_repaint_inner(wall) {
@@ -3170,7 +3561,7 @@ class Menu_control {
     try {
       element.set_position(0, 0, 0)
     } catch (error) {
-      console.log(error);
+     //console.log(error);
       // expected output: ReferenceError: nonExistentFunction is not defined
       // Note - error messages will vary depending on browser
     }
@@ -3186,7 +3577,7 @@ class Menu_control {
 
       let direction_x = element.translation_x;
       let direction_y = element.translation_y;
-
+     
       //Make sure this isn't changed 
       //I have no clue why i had some translations on the z_index anyway
       let direction_z = element.translation_z;
@@ -3195,16 +3586,32 @@ class Menu_control {
       //console.log(element)
       function check_correctness_of_translation(allowable_margin = 0.011) {
 
+        
+       //console.log(-parseFloat(wall_being_targeted.width) / 2 + parseFloat(allowable_margin))
+       //console.log(parseFloat(direction_x) - parseFloat(element.geometry.parameters.width) /2)
         if (!(-parseFloat(wall_being_targeted.width) / 2 + parseFloat(allowable_margin) < parseFloat(direction_x) - parseFloat(element.geometry.parameters.width) / 2 && parseFloat(direction_x) + parseFloat(element.geometry.parameters.width) / 2 < parseFloat(wall_being_targeted.width) / 2 - parseFloat(allowable_margin))) {
 
-          //console.log("Scream stop")
+         //console.log("Scream stop")
           return false;
         }
         allowable_margin = -0.01
         //console.log(parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin))
         //console.log(parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2)
+    
         if (!(0 <= parseFloat(direction_y) && parseFloat(direction_y) + parseFloat(element.geometry.parameters.height) < parseFloat(wall_being_targeted.depth) - parseFloat(allowable_margin))) {
+          
+          //PENDING6
+         if( heading_title.toUpperCase().includes("BRAMA")){
+           //Based on type 
+         // alert("raise the wall")
+         // document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value=(
+         // parseFloat(document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value)+0.1001).toFixed(2)
+          
+          
+          menu_controller.rebuild_garage_dimensions_hold_the_children()
+         
 
+          }
           //console.log("Scream stop")
           return false;
         }
@@ -3236,11 +3643,11 @@ class Menu_control {
         let rotation_axis = new THREE.Vector3(0, 1, 0)
         let modified_translations = new THREE.Vector3(direction_x, direction_y, direction_z)
 
-        console.log(modified_translations)
-        console.log(object_rotation)
+       //console.log(modified_translations)
+       //console.log(object_rotation)
         modified_translations.applyAxisAngle(rotation_axis, object_rotation)
 
-        console.log(modified_translations)
+       //console.log(modified_translations)
 
 
         direction_x = modified_translations.x
@@ -3307,8 +3714,8 @@ class Menu_control {
           let set_width = parseFloat(div_elem.querySelector('input.dimension[dimension="width"]').value)
           let set_height = parseFloat(div_elem.querySelector('input.dimension[dimension="height"]').value)
           let direction = wall_being_targeted_name
-          console.log(direction)
-          console.log("nyan:" + direction)
+         //console.log(direction)
+         //console.log("nyan:" + direction)
           switch (direction) {
 
             //Custom logic to be implemented
@@ -3317,6 +3724,7 @@ class Menu_control {
             case 'left':
               canopy_container.left_size = set_width;
               this.rebuild_garage_dimensions_hold_the_children()
+              recreate_foundation()
               //evt.currentTarget.value=element.translation_x
 
 
@@ -3326,6 +3734,7 @@ class Menu_control {
             case 'right':
               canopy_container.right_size = set_width;
               this.rebuild_garage_dimensions_hold_the_children()
+              recreate_foundation()
               //evt.currentTarget.value=element.translation_x
 
 
@@ -3334,10 +3743,12 @@ class Menu_control {
             case 'front':
               canopy_container.front_size = set_width;
               this.rebuild_garage_dimensions_hold_the_children()
+              recreate_foundation()
               break;
             case 'back':
               canopy_container.back_size = set_width;
               this.rebuild_garage_dimensions_hold_the_children()
+              recreate_foundation()
               //evt.currentTarget.value=element.translation_y;
               //direction_y=10-translation_value;
               break;
@@ -3356,7 +3767,10 @@ class Menu_control {
         });
       }
 
-    } else {
+    } 
+    
+    
+    else {
 
       for (let input of input_dim_arr) {
 
@@ -3376,21 +3790,17 @@ class Menu_control {
           function check_correctness_of_translation(allowable_margin = 0.011) {
             //console.log(direction_x)
             if (!(-parseFloat(wall_being_targeted.width) / 2 + parseFloat(allowable_margin) < parseFloat(direction_x) - parseFloat(element.geometry.parameters.width) / 2 && parseFloat(direction_x) + parseFloat(element.geometry.parameters.width) / 2 < parseFloat(wall_being_targeted.width) / 2 - parseFloat(allowable_margin))) {
-              console.log("Scream stop")
+             //console.log("Scream stop")
               return false;
             }
             allowable_margin = -0.01
-            //console.log(parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin))
-            //console.log(parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2)
 
-            //if (!(-parseFloat(wall_being_targeted.depth)/2+parseFloat(allowable_margin)<=parseFloat(direction_y)-parseFloat(element.geometry.parameters.height)/2 && parseFloat(direction_y)+parseFloat(element.geometry.parameters.height)/2 <parseFloat(wall_being_targeted.depth)/2-parseFloat(allowable_margin))){
+           //console.log(parseFloat(direction_y) + parseFloat(element.geometry.parameters.height) / 2 ) 
+           //console.log("is smaller than")
+           //console.log(parseFloat(wall_being_targeted.depth) - parseFloat(allowable_margin))
+            if (!(0 <= parseFloat(direction_y) && 2*parseFloat(direction_y) + 2*parseFloat(element.geometry.parameters.height) / 2 < parseFloat(wall_being_targeted.depth) - parseFloat(allowable_margin))) {
 
-            //console.log("Scream stop")
-            //return false;
-            //}
-            if (!(0 <= parseFloat(direction_y) && parseFloat(direction_y) + parseFloat(element.geometry.parameters.height) / 2 < parseFloat(wall_being_targeted.depth) - parseFloat(allowable_margin))) {
-
-              console.log("Scream stop")
+             //console.log("Scream stop")
               return false;
             }
 
@@ -3463,23 +3873,38 @@ class Menu_control {
           if (check_correctness_of_translation()) {
             //If you pass the movement test movement test to be implemented
             //Probably should implement the custom logic that prevents the changes to the sizing of the elements anyhow
-
+            
             //element.translation_x=direction_x;
             //element.translation_y=direction_y;
             //element.translation_z=direction_z;
             //element.set_position(direction_x,direction_y, direction_z)
           } else {
+          
             //Custom logic to be implemented
             switch (direction) {
 
-              case 'left':
+              case 'width':
+                  div_elem.querySelector('input.dimension[dimension="width"]').value=div_elem.querySelector('input.dimension[dimension="width"]').value-0.1
+                  set_width = parseFloat(div_elem.querySelector('input.dimension[dimension="width"]').value)
+                  set_height = parseFloat(div_elem.querySelector('input.dimension[dimension="height"]').value)
+                  element.remodel_self(set_width, set_height, element.geometry.depth, object_rotation)
+                  element.remodel_a_stupid_piece_of_gate(set_width, set_height, element.geometry.depth, object_rotation)
+                  element.texture.repeat.set(1, element.geometry.parameters.height * 1);
+    
                 //evt.currentTarget.value=element.translation_x
 
 
 
                 //direction_x=translation_value;
                 break;
-              case 'right':
+              case 'height':
+                div_elem.querySelector('input.dimension[dimension="height"]').value=div_elem.querySelector('input.dimension[dimension="height"]').value-0.1
+                set_width = parseFloat(div_elem.querySelector('input.dimension[dimension="width"]').value)
+                set_height = parseFloat(div_elem.querySelector('input.dimension[dimension="height"]').value)
+                element.remodel_self(set_width, set_height, element.geometry.depth, object_rotation)
+                element.remodel_a_stupid_piece_of_gate(set_width, set_height, element.geometry.depth, object_rotation)
+                element.texture.repeat.set(1, element.geometry.parameters.height * 1);
+  
                 //evt.currentTarget.value=element.translation_x
 
 
@@ -3507,7 +3932,7 @@ class Menu_control {
       inner_change_wall()
 
     } catch (error) {
-      console.log(error);
+     //console.log(error);
     }
 
     // expected output: ReferenceError: nonExistentFunction is not defined
@@ -3515,9 +3940,9 @@ class Menu_control {
 
     if(heading_title.toUpperCase().includes("BRAMA"))
     {
-      console.log("haj")
-      console.log(`input[name="wall-color${custom_counter_closure}"]`+'[value*="13"]')
-      console.log(div_elem.querySelector(`input[name="wall-color${custom_counter_closure}"]`+'[value*="13"]'))
+     //console.log("haj")
+     //console.log(`input[name="wall-color${custom_counter_closure}"]`+'[value*="13"]')
+     //console.log(div_elem.querySelector(`input[name="wall-color${custom_counter_closure}"]`+'[value*="13"]'))
       div_elem.querySelector(`input[name="wall-color${custom_counter_closure}"]`+'[value*="13"]').checked=true;
      
     }
@@ -3526,7 +3951,7 @@ class Menu_control {
     if(heading_title.toUpperCase().includes("OKNO"))
     {
   
-      console.log(div_elem.querySelector(".num-selector input[direction='top']"))
+     //console.log(div_elem.querySelector(".num-selector input[direction='top']"))
       div_elem.querySelector(".num-selector input[direction='top']").value=1.2
   
       div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
@@ -3565,9 +3990,9 @@ class Menu_control {
   
         })
       }
-      div_elem.querySelector('input.dimension[dimension="width"]').value=2.80
+      div_elem.querySelector('input.dimension[dimension="width"]').value=2.90
       div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
-      div_elem.querySelector('input.dimension[dimension="height"]').value=1.90
+      div_elem.querySelector('input.dimension[dimension="height"]').value=2.00
       div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
   
     }
@@ -3710,7 +4135,7 @@ class Menu_control {
     let object_rotation = 0
     let wall_targeted = ""
     //alert("i am here")
-    console.log(" I am here and my side is:" + side)
+   //console.log(" I am here and my side is:" + side)
     switch (side) {
       case "front":
 
@@ -3756,7 +4181,7 @@ class Menu_control {
     friendly_door.geometry.rotateY(object_rotation)
     menu_controller.gate_array.push(friendly_door)
 
-    console.log(friendly_door.mesh)
+   //console.log(friendly_door.mesh)
     for (let child_element of friendly_door.mesh.children) {
       child_element.geometry.rotateY(object_rotation)
     }
@@ -3770,7 +4195,7 @@ class Menu_control {
   add_gate() {
 
 
-    let width_of_gate = 2;
+    let width_of_gate = 2.80;
     let height_of_gate = 2;
 
     const {
@@ -3794,6 +4219,7 @@ class Menu_control {
     this.side_selecting(friendly_door, position, wall_chosen)
 
 
+    
 
     //A base for rotations and ease of manipulations
     let eigen = new THREE.Vector3(1, 0, 0)
@@ -3817,6 +4243,7 @@ class Menu_control {
     let new_elem = this.add_node(friendly_door.provide_identification(), friendly_door, wall_chosen, "Brama " + gate_number)
     this.side_menu.insertBefore(new_elem, document.querySelector("#windows-object"))
     menu_controller.force_a_placed_object_update(friendly_door)
+ 
 
   }
 
@@ -3945,8 +4372,7 @@ class Menu_control {
 
   }
   add_canopy() {
-    //let new_elem=this.add_node(null, null, "Front",'Wiata')
-    //TODO
+   
     let wall_chosen = document.querySelector("#canopy-wall[name='wall-chosen']").value
     let width_of_canopy = 1.20;
     switch (wall_chosen) {
@@ -3960,7 +4386,7 @@ class Menu_control {
         canopy_container.back_size = width_of_canopy
         break;
       case "right":
-        canopy_container.right_size = 0
+        canopy_container.right_size = width_of_canopy
         break;
 
       default:
@@ -3975,6 +4401,46 @@ class Menu_control {
     this.canopy_array.push("elem")
     this.rebuild_garage_dimensions_hold_the_children()
     this.side_menu.insertBefore(new_elem, document.querySelector("#final-object"))
+  }
+
+  add_gutter() {
+
+
+    let width_of_gate = 2;
+    let height_of_gate = 2;
+
+
+    const {
+      message,
+      position
+    } = menu_controller.initial_gate_logic(width_of_gate, height_of_gate, menu_controller.gate_array)
+    //console.log(message)
+    //console.log(position)
+    
+    let wall_chosen = "right"
+    let object_rotation = menu_controller.convert_side_to_rotation(wall_chosen)["object_rotation"]
+    let friendly_door = new Displacement_object(main_house_outer.wall_front, width_of_gate, height_of_gate, 0.04, 0, 0, 0, "Rynna", object_rotation)
+    menu_controller.side_selecting(friendly_door, position, wall_chosen)
+
+
+
+    //A base for rotations and ease of manipulations
+    let eigen = new THREE.Vector3(1, 0, 0)
+    let rotation_axis = new THREE.Vector3(0, 1, 0)
+    eigen.applyAxisAngle(rotation_axis, object_rotation)
+    //Now just make the logic of transformations adhere to proper rules
+   // let target=friendly_door.mesh.getObjectByName("hand111")
+   // target.translateZ(7)
+
+    //console.log("friendly door:")
+    //console.log(friendly_door)
+    //this.gate_array.push(friendly_door)
+    //main_house_outer.wall_front.place_a_box2(friendly_door);
+    //friendly_door.set_position(position.x,position.y,position.z)
+    let gate_number=0
+    let new_elem = menu_controller.add_node(friendly_door.provide_identification(), friendly_door, wall_chosen, "Rynna " + gate_number)
+    menu_controller.force_a_placed_object_update(friendly_door)
+
   }
 
 
@@ -4013,13 +4479,16 @@ class Menu_control {
 let big_box_of_friends=menu_controller.hold_all_the_children()
 menu_controller.rebuild_garage_dimensions()
 menu_controller.readd_all_the_children(big_box_of_friends)
+
+
+
   }
 
   hold_children(wall_targeted){
 
-    console.log("Copy the children")
+   //console.log("Copy the children")
 
-    console.log(wall_targeted.object.children)
+   //console.log(wall_targeted.object.children)
 
 
     return wall_targeted.object.children
@@ -4038,8 +4507,7 @@ menu_controller.readd_all_the_children(big_box_of_friends)
     this.gate_array = [];
     this.window_array = [];
     this.door_array = [];
-    //TODO
-    //this.canopy_array=[];
+ 
 
     let constructor_width = parseFloat(document.querySelector(".num-selector [name='width']").value);
     let constructor_depth = parseFloat(document.querySelector(".num-selector [name='depth']").value);
@@ -4048,16 +4516,21 @@ menu_controller.readd_all_the_children(big_box_of_friends)
     let roof_depth = parseFloat(document.querySelector(".num-selector [name='depth']").value);
     let roof_height = parseFloat(document.querySelector(".num-selector [name='total-height']").value);
     let roof_type = parseInt(document.querySelector('input[name="roof-type"]:checked').value);
+
+    
+    
+
+
     try {
       main_house_outer.release();
     } catch (error) {
-      console.log(error)
+     //console.log(error)
     }
     //main_house_outer=new Creation_controller_outer(30, 10, 10, 10, 10, 10, scene_outer,4);
     main_house_outer = new Creation_controller_outer(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene_outer, roof_type);
 
 
-
+ 
     //Based on the The canopy flag 
     try {
       main_house_canopy.release();
@@ -4069,16 +4542,15 @@ menu_controller.readd_all_the_children(big_box_of_friends)
 
 
 
-    //Canopy code TODO proper logic
     //Presentation
     //this.canopy_array=["Coach hiii"]
-    console.log("Attenzione")
-    console.log(canopy_container)
+   //console.log("Attenzione")
+   //console.log(canopy_container)
     let canopy_flag = false;
     try {
       canopy_flag = canopy_container.canopy_exists()
     } catch (error) {
-      console.log(error)
+     //console.log(error)
     }
     //Always force a canopy for now less code to maintain
     canopy_flag=true;
@@ -4171,8 +4643,7 @@ menu_controller.readd_all_the_children(big_box_of_friends)
       //main_house_outer.wall_left=main_house_canopy.wall_left
       //main_house_outer.wall_right=main_house_canopy.wall_right
 
-      //TODO
-      //Based on what type of canopy is being added remove certain parts of the canopy
+
       //main_house_canopy.wall_front.object.removeFromParent()
       if (!canopy_container.front_size) {
         main_house_canopy.wall_front.object.removeFromParent()
@@ -4186,6 +4657,302 @@ menu_controller.readd_all_the_children(big_box_of_friends)
       if (!canopy_container.right_size) {
         main_house_canopy.wall_right.object.removeFromParent()
       }
+
+      function insert_canopy(canopy_container_wall,rect_being_targeted, main_house_canopy_wall, rotation=0, support_location="front" ){
+
+      let beam_dim_x=0.025*0.5
+      let beam_dim_y=0.1*0.5
+      let offset=new THREE.Vector3(0,0,0)
+      let beam_dim_left=new THREE.Vector3(0,0,0)
+      let beam_dim_center=new THREE.Vector3(0,0,0)
+      let beam_dim_right=new THREE.Vector3(0,0,0)
+      switch(support_location){
+
+        case("front"):
+        offset=new THREE.Vector3(-rect_being_targeted.wall_front.width/2, 0,0)
+        beam_dim_left=new THREE.Vector3(0,0,-beam_dim_y)
+        beam_dim_center=new THREE.Vector3(0,0,-beam_dim_y)
+        beam_dim_right=new THREE.Vector3(0,0,-beam_dim_y)
+        break;
+        case("back"):
+        offset=new THREE.Vector3(-rect_being_targeted.wall_front.width/2, 0,0)
+        beam_dim_left=new THREE.Vector3(0,0,+beam_dim_y)
+        beam_dim_center=new THREE.Vector3(0,0,+beam_dim_y)
+        beam_dim_right=new THREE.Vector3(0,0,+beam_dim_y)
+
+
+        break;
+        case("left"):
+        offset=new THREE.Vector3(0, 0,rect_being_targeted.wall_left.width/2)
+        beam_dim_left=new THREE.Vector3(+beam_dim_y,0,0)
+        beam_dim_center=new THREE.Vector3(+beam_dim_y,0,0)
+        beam_dim_right=new THREE.Vector3(+beam_dim_y,0,0)
+        break;
+        case("right"):
+        offset=new THREE.Vector3(0, 0,rect_being_targeted.wall_left.width/2)
+        beam_dim_left=new THREE.Vector3(-beam_dim_y,0,0)
+        beam_dim_center=new THREE.Vector3(-beam_dim_y,0,0)
+        beam_dim_right=new THREE.Vector3(-beam_dim_y,0,0)
+
+
+        break;
+      }
+
+      let insert_geometry = new THREE.BoxGeometry(0.05, main_house_canopy.constructor_height - 0.015,  0.05);
+      let insert_geometry_left = new THREE.BoxGeometry(0.05, main_house_canopy.constructor_height - 0.015,  0.05);
+      let insert_geometry_right = new THREE.BoxGeometry(0.05, main_house_canopy.constructor_height - 0.015,  0.05);
+      let insert_material = new THREE.MeshBasicMaterial({
+        color: 0x272727,
+        side: THREE.DoubleSide
+      });
+      //insert_geometry.translate(final_displacement.x, final_displacement.y, final_displacement.z);
+      canopy_container_wall[0]=  new THREE.Mesh(insert_geometry, insert_material);
+      canopy_container_wall[1]=  new THREE.Mesh(insert_geometry_left, insert_material);
+      canopy_container_wall[2]=  new THREE.Mesh(insert_geometry_right, insert_material);
+
+
+      //insert_geometry.rotateY(Math.PI/2)
+     //console.log("canopy:")
+     //console.log(offset)
+
+      
+      canopy_container_wall[0].geometry.rotateY(rotation)
+      canopy_container_wall[1].geometry.rotateY(rotation)
+      canopy_container_wall[2].geometry.rotateY(rotation)
+
+      canopy_container_wall[0].geometry.translate(canopy_translation.x-offset.x,canopy_translation.y-offset.y,canopy_translation.z-offset.z)
+      canopy_container_wall[1].geometry.translate(canopy_translation.x,canopy_translation.y,canopy_translation.z)
+      canopy_container_wall[2].geometry.translate(canopy_translation.x+offset.x,canopy_translation.y,canopy_translation.z+offset.z)
+
+
+      canopy_container_wall[0].geometry.translate(beam_dim_left.x,beam_dim_left.y,beam_dim_left.z)
+      canopy_container_wall[1].geometry.translate(beam_dim_center.x,beam_dim_center.y,beam_dim_center.z)
+      canopy_container_wall[2].geometry.translate(beam_dim_right.x,beam_dim_right.y,beam_dim_right.z)
+
+
+      main_house_canopy_wall.object.add(canopy_container_wall[0]);
+      main_house_canopy_wall.object.add(canopy_container_wall[1]);
+      main_house_canopy_wall.object.add(canopy_container_wall[2]);
+
+      if(support_location='front'){
+      let curr_id=canopy_container_wall[1].id
+      main_house_canopy.wall_front.remove_component(curr_id)
+      }
+    }
+
+    
+      if (canopy_container.front_size) {
+        let beam_container=canopy_container.front_container
+        let wall_being_targeted=main_house_canopy.wall_front
+        insert_canopy(beam_container,main_house_canopy ,wall_being_targeted, Math.PI/2, 'front')
+
+
+
+      }
+      if (canopy_container.left_size) {
+   
+
+        let beam_container=canopy_container.front_container
+        let wall_being_targeted=main_house_canopy.wall_left
+        insert_canopy(beam_container,main_house_canopy ,wall_being_targeted, 0, 'left')
+
+
+        // let insert_geometry = new THREE.BoxGeometry(0.02, 1 + 0.01, 1 + 0.02);
+        // let insert_geometry_left = new THREE.BoxGeometry(0.02, 1 + 0.01, 1 + 0.02);
+        // let insert_geometry_right = new THREE.BoxGeometry(0.02, 1 + 0.01, 1 + 0.02);
+        // let insert_material = new THREE.MeshBasicMaterial({
+        //   color: 0x272727,
+        //   side: THREE.DoubleSide
+        // });
+        // //insert_geometry.translate(final_displacement.x, final_displacement.y, final_displacement.z);
+        // canopy_container.left_container[0]=  new THREE.Mesh(insert_geometry, insert_material);
+        // canopy_container.left_container[1]=  new THREE.Mesh(insert_geometry_left, insert_material);
+        // canopy_container.left_container[2]=  new THREE.Mesh(insert_geometry_right, insert_material);
+
+
+        // //insert_geometry.rotateY(Math.PI/2)
+        ////console.log("canopy:")
+        ////console.log(main_house_canopy)
+
+        
+        // canopy_container.left_container[0].geometry.translate(canopy_translation.x,canopy_translation.y,canopy_translation.z-main_house_canopy.wall_left.width/2)
+        // canopy_container.left_container[1].geometry.translate(canopy_translation.x,canopy_translation.y,canopy_translation.z)
+        // canopy_container.left_container[2].geometry.translate(canopy_translation.x,canopy_translation.y,canopy_translation.z+main_house_canopy.wall_left.width/2)
+
+        // main_house_canopy.wall_left.object.add(canopy_container.left_container[0]);
+        // main_house_canopy.wall_left.object.add(canopy_container.left_container[1]);
+        // main_house_canopy.wall_left.object.add(canopy_container.left_container[2]);
+
+        //remove_composite_object(insert_mesh.id)
+        //let curr_id=insert_mesh.id
+        //main_house_canopy.wall_back.remove_component(curr_id)
+        //main_house_canopy.wall_front.remove_component(curr_id)
+        //main_house_canopy.wall_left.remove_component(curr_id)
+        //main_house_canopy.wall_right.remove_component(curr_id)
+
+        //To attach to normal walls you just have to copoy the following code and uncomment it once
+
+        ////insert_geometry.translate(canopy_translation.x,canopy_translation.y,canopy_translation.z)
+        //main_house_outer.wall_left.object.add(insert_mesh);
+
+
+
+      }
+      if (canopy_container.right_size) {
+        let beam_container=canopy_container.right_container
+        let wall_being_targeted=main_house_canopy.wall_right
+        insert_canopy(beam_container,main_house_canopy ,wall_being_targeted, 0, 'right')
+      }
+      if(canopy_container.back_size){
+
+        let beam_container=canopy_container.back_container
+        let wall_being_targeted=main_house_canopy.wall_back
+        insert_canopy(beam_container,main_house_canopy ,wall_being_targeted, 0, 'back')
+      }
+
+
+      if(false){
+        let reinforcement_width=0.1
+        let reinforcement_depth=0.02 
+        let compensation=(reinforcement_width-reinforcement_depth)/2
+        let insert_geometry = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
+        let insert_material = new THREE.MeshBasicMaterial({color: 0x272727,side: THREE.DoubleSide});
+        
+        let a=new THREE.Mesh(insert_geometry, insert_material);
+        a.name="Boy"
+       
+
+        
+
+        let rotation_0=new THREE.Vector3(-(main_house_outer.wall_front.width/2-compensation),0,-compensation)
+        let rotation_1=new THREE.Vector3(+(main_house_outer.wall_front.width/2-compensation),0,-compensation )
+        let rotation_2=new THREE.Vector3(-(main_house_outer.wall_front.width/2-compensation),0,+compensation)
+        let rotation_3=new THREE.Vector3(+(main_house_outer.wall_front.width/2-compensation),0,+compensation)
+
+        a.geometry.translate(rotation_0.x,rotation_0.y,rotation_0.z)
+        a.name="Crucial"
+        a.visible=false
+        external_arr.front=a;
+        
+        console.log(external_arr)
+        console.log(main_house_outer.wall_front.object)
+        main_house_outer.wall_front.object.children.push(a);
+
+      }
+      if(request_clean){
+        //console.log(main_house_outer.wall_front.object)
+      }
+
+      
+
+      if(false) {
+
+        let reinforcement_width=0.1
+        let reinforcement_depth=0.02 
+        let compensation=(reinforcement_width-reinforcement_depth)/2
+
+        let insert_geometry = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
+        let insert_geometry_left = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
+        let insert_geometry_right = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
+        let insert_geometry_back = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
+        let insert_material = new THREE.MeshBasicMaterial({
+          color: 0x272727,
+          side: THREE.DoubleSide
+        });
+        //insert_geometry.translate(final_displacement.x, final_displacement.y, final_displacement.z);
+        //reinforcements_container.container[0]=  new THREE.Mesh(insert_geometry, insert_material);
+        //reinforcements_container.container[0].name="reinforcement-wall"
+        //console.log(reinforcements_container.container[0])
+        //reinforcements_container.container[1]=  new THREE.Mesh(insert_geometry_left, insert_material);
+        //reinforcements_container.container[1].name="heyy"
+        //console.log(reinforcements_container.container[1])
+
+        reinforcements_container.container[0]=new THREE.Mesh(insert_geometry, insert_material);
+        reinforcements_container.container[1]=new THREE.Mesh(insert_geometry_left, insert_material);
+        reinforcements_container.container[2]=new THREE.Mesh(insert_geometry_right, insert_material);
+        reinforcements_container.container[3]=new THREE.Mesh(insert_geometry_back, insert_material);
+
+
+        
+     
+     
+      //  main_house_outer.wall_front.object.add( reinforcements_container.container[1]);
+       // console.log(reinforcements_container.container[0])
+       // console.log(reinforcements_container.container[1])
+
+        console.log("Okay idk:")
+        //console.log(main_house_outer.wall_front.object)
+
+     
+       
+        
+  
+        reinforcements_container.container[2].name="reinforcement-wall3"
+        reinforcements_container.container[3].name="reinforcement-wall4"
+
+
+
+        main_house_outer.wall_front.object.add( reinforcements_container.container[0]);
+        main_house_outer.wall_front.object.add( reinforcements_container.container[1]);
+        main_house_outer.wall_back.object.add( reinforcements_container.container[2]);
+        main_house_outer.wall_back.object.add( reinforcements_container.container[3]);
+
+        
+
+      //   remove_reinforcements(main_house_outer.wall_front)
+      //   console.log("BAck wall:")
+      //   remove_reinforcements(main_house_outer.wall_back)
+      //   function remove_reinforcements(targeted_wall){
+      //   let children = targeted_wall.object.children
+      //   //console.log(children)
+      //   console.log(children)
+      //   for (const child of children) {
+      //     if(child.name.includes("reinforcement"))
+      //     {
+      //       console.log(child)
+      //     //main_house_outer.wall_front.object.remove(child)
+      //     targeted_wall.object.remove(child)
+      //   }
+      //     //      //console.log(child)
+      //     //
+      //   }
+      // }
+
+
+
+        let rotation_0=new THREE.Vector3(-(main_house_outer.wall_front.width/2-compensation),0,-compensation)
+        let rotation_1=new THREE.Vector3(+(main_house_outer.wall_front.width/2-compensation),0,-compensation )
+        let rotation_2=new THREE.Vector3(-(main_house_outer.wall_front.width/2-compensation),0,+compensation)
+        let rotation_3=new THREE.Vector3(+(main_house_outer.wall_front.width/2-compensation),0,+compensation)
+
+        reinforcements_container.container[0].geometry.translate(rotation_0.x,rotation_0.y,rotation_0.z)
+        reinforcements_container.container[1].geometry.translate(rotation_1.x,rotation_1.y,rotation_1.z)
+        reinforcements_container.container[2].geometry.translate(rotation_2.x,rotation_2.y,rotation_2.z)
+        reinforcements_container.container[3].geometry.translate(rotation_3.x,rotation_3.y,rotation_3.z)
+
+
+      }
+
+if(false){
+  let curr_id=""
+        
+   curr_id=reinforcements_container.container[0].id
+   main_house_outer.wall_front.remove_component(curr_id)
+
+   curr_id=reinforcements_container.container[1].id
+   main_house_outer.wall_front.remove_component(curr_id)
+      
+   curr_id=reinforcements_container.container[2].id
+   main_house_outer.wall_back.remove_component(curr_id)
+  
+   curr_id=reinforcements_container.container[3].id
+   main_house_outer.wall_back.remove_component(curr_id)
+
+
+
+
+}
+      //let external_arr=new Reinforcements_boys()
 
 
 
@@ -4202,6 +4969,10 @@ menu_controller.readd_all_the_children(big_box_of_friends)
 
       //That is pretty bad, but let it pass for now
       menu_controller.change_roof()
+
+      //Careful with making a cyclical call
+      document.querySelector('input[name="wall-type"]').dispatchEvent(new Event('change'));
+      
 
     }
 
@@ -4257,7 +5028,7 @@ menu_controller.readd_all_the_children(big_box_of_friends)
 
         default:
           wall.texture = loader.load('./resources/images/PWP2.jpg');
-          //alert('3')
+         
           break;
       }
 
@@ -4301,7 +5072,7 @@ menu_controller.readd_all_the_children(big_box_of_friends)
 
     if (texture_to_check == '0' || texture_to_check == '1' || texture_to_check == '2') {
 
-      console.log("special_case")
+     //console.log("special_case")
     } else {
       let color_value = document.querySelector('input[name="wall-color"]:checked').value
       let three_color = new THREE.Color(color_value)
@@ -4344,7 +5115,7 @@ menu_controller.readd_all_the_children(big_box_of_friends)
     try {
       texture_to_check = document.querySelector('input[name="roof-color"]:checked').value
     } catch (error) {
-      console.log("this is expected we choose the default")
+     //console.log("this is expected we choose the default")
     }
 
 
@@ -4368,7 +5139,7 @@ menu_controller.readd_all_the_children(big_box_of_friends)
 
         default:
           wall.texture = loader.load('./resources/images/PWP2.jpg');
-          //alert('3')
+        
           break;
       }
 
@@ -4380,11 +5151,11 @@ menu_controller.readd_all_the_children(big_box_of_friends)
       //console.log(texture_rotated.includes("rotated"))
       if (texture_rotated.includes("rotated")) {
 
-        wall.texture.repeat.set(1, wall.width);
+        wall.texture.repeat.set(1, 2*wall.width);
         wall.texture.rotation = (Math.PI / 2)
       } else {
         //This is kinda a quick fix but it works
-        wall.texture.repeat.set(1, wall.depth);
+        wall.texture.repeat.set(1, 2*wall.depth);
         wall.texture.rotation = (0)
       }
 
@@ -4401,15 +5172,15 @@ menu_controller.readd_all_the_children(big_box_of_friends)
     wall_repaint_inner(main_house_outer.roof2)
 
     if (texture_to_check == '0' || texture_to_check == '1' || texture_to_check == '2') {
-      console.log("special_case")
+     //console.log("special_case")
     } else {
-      console.log("normal_case")
+     //console.log("normal_case")
 
       let color_value = "#13447C"
       try {
         color_value = document.querySelector('input[name="roof-color"]:checked').value
       } catch (error) {
-        console.log("this is expected we choose the default")
+       //console.log("this is expected we choose the default")
       }
       //let color_value=document.querySelector('input[name="roof-color"]:checked').value
 
@@ -4459,7 +5230,58 @@ menu_controller.readd_all_the_children(big_box_of_friends)
   }
 
 }
+class Reinforcements_boys{
+ constructor(){
+  let reinforcement_width=0.1
+  let reinforcement_depth=0.02 
+  let compensation=(reinforcement_width-reinforcement_depth)/2
 
+  let insert_geometry = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
+  let insert_geometry_left = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
+  let insert_geometry_right = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
+  let insert_geometry_back = new THREE.BoxGeometry(0.10, main_house_canopy.constructor_height,  0.10);
+  let insert_material = new THREE.MeshBasicMaterial({
+    color: 0x272727,
+    side: THREE.DoubleSide
+  });
+  
+
+  let container=new Array(4)
+  container[0]=new THREE.Mesh(insert_geometry, insert_material);
+  container[1]=new THREE.Mesh(insert_geometry_left, insert_material);
+  container[2]=new THREE.Mesh(insert_geometry_right, insert_material);
+  container[3]=new THREE.Mesh(insert_geometry_back, insert_material);
+
+
+  console.log("Okay idk:")
+  //console.log(main_house_outer.wall_front.object)
+
+
+ 
+  
+
+  //reinforcements_container.container[2].name="reinforcement-wall3"
+  //reinforcements_container.container[3].name="reinforcement-wall4"
+
+  main_house_outer.wall_front.object.add(container[0]);
+  main_house_outer.wall_front.object.add(container[1]);
+  main_house_outer.wall_back.object.add(container[2]);
+  main_house_outer.wall_back.object.add(container[3]);
+
+  let rotation_0=new THREE.Vector3(-(main_house_outer.wall_front.width/2-compensation),0,-compensation)
+  let rotation_1=new THREE.Vector3(+(main_house_outer.wall_front.width/2-compensation),0,-compensation )
+  let rotation_2=new THREE.Vector3(-(main_house_outer.wall_front.width/2-compensation),0,+compensation)
+  let rotation_3=new THREE.Vector3(+(main_house_outer.wall_front.width/2-compensation),0,+compensation)
+
+  container[0].geometry.translate(rotation_0.x,rotation_0.y,rotation_0.z)
+  container[1].geometry.translate(rotation_1.x,rotation_1.y,rotation_1.z)
+  container[2].geometry.translate(rotation_2.x,rotation_2.y,rotation_2.z)
+  container[3].geometry.translate(rotation_3.x,rotation_3.y,rotation_3.z)
+
+
+ }
+
+}
 
 //Klasa odseparowujaca rendering od placementu
 //Kontroller logiki scian
@@ -4559,12 +5381,17 @@ function roof_recalculation(){    //CURRENT_REVISION
   let index_roof=parseInt(document.querySelector('input[name="roof-type"]:checked').value)
   let height_multiplier=1
   let initial_height=0.5
- // alert(height_multiplier)
-  if(index_roof==5 || index_roof==4){
-   height_multiplier=0.5
-  }
- 
 
+  if(index_roof==5 || index_roof==4){
+   height_multiplier=0.25*0.4
+  }
+  if(index_roof==1 || index_roof==3){
+    height_multiplier=0.087
+   }
+   if(index_roof==0 || index_roof==2){
+     //RESPONSE DEPENDANT
+    height_multiplier=0.1 //or 0.2 if blue was chosen
+   }
 
   if(index_roof==0 || index_roof==2 ||index_roof==4){
   initial_height=parseFloat(document.querySelector(".num-selector [name='width']").value)+parseFloat(canopy_container.left_size)+parseFloat(canopy_container.right_size)
@@ -4575,7 +5402,7 @@ function roof_recalculation(){    //CURRENT_REVISION
   
   //REVISION_DELETION
 
-  document.querySelector(".num-selector [name='total-height']").value=0.4*height_multiplier*initial_height
+  document.querySelector(".num-selector [name='total-height']").value=height_multiplier*initial_height
 }
 
 //document.addEventListener('click',  ()=>{menu_controller.change_roof()})
@@ -4592,6 +5419,16 @@ document.querySelector("#add-doors").addEventListener('click', () => {
 document.querySelector("#add-canopy").addEventListener('click', () => {
   menu_controller.add_canopy()
 })
+
+
+document.querySelector("#reinforcements").addEventListener('click', () => {
+  reinforcement=document.querySelector("#reinforcements").checked
+  if(reinforcement){request_clean=false}
+  else{request_clean=true}
+  //alert(reinforcement)
+  menu_controller.rebuild_garage_dimensions_hold_the_children()
+})
+
 
 
 let roof_types = document.querySelectorAll('input[name="roof-type"]')
@@ -4674,9 +5511,30 @@ for (let garage_dimension of garage_dimension_changers) {
   garage_dimension.addEventListener('change',roof_recalculation)}
 
 
+  let reset_status=0
+  
 for (let garage_dimension of garage_dimension_changers) {
  
-  garage_dimension.addEventListener('change', menu_controller.rebuild_garage_dimensions_hold_the_children)
+  garage_dimension.addEventListener('change',()=>{
+     menu_controller.rebuild_garage_dimensions()
+  //TODO build a proper init
+
+  let erasers=document.querySelectorAll('.erase-button')
+  for(let erase of erasers) {
+    erase.dispatchEvent(new Event('click'));
+    erase.click()
+  }
+ 
+  
+  
+    menu_controller.gate_array=[]
+    menu_controller.window_array=[]
+    menu_controller.door_array=[]
+    document.querySelector("#add-gates").click()      
+
+  
+})
+
 }
 
 for (let garage_dimension of garage_dimension_changers) {
@@ -4715,8 +5573,14 @@ for (let wall_color of wall_colors) {
   })
 }
 
+let gutter_checkbox=document.querySelector("#gutter[name='gutter']")
+gutter_checkbox.addEventListener("change",()=>{ 
+  
+  //Gutter is not controlled by the person but by the previous setup pass the walls to which to add the gutter  
+  
+  menu_controller.add_gutter()
 
-
+})
 
 //main_house_outer.release();
 //menu_controller.release_all_objects()
@@ -4731,137 +5595,7 @@ menu_controller.add_canopy()
 menu_controller.rebuild_garage_dimensions()
 
 
-class Foundation extends General_object {
 
-
-  constructor(width, depth, index) {
-    super();
-    this.components = [];
-    this.width = width;
-    this.depth = depth;
-    this.index = index;
-  }
-  add_components_to_scene() {
-
-    //Define geometry based on the index
-    switch (this.index) {
-      case 0:
-        var geometry = new THREE.PlaneGeometry(this.width, this.depth, 2, 2);
-        geometry.rotateX(Math.PI / 2)
-        var texture = loader.load('./resources/images/foundation0.jpg');
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-        //This is kinda a quick fix but it works
-        texture.repeat.set(this.width / 2, this.depth / 2);
-        texture.rotation = (0)
-        var material = new THREE.MeshBasicMaterial({
-          color: 0xffffff,
-          wireframe: false,
-          side: THREE.DoubleSide,
-          map: texture
-        });
-        var torus = new THREE.Mesh(geometry, material);
-        this.components.push(torus);
-        break;
-      case 1:
-        var block_width = 1;
-        var block_depth = 1;
-
-        var texture = loader.load('./resources/images/foundation1.jpg');
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-
-        texture.repeat.set(block_width, block_depth);
-        texture.rotation = (0)
-
-        let displacement_array_x = [-1, 0, 1]
-        let displacement_array_y = [-1, 0, 1]
-        for (let displacement_x of displacement_array_x) {
-          for (let displacement_y of displacement_array_y) {
-            //console.log(displacement_x)
-            //console.log(displacement_y)
-
-            var geometry = new THREE.PlaneGeometry(block_width, block_depth, 2, 2);
-            geometry.translate(displacement_x * (this.width / 2 - block_width / 2), displacement_y * (this.depth / 2 - block_depth / 2), 0)
-            geometry.rotateX(Math.PI / 2)
-            var material = new THREE.MeshBasicMaterial({
-              color: 0xff6347,
-              wireframe: false,
-              side: THREE.DoubleSide,
-              map: texture
-            });
-            var mesh = new THREE.Mesh(geometry, material);
-            this.components.push(mesh);
-
-          }
-        }
-        break;
-
-
-      case 2:
-        var geometry = new THREE.PlaneGeometry(this.width, this.depth, 2, 2);
-        geometry.rotateX(Math.PI / 2)
-        var texture = loader.load('./resources/images/foundation2.jpg');
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-
-        texture.repeat.set(this.width, this.depth);
-        texture.rotation = (0)
-        var material = new THREE.MeshBasicMaterial({
-          color: 0xffffff,
-          wireframe: false,
-          side: THREE.DoubleSide,
-          map: texture
-        });
-        var torus = new THREE.Mesh(geometry, material);
-        this.components.push(torus);
-        //this.add_components();
-
-
-
-
-
-        break;
-      case 3:
-        var geometry = new THREE.PlaneGeometry(this.width, this.depth, 2, 2);
-        geometry.rotateX(Math.PI / 2)
-        var texture = loader.load('./resources/images/foundation1.jpg');
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-        //This is kinda a quick fix but it works
-        texture.repeat.set(this.width, this.depth);
-        texture.rotation = (0)
-        var material = new THREE.MeshBasicMaterial({
-          color: 0xffffff,
-          wireframe: false,
-          side: THREE.DoubleSide,
-          map: texture
-        });
-        var torus = new THREE.Mesh(geometry, material);
-        this.components.push(torus);
-        //this.add_components();
-
-
-
-        break;
-
-
-    }
-    this.add_components();
-  }
-  remove_components() {
-    for (const elem of this.components) {
-      scene_outer.remove(elem);
-    }
-  }
-  add_components() {
-    for (const elem of this.components) {
-      scene_outer.add(elem);
-    }
-
-  }
-
-}
 let found = new Foundation(3 + 1, 3 + 1, 1);
 
 function recreate_foundation() {
@@ -4871,8 +5605,16 @@ function recreate_foundation() {
   let constructor_depth = parseFloat(document.querySelector(".num-selector [name='depth']").value);
   let index = parseInt(document.querySelector("[name=foundation-type]:checked").value);
   //console.log(index)
+  try{
   found.remove_components()
-  found = new Foundation(constructor_width + 1, constructor_depth + 1, index);
+  }
+  catch(permission)
+  {
+   //console.log("Foundantion wasn't yet initialized")
+
+  }
+
+  found = new Foundation(constructor_width + 0.5, constructor_depth + 0.5, index);
   found.add_components_to_scene()
 }
 recreate_foundation()
@@ -4883,7 +5625,7 @@ for (let foundation_type of foundation_types) {
 }
 
 
-menu_controller.add_gate()
+//menu_controller.add_gate()
 document.querySelector('input[name="roof-color"][value*="13"]').click()
 menu_controller.change_wall()
 //menu_controller.gate_array[0].change_texture()
@@ -4911,7 +5653,7 @@ menu_controller.change_wall()
 
 
 
-
+//PRESENTATION CODE
 // const skyGeo2 = new THREE.SphereGeometry( 100, 32, 15 );
 // const skyMat2=new THREE.MeshBasicMaterial({
 //   //map: wall.texture,
@@ -4932,12 +5674,12 @@ menu_controller.change_wall()
 // grass_texture.wrapT = THREE.RepeatWrapping
 // grass_texture.wrapS = THREE.RepeatWrapping;
 
-// grass_texture.repeat.set(25.0, 25.0);
+// grass_texture.repeat.set(125.0, 125.0);
 
 // let dp_map = loader.load('displacement.jpg');
 // dp_map.repeat.set(50.0, 50.0);
 
-// const planeGeo = new THREE.PlaneGeometry( 50, 50 );
+// const planeGeo = new THREE.PlaneGeometry( 250, 250 );
 // planeGeo.rotateX(Math.PI / 2);
 
 // let planeMat=new THREE.MeshPhysicalMaterial({
@@ -4961,9 +5703,9 @@ menu_controller.change_wall()
 
 
 // let plane= new THREE.Mesh( planeGeo, planeMat );
-// plane.position.y=-0.05
-// console.log(plane)
-// console.log("heyy")
+// plane.position.y=-0.01
+////console.log(plane)
+////console.log("heyy")
 // scene_outer.add( plane );
 
 
@@ -4979,3 +5721,9 @@ menu_controller.change_wall()
 
 //a big_box_of_friends=menu_controller.hold_all_the_children()
 //menu_controller.readd_all_the_children(big_box_of_friends)
+
+
+document.querySelector("#add-gates").click()
+
+let external_arr="";
+//let external_arr=new Reinforcements_boys()

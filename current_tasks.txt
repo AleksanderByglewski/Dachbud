@@ -1,12 +1,28 @@
-Kontrola stanów[]
+Rewizja
+    1.//ANSWER DEPENDANT
+    2.RESOLVED
+    3.RESOLVED
+    4.RESOLVED COULD HAVE CAUSED ISSUES WITH PREVIOUS REVISION CHECK IF EVERYTHING IS CORRECT ANSWER DEPENDANDANT
+    5.UNDERSTOOD PEND
+    6.//ANSWER DEPENDANT //PENDING6  GIVE A REMARK "Dziękuję za uwagę z podniesieniem, poproszę jeszcze o potwierdzenie, czy poniższe opcja spełnia wymagania "
+        W obu wypadkach ukryć pole wyboru wysokość elementu. Zostają pola odchylenie od środka ścian(poziom), odchylenie od środka ściany(pion), szerokość elementu
+            -W pierwszym wypadku przesunięcie bramy o 0.5 metrów w górę powoduje wynik jak na obrazku niebieskim. Wysokość bramy się nie zmienia, jej odległość od ziemi wyniesie 0.5m
+            -W drugim wypadku przesunięcie bramy o 0.5 metrów w górę powoduje wynik jak na obrazku czerwonym. Wysokośc bramy się zmienia, jej odległośc od ziemi wyniesie 0.0m 
+    7. //ANSWER DEPENDANT ANSWER ADD A BORDER 
+    8. PEDNDING MODIFY A MODEL (TASK ADD A SECOND TYPE OF HANDLE)
+    9. //RESOLVED
+    10.//RESOLVED
+    11.//PENDING Gutters
+    12.//RESOLVED
+    13.//PENDING Obrobki blacharskie
+    15.//RESOLVED
+    16.//RESOLVED
+    17.//RESOLVED "Wprowadzilismy tez braki z poprzedniej rewizji czyli poprawe modelu wiaty
+    18.//COMPRESSION OF ONE OF THE HANDLES
 
-
-Modelowanie[]
-    Stworzyć skomplikowane obiekty[]
-        -Drzwi[x]
-        -Kotwiczenie[]
-        -Wiata[x]
-        -Bramy[x]
+Logika[]
+    Umiejscowienie obiektór[]
+        -Klamka dzrzwi[] (Klamka jest umieszczana na środku ściany pod względem wysokości, a nie na środku drzwi)
         -Rynny[]
 
 
