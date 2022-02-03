@@ -231,3 +231,13 @@ div#roof-material {
   [type="checkbox"]{
       margin-left: 2em;
   }
+  .cel {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+.cel input{
+    margin-left:1em !important;
+    margin-top:4px !important;
+    
+}

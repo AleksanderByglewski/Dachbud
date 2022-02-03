@@ -1,15 +1,19 @@
+Rewizja 4
+1.Załatwione
+2.Załatwione
+
 Rewizja
-    1.//ANSWER DEPENDANT "Dzień dobry jaki kąt nachlenia dachu"
+    1.//RESOLVED "Dzień dobry jaki kąt nachylenia dachu"
     2.RESOLVED
     3.RESOLVED
     4.RESOLVED COULD HAVE CAUSED ISSUES WITH PREVIOUS REVISION CHECK IF EVERYTHING IS CORRECT ANSWER DEPENDANDANT
     5.UNDERSTOOD PEND
-    6.//ANSWER DEPENDANT //PENDING6  GIVE A REMARK "Dziękuję za uwagę z podniesieniem, poproszę jeszcze o potwierdzenie, czy poniższe opcja spełnia wymagania "
+    6.//RESOLVED //PENDING6  GIVE A REMARK "Dziękuję za uwagę z podniesieniem, poproszę jeszcze o potwierdzenie, czy poniższe opcja spełnia wymagania "
         W obu wypadkach ukryć pole wyboru wysokość elementu. Zostają pola odchylenie od środka ścian(poziom), odchylenie od środka ściany(pion), szerokość elementu
             -W pierwszym wypadku przesunięcie bramy o 0.5 metrów w górę powoduje wynik jak na obrazku niebieskim. Wysokość bramy się nie zmienia, jej odległość od ziemi wyniesie 0.5m
             -W drugim wypadku przesunięcie bramy o 0.5 metrów w górę powoduje wynik jak na obrazku czerwonym. Wysokośc bramy się zmienia, jej odległośc od ziemi wyniesie 0.0m 
-    7. //ANSWER DEPENDANT ANSWER ADD A BORDER 
-    8. PEDNDING MODIFY A MODEL (TASK ADD A SECOND TYPE OF HANDLE)
+    7. //RESOLVED
+    8. //RESOLVED
     9. //RESOLVED
     10.//RESOLVED
     11.//PENDING Gutters

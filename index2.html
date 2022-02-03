@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="HTMLcomponents/side-menu/side-menu.css">
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dachbud garages</title>
+  </head>
+  <body>
+
+  <div id="page-container">
+      <div id="div-01">Here is div-01</div>
+      <div id="div-02">Here is div-02</div>
+  
+      <div class="side-menu">
+
+
+        <div class="menu-elem" style="display:none">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Empty elem heading</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide"><div class="menu-elem-content-text">Menu elem content</div></div>
+        </div>
+
+        <div class="menu-elem" style="display:none">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Empty image selector</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide image-based-selection">
+
+                <label class="padded-element">
+                    <input type="radio" name="test" value="small" checked>
+                    <img src="http://placehold.it/40x60/0bf/fff&text=A">
+                    <div class="image-description">Opcja 1</div>
+                  </label>
+                  
+                  <label  class="padded-element">
+                    <input type="radio" name="test" value="big">
+                    <img src="http://placehold.it/40x60/b0f/fff&text=B">
+                    <div class="image-description">Opcja 2</div>
+                  </label>
+
+            </div>
+        </div>
+
+        <div class="menu-elem" >
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Wybór dachu</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide image-based-selection grid-3-columns">
+
+                <label class="padded-element">
+                    <input type="radio" name="roof-type" value="0" checked>
+                    <img src="./resources/images/0.jpg">
+                    <div class="image-description">Dach jednospadowy prawy</div>
+                  </label>
+                  <label class="padded-element">
+                    <input type="radio" name="roof-type" value="2" checked>
+                    <img src="./resources/images/2.jpg">
+                    <div class="image-description">Dach jednospadowy lewy</div>
+                  </label>
+                  <label class="padded-element">
+                    <input type="radio" name="roof-type" value="5" checked>
+                    <img src="./resources/images/5.jpg">
+                    <div class="image-description">Dach dwuspadowy przód</div>
+                  </label>
+                  <label class="padded-element">
+                    <input type="radio" name="roof-type" value="1" checked>
+                    <img src="./resources/images/1.jpg">
+                    <div class="image-description">Dach jednospadowy przód</div>
+                  </label>
+                  <label class="padded-element">
+                    <input type="radio" name="roof-type" value="3" checked>
+                    <img src="./resources/images/3.jpg">
+                    <div class="image-description">Dach jednospadowy tył</div>
+                  </label>
+                  <label class="padded-element">
+                    <input type="radio" name="roof-type" value="4" checked>
+                    <img src="./resources/images/4.jpg">
+                    <div class="image-description">Dach dwuspadowy bok</div>
+                  </label>
+
+            </div>
+        </div>
+
+           
+  
+
+        <div class="menu-elem" style="display:none">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Materiał dach</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide image-based-selection wall-type-select">
+
+                <label class="padded-element">
+                    <input type="radio" name="roof-type-orientation" id="ocynk-roof-rotation" value="standard" checked>
+                    <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN.jpg">
+                    <div class="image-description">Przetłoczenia pionowe</div>
+                  </label>
+                  
+                  <label  class="padded-element">
+                    <input type="radio" name="roof-type-orientation" value="rotated">
+                    <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN.jpg">
+                    <div class="image-description">Przetłoczenia poziome</div>
+                  </label>
+
+            </div>
+        </div>
+
+        <div class="menu-elem">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Kolor dachu</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide image-based-selection grid-6-columns">
+
+                <label class="padded-element">
+                    <input type="radio" name="roof-color" value="#D2B773" >
+                    <img src="./resources/colors/RAL1002.gif">
+                    <div class="image-description">RAL<br> 1002</div>
+                </label>
+                  
+          
+                <label  class="padded-element">
+                  <input type="radio" name="roof-color" value="#59191F">
+                  <img src="./resources/colors/RAL3005.gif">
+                  <div class="image-description">RAL<br> 3005</div>
+                </label>
+                <label  class="padded-element">
+                    <input type="radio" name="roof-color" value="#13447C" checked>
+                    <img src="./resources/colors/RAL5010.gif">
+                    <div class="image-description">RAL<br> 5010</div>
+                  </label>
+
+                  <label  class="padded-element">
+                    <input type="radio" name="roof-color" value="#0F4336">
+                    <img src="./resources/colors/RAL6005.gif">
+                    <div class="image-description">RAL<br> 6005</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="roof-color" value="#354733">
+                    <img src="./resources/colors/RAL6020.gif">
+                    <div class="image-description">RAL<br> 6020</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="roof-color" value="#373F43">
+                    <img src="./resources/colors/RAL7016.gif">
+                    <div class="image-description">RAL<br> 7016</div>
+                  </label>
+
+
+
+
+                  <label  class="padded-element">
+                    <input type="radio" name="roof-color" value="#8F4E35">
+                    <img src="./resources/colors/RAL8004.gif">
+                    <div class="image-description">RAL<br> 8004</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="roof-color" value="#44322D">
+                    <img src="./resources/colors/RAL8017.gif">
+                    <div class="image-description">RAL<br> 8017</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="roof-color" value="#0A0A0A">
+                    <img src="./resources/colors/RAL9005.gif">
+                    <div class="image-description">RAL<br> 9005</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="roof-color" value="#A5A5A5">
+                    <img src="./resources/colors/RAL9006.gif">
+                    <div class="image-description">RAL<br> 9006</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="roof-color" value="#FFFFFF" >
+                    <img src="./resources/colors/RAL9010.gif">
+                    <div class="image-description">RAL<br> 9010</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" id="ocynk-roof" name="roof-color" value="0">
+                    <img src="./resources/colors/TEXTURE-METAL.jpg">
+                    <div class="image-description">Ocynk<br> 9010</div>
+                  </label>
+  
+                  <label  class="padded-element" style="display:none">
+                    <input type="radio" name="roof-color" value="1" >
+                    <img src="./resources/colors/TEXTURE-ORZECH.jpg">
+                    <div class="image-description image-description-widen">Orzech</div>
+                  </label>
+                  <label  class="padded-element" style="display:none">
+                    <input type="radio" name="roof-color" value="2">
+                    <img src="./resources/colors/TEXTURE-DAB.jpg">
+                    <div class="image-description image-description-widen">Złoty dąb<br> </div>
+                  </label>
+
+
+
+
+            </div>
+        </div>
+
+        <!---->
+        <div class="menu-elem" style="display:none">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Pokrycie dachu (deprecated)</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide" id="roof-color">
+                <div class="color-container" data-colorindex="262E38">
+                    <div><img  src="https://dummyimage.com/400x400/262E38/fff" alt="minus-icon"></div>
+                    <div class="desc">Kolor 1 (przyklad)</div>
+                </div>
+                <div class="color-container" data-colorindex="beff00">
+                    <div><img  src="https://dummyimage.com/400x400/beff00/fff" alt="minus-icon"></div>
+                    <div class="desc">Kolor 2 (przyklad)</div>
+                </div>
+                <div class="color-container" data-colorindex="eeff00">
+                    <div><img  src="https://dummyimage.com/400x400/eeff00/fff" alt="minus-icon"></div>
+                    <div class="desc">Kolor 3 (przyklad)</div>
+                </div>
+
+                <div>
+                    <div><img  src="https://dummyimage.com/400x400/ccc/fff" alt="minus-icon"></div>
+                    <div class="desc">Kolor 4</div>
+                </div>
+                <div>
+                    <div><img  src="https://dummyimage.com/400x400/ccc/fff" alt="minus-icon"></div>
+                    <div class="desc">Kolor 5</div>
+                </div>
+                <div>
+                    <div><img  src="https://dummyimage.com/400x400/ccc/fff" alt="minus-icon"></div>
+                    <div class="desc">Kolor 6</div>
+                </div>
+       
+                <div>
+                    <div><img  src="https://dummyimage.com/400x400/ccc/fff" alt="minus-icon"></div>
+                    <div class="desc">Kolor 7</div>
+                </div>
+                <div>
+
+                    <div><img  src="https://dummyimage.com/400x400/ccc/fff" alt="minus-icon"></div>
+                    <div class="desc">Kolor 8</div>
+               
+
+                </div>
+                <div>
+                    <div><img  src="https://dummyimage.com/400x400/ccc/fff" alt="minus-icon"></div>
+                    <div class="desc">Kolor 9</div>
+                </div>
+                <div>
+                    <div><img  src="https://dummyimage.com/400x400/ccc/fff" alt="minus-icon"></div>
+                    <div class="desc">Kolor 10</div>
+                </div>
+                <div>
+                    <div><img  src="https://dummyimage.com/400x400/ccc/fff" alt="minus-icon"></div>
+                    <div class="desc">Kolor 11</div>
+                </div>
+                <div>
+                    <div><img  src="https://dummyimage.com/400x400/ccc/fff" alt="minus-icon"></div>
+                    <div class="desc">Kolor 12</div>
+                </div>
+       
+
+
+            </div>
+        </div>
+        <div class="menu-elem">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Materiał ściany</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide image-based-selection wall-type-select">
+
+                <label class="padded-element">
+                    <input type="radio" name="wall-type" value="rotated" id="ocynk-wall-rotation" >
+                    <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN-DENSE.jpg">
+                    <div class="image-description">Przetłoczenia pionowe wąskie</div>
+                  </label>
+                       <!--
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-type" value="rotated-dense ">
+                    <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN-DENSE.jpg">
+                    <div class="image-description">Przetłoczenia pionowe wąskie</div>
+                  </label>
+                   -->
+                  <label class="padded-element">
+                    <input type="radio" name="wall-type" value=" standard" checked>
+                    <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg">
+                    <div class="image-description">Przetłoczenia poziome wąskie</div>
+                  </label>
+                  <!--
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-type" value="standard-dense">
+                    <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg">
+                    <div class="image-description">Przetłoczenia poziome wąskie</div>
+                  </label>
+                  -->
+            </div>
+        </div>
+        
+        <div class="menu-elem">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Kolory ścian</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide image-based-selection grid-6-columns">
+
+                <label class="padded-element">
+                    <input type="radio" name="wall-color" value="#D2B773" checked>
+                    <img src="./resources/colors/RAL1002.gif">
+                    <div class="image-description">RAL<br> 1002</div>
+                </label>
+                  
+          
+
+                <label  class="padded-element">
+                    <input type="radio" name="wall-color" value="#59191F">
+                    <img src="./resources/colors/RAL3005.gif">
+                    <div class="image-description">RAL<br> 3005</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-color" value="#13447C">
+                    <img src="./resources/colors/RAL5010.gif">
+                    <div class="image-description">RAL<br> 5010</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-color" value="#0F4336">
+                    <img src="./resources/colors/RAL6005.gif">
+                    <div class="image-description">RAL<br> 6005</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-color" value="#354733">
+                    <img src="./resources/colors/RAL6020.gif">
+                    <div class="image-description">RAL<br> 6020</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-color" value="#373F43">
+                    <img src="./resources/colors/RAL7016.gif">
+                    <div class="image-description">RAL<br> 7016</div>
+                  </label>
+
+
+
+
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-color" value="#8F4E35">
+                    <img src="./resources/colors/RAL8004.gif">
+                    <div class="image-description">RAL<br> 8004</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-color" value="#44322D">
+                    <img src="./resources/colors/RAL8017.gif">
+                    <div class="image-description">RAL<br> 8017</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-color" value="#0A0A0A">
+                    <img src="./resources/colors/RAL9005.gif">
+                    <div class="image-description">RAL<br> 9005</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-color" value="#A5A5A5">
+                    <img src="./resources/colors/RAL9006.gif">
+                    <div class="image-description">RAL<br> 9006</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-color" value="#FFFFFF" checked>
+                    <img src="./resources/colors/RAL9010.gif">
+                    <div class="image-description">RAL<br> 9010</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" id="ocynk-wall" name="wall-color" value="0">
+                    <img src="./resources/colors/TEXTURE-METAL.jpg">
+                    <div class="image-description">Ocynk<br> 9010</div>
+                  </label>
+  
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-color" value="1">
+                    <img src="./resources/colors/TEXTURE-ORZECH.jpg">
+                    <div class="image-description image-description-widen">Orzech</div>
+                  </label>
+                  <label  class="padded-element">
+                    <input type="radio" name="wall-color" value="2">
+                    <img src="./resources/colors/TEXTURE-DAB.jpg">
+                    <div class="image-description image-description-widen">Złoty dąb<br> </div>
+                  </label>
+
+
+
+
+            </div>
+        </div>
+
+
+
+        
+
+
+
+
+          <div class="menu-elem">
+            <div class="menu-elem-heading">
+                  <div class="menu-elem-heading-title">Wymiary garażu</div>
+                  <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide">
+                
+
+                    <div class="num-selector garage-rebuild">
+                    <label for="width" >Szerokość podstawy garażu:</label>
+                    <select name="width">
+                      
+                        <option value="3">   3.0 m </option>
+                        <option value="3.5"> 3.5 m </option>
+                        <option value="4">   4.0 m </option>
+                        <option value="4.5"> 4.5 m </option>
+                        <option value="5">   5.0 m </option>
+                        <option value="5.5"> 5.5 m </option>
+                        <option value="6">   6.0 m </option>
+                        <option value="6.5"> 6.5 m </option>
+                        <option value="7">   7.0 m </option>
+                        <option value="7.5"> 7.5 m </option>
+                        <option value="8">   8.0 m </option>
+                        <option value="8.5"> 8.5 m </option>
+                        <option value="9">   9.0 m </option>
+   
+                    </select>
+                    </div>
+                    <div class="num-selector garage-rebuild">
+                    <label for="depth">Głębokość podstawy garażu:</label>
+                    <select name="depth">
+                      
+                        <option value="3">   3.0 m </option>
+                        <option value="3.5"> 3.5 m </option>
+                        <option value="4">   4.0 m </option>
+                        <option value="4.5"> 4.5 m </option>
+                        <option value="5">   5.0 m </option>
+                        <option value="5.5"> 5.5 m </option>
+                        <option value="6">   6.0 m </option>
+                        <option value="6.5"> 6.5 m </option>
+                        <option value="7">   7.0 m </option>
+                        <option value="7.5"> 7.5 m </option>
+                        <option value="8">   8.0 m </option>
+                        <option value="8.5"> 8.5 m </option>
+                        <option value="9">   9.0 m </option>
+    
+                    </select>
+                    </div>
+
+                    <div class="num-selector garage-rebuild">
+                      <label for="wall-height">Wysokość ścian garażu:</label>
+                      <select name="wall-height">
+                          <option value="2">   2.0 m </option>
+                          <option value="2.5"> 2.5 m </option>
+                          <option value="3">   3.0 m </option>
+                          <option value="3.5"> 3.5 m </option>
+                          <option value="4">   4.0 m </option>
+                          <option value="4.5"> 4.5 m </option>
+                          <option value="5">   5.0 m </option>
+                          <option value="5.5"> 5.5 m </option>
+                          <option value="6">   6.0 m </option>
+                          <option value="6.5"> 6.5 m </option>
+                          <option value="7">   7.0 m </option>
+                          <option value="7.5"> 7.5 m </option>
+                          <option value="8">   8.0 m </option>
+                          <option value="8.5"> 8.5 m </option>
+                          <option value="9">   9.0 m </option>
+                          <option value="9.5"> 9.5 m </option>
+                          <option value="10">  10.0 m</option>
+                          <option value="10.5">10.5 m</option>
+                          <option value="11">  11.0 m</option>
+                          <option value="11.5">11.5 m</option>
+                          <option value="12">  12.0 m</option>
+                          <option value="12.5">12.5 m</option>
+                          <option value="13">  13.0 m</option>
+                          <option value="13.5">13.5 m</option>
+                          <option value="14">  14.0 m</option>
+                          <option value="14.5">14.5 m</option>
+                          <option value="15">  15.0 m  </option>
+                      </select>
+                      </div>
+
+                      <div class="num-selector garage-rebuild" style="display:none !important">
+                        <label for="total-height">Wysokość szczytu garażu:</label>
+                        <input type="number" name="total-height" value="1.0">
+                            
+                        </input>
+                      </div>
+  
+             
+            </div>
+          </div>
+
+
+
+          <div class="menu-elem">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Teren pod garaż</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide image-based-selection wall-type-select">
+
+              <label class="padded-element">
+                  <input type="radio" name="foundation-type" value="0" checked>
+                  <img src="./resources/images/bottom/0.jpg">
+                  <div class="image-description">Wylewka betonowa</div>
+                </label>
+                
+                <label  class="padded-element">
+                  <input type="radio" name="foundation-type" value="1">
+                  <img src="./resources/images/bottom/1.jpg">
+                  <div class="image-description">Płyty chodnikowe</div>
+                </label>
+                <label class="padded-element">
+                  <input type="radio" name="foundation-type" value="2" >
+                  <img src="./resources/images/bottom/2.jpg">
+                  <div class="image-description">Fundament </div>
+                </label>
+                
+                <label  class="padded-element">
+                  <input type="radio" name="foundation-type" value="3">
+                  <img src="./resources/images/bottom/3.jpg">
+                  <div class="image-description">Kostka brukowa</div>
+                </label>
+          </div>
+        </div>
+
+
+
+       
+
+
+
+        <div id="gates-object" class="menu-elem">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Dodatkowe bramy</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide">
+                
+                  
+              <div style="display:none!important">
+                  <div class="num-selector">
+                  <label for="width">Wybór umiejscowienia bramy:</label>
+                    <select id="gate-wall" name="wall-chosen">
+                        <option value="front">Frontowa </option>
+                        <option value="left"> Lewa </option>
+                        <option value="right">Prawa </option>
+                        <option value="back"> Tylnia </option>
+
+                    </select>
+                  </div>
+              </div>
+              
+              <div id="add-gates" class="menu-elem-content-text">Dodaj bramy</div>
+            
+            </div>
+        </div>
+     
+
+
+          <div id="windows-object" class="menu-elem">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Dodatkowe okna</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide">
+              <div>
+                <div class="num-selector">
+                <label for="width">Wybór umiejscowienia okna:</label>
+                  <select id="window-wall" name="wall-chosen">
+                      <option value="front">Frontowa </option>
+                      <option value="left"> Lewa </option>
+                      <option value="right">Prawa </option>
+                      <option value="back"> Tylnia </option>
+
+                  </select>
+                </div>
+              </div>
+              <div id="add-windows" class="menu-elem-content-text">Dodaj okna</div>
+            
+            </div>
+        </div>
+
+        <div id="doors-object" class="menu-elem">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Dodatkowe drzwi</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide">
+              
+              <div>
+                <div class="num-selector">
+                <label for="width">Wybór umiejscowienia drzwi:</label>
+                  <select id="door-wall" name="wall-chosen">
+                      <option value="front">Frontowa </option>
+                      <option value="left"> Lewa </option>
+                      <option value="right">Prawa </option>
+                      <option value="back"> Tylnia </option>
+
+                  </select>
+                </div>
+              </div>
+              
+              <div id="add-doors" class="menu-elem-content-text">Dodatkowe drzwi</div>
+            
+            
+            </div>
+        </div>
+
+        
+        <div id="canopy-object" class="menu-elem">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Dodatkowa wiata</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide">
+
+              <div>
+                <div class="num-selector">
+                <label for="canopy">Wybór umiejscowienia wiaty:</label>
+                  <select id="canopy-wall" name="wall-chosen">
+                      <option value="front">Frontowa </option>
+                      <option value="left" selected> Lewa </option>
+                      <option value="right">Prawa </option>
+                      <option value="back"> Tylnia </option>
+
+                  </select>
+                </div>
+              </div>  
+              
+              <div id="add-canopy" class="menu-elem-content-text">Dodatkowa wiata</div>
+            
+            </div>
+        </div>
+
+
+     
+        <div id="final-object" class="menu-elem">
+            <div class="menu-elem-heading">
+                <div class="menu-elem-heading-title">Dodatkowe elementy</div>
+                <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
+            </div>    
+            <div class="menu-elem-content hide">
+              
+              <div class="menu-elem-content-text ">
+                
+
+                <div>
+                  <div class="check-selector">
+                  <label for="rynny">Dodatkowa obróbka blacharska:</label>
+                  <input type="checkbox" id="add" name="add" style="zoom: 1.5;">
+                  </div>
+                </div>
+       
+                <div>
+                  <div class="check-selector">
+                  <label for="rynny">Pokrycie filcowe:</label>
+                  <input type="checkbox" id="horns" name="rynny" style="zoom: 1.5;">
+                  </div>
+                </div>
+
+                
+                <div>
+                  <div class="check-selector">
+                  <label for="rynny">Kotwiczenie:</label>
+                  <input type="checkbox" id="horns2" name="rynny" style="zoom: 1.5;">
+                  </div>
+                </div>
+
+                <div>
+                  <div class="check-selector">
+                  <label for="rynny">Rynny:</label>
+                  <input type="checkbox" id="gutter" name="gutter" style="zoom: 1.5;">
+                  </div>
+                </div>
+                <div>
+                  <div class="check-selector">
+                  <label for="rynny">Automatyczne otwieranie drzwi:</label>
+                  <input type="checkbox" id="horns" name="rynny" style="zoom: 1.5;">
+                  </div>
+                </div>
+         
+
+        
+
+
+              </div>
+            
+            
+            </div>
+        </div>
+
+
+
+      </div>
+  </div>
+  
+    <canvas id="bg"></canvas>   
+
+  <script type="module" src="/texture-exploration.js"></script> 
+
+  
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+
+  <script>
+
+  </script>
+  <script  src="/HTMLcomponents/side-menu/side-menu.js"></script>
+</html>
