@@ -1,6 +1,21 @@
-Rewizja 4
-1.Załatwione
-2.Załatwione
+Dziękujemy za przesłanie konfiguratora. 
+Zauważyliśmy, że jeszcze w przypadku zmiany przetłoczeń blachy na drzwiach na pionowe nadal mamy klamkę zamiast uchwytu - jeśli można bardzo prosimy, żeby to zmienić.
+Dodatkowo bardzo prosimy o wprowadzenie kilku małych poprawek:
+[GOTOWE]- jeśli chodzi o obróbkę blacharską - powinna ona być automatycznie dopasowana do koloru ścian i dachu lub trzeba będzie wprowadzić opcję możliwości wyboru koloru obróbki - ta sama paleta kolorów którą mamy w przypadku koloru ścian 
+- rynny - w przypadku dachu ze spadem do tyłu brakuje rynny poziomej; dodatkowo jeśli mamy garaż np. dwuspadowy z wiatą to rynna powinna być od zewnętrznej strony wiaty a nie pod wiatą; dodatkowo rynny powinny być w dwóch wariantach do wyboru - brązowe RAL 8017 lub grafitowe RAL 7016; rynna pionowa (spustowa) powinna być do wyboru z przodu lub z tyłu
+- okno do wyboru w kolorze brąz RAL 8017 lub biały RAL 9010
+- bramę uchylną i dwuskrzydłową podnieść do wysokości ścian czyli na 2,13m (wysokość wjazdu bram zostaje bez zmian)
+- w przypadku dachu ze spadem dachu do tyłu - tył dachu obniżyć do wysokości 1,90m (przód dachu powinien być mniej więcej na równej wysokości z bramą)
+- dodać tło takie jak było poprzednio i usunąć "linie pomocnicze"
+[GOTOWE]- wysokość ścian garażu - maksymalnie do 3.13m
+- usunąć możliwość podniesienia bramy (odchylenie od środka ściany pion)
+- dodać możliwość podniesienia bramy uchylnej do wys wjazdu 2,60m, a dwuskrzydłowej do 3,00m wys wjazdu; szerokość wjazdu bramy uchylnej do 3,30m; szerokość wjazdu dwuskrzydłowej do 4m
+- usunąć możliwość obniżenia drzwi; szerokość drzwi ustawić od 0.8m do 1.50m
+- dodać jednostkę miary - metry do wszystkich opcji takich jak szerokość/długość elementu / odchylenie pion poziom itd. (dodatkowo słowo "odchylenie zamienić na "przesunięcie"- tak chyba będzie prościej)
+[GOTOWE]- jeśli mamy wybraną bramę dwuskrzydłową i ustawimy przetłoczenia pionowe, a następnie zmienimy na przetłoczenia poziome, to uchwyt powinien się zmienić na klamkę
+[GOTOWE]- po włączeniu konfiguratora niech "początkowy garaż" wyświetla się bez wiaty \
+[GOTOWE]- w ostatniej rubryce dopisać jeszcze informację, że "Konstrukcja garażu jest w standardzie pomalowana farbą podkładową w kolorze brązowym. Niektóre elementy konstrukcji mogą być widoczne od zewnątrz garażu w przypadku braku obróbki blacharskiej."
+
 
 Rewizja
     1.//RESOLVED "Dzień dobry jaki kąt nachylenia dachu"
