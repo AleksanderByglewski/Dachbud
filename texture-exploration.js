@@ -463,31 +463,48 @@ class Displacement_object {
           console.log(this.mesh)
 
 
-          var material222 = new THREE.MeshBasicMaterial( {color:0x44322d,  side: THREE.DoubleSide} );
+       
 
-          //Color change gutter
-          //let color_set_gutter=new THREE.Color( 0x88645b )
-          let color_set_gutter=new THREE.Color( 0xab928c )
-          color_set_gutter=new THREE.Color( 0xffffff )
+         //Color change gutter
+         var material222 = new THREE.MeshBasicMaterial( {color:0x44322d,  side: THREE.DoubleSide} );
+
           
-          if(document.querySelector("[name='gutter-color']").value=='#FFFFFF')
-          {material222 = new THREE.MeshBasicMaterial( {color:0xeeeeee,  side: THREE.DoubleSide} );}
+         let color_set_gutter=new THREE.Color( 0x665148 )
+          color_set_gutter=new THREE.Color( 0x44322d)
+         //let color_set_gutter=new THREE.Color( 0xab928c )
+         //color_set_gutter=new THREE.Color( 0xffffff )
+         //color_set_gutter=new THREE.Color( 0xff0000 )
 
-          function recursive_change(parent_object){
-            parent_object.material = material222;
-            //try{
-            //parent_object.material.color=color_set_gutter;
-            //parent_object.material.needsUpdate = true;}
-            //catch(error){}
-            for (let elem of parent_object.children){
-              console.log("I am a child")
-              console.log(elem)
-              recursive_change(elem)
-              
-            }
+         if(document.querySelector("[name='gutter-color']").value=='#FFFFFF')
+         {material222 = new THREE.MeshBasicMaterial( {color:0xeeeeee,  side: THREE.DoubleSide} );
+        
+         color_set_gutter=new THREE.Color( 0xffffff)}
 
-          }
-          recursive_change(handle1)
+         function recursive_change(parent_object){
+           try{
+           parent_object.material.emissive=color_set_gutter
+           parent_object.material.emissiveIntensity=0.75
+           parent_object.material.color=color_set_gutter
+           //parent_object.material.reflectivity=1.0
+           }
+           catch(error){}
+            //console.log(parent_object.material)
+          
+           //parent_object.material = material222;
+           //try{
+           //parent_object.material.color=color_set_gutter;
+           //parent_object.material.needsUpdate = true;}
+           //catch(error){}
+           for (let elem of parent_object.children){
+             console.log("I am a child")
+             console.log(elem)
+             recursive_change(elem)
+             
+           }
+
+         }
+         recursive_change(handle1)
+         console.log(handle1.children)
 
         });
 
@@ -592,15 +609,28 @@ class Displacement_object {
           var material222 = new THREE.MeshBasicMaterial( {color:0x44322d,  side: THREE.DoubleSide} );
 
           
-          //let color_set_gutter=new THREE.Color( 0x88645b )
-          let color_set_gutter=new THREE.Color( 0xab928c )
-          color_set_gutter=new THREE.Color( 0xffffff )
-          
+          let color_set_gutter=new THREE.Color( 0x665148 )
+          color_set_gutter=new THREE.Color( 0x44322d)
+          //let color_set_gutter=new THREE.Color( 0xab928c )
+          //color_set_gutter=new THREE.Color( 0xffffff )
+          //color_set_gutter=new THREE.Color( 0xff0000 )
+
           if(document.querySelector("[name='gutter-color']").value=='#FFFFFF')
-          {material222 = new THREE.MeshBasicMaterial( {color:0xeeeeee,  side: THREE.DoubleSide} );}
+          {material222 = new THREE.MeshBasicMaterial( {color:0xeeeeee,  side: THREE.DoubleSide} );
+          color_set_gutter=new THREE.Color( 0xffffff)
+        }
 
           function recursive_change(parent_object){
-            parent_object.material = material222;
+            try{
+            parent_object.material.emissive=color_set_gutter
+            parent_object.material.emissiveIntensity=0.75
+            parent_object.material.color=color_set_gutter
+            //parent_object.material.reflectivity=1.0
+            }
+            catch(error){}
+             //console.log(parent_object.material)
+           
+            //parent_object.material = material222;
             //try{
             //parent_object.material.color=color_set_gutter;
             //parent_object.material.needsUpdate = true;}
@@ -4118,7 +4148,7 @@ class Menu_control {
         let rotation_axis = new THREE.Vector3(0, 1, 0)
         let modified_translations = new THREE.Vector3(direction_x, direction_y, direction_z)
         modified_translations.applyAxisAngle(rotation_axis, object_rotation)
-
+        
         direction_x = modified_translations.x
         direction_y = modified_translations.y
         direction_z = modified_translations.z
@@ -4126,8 +4156,8 @@ class Menu_control {
         element.translation_x = direction_x;
         element.translation_y = direction_y;
         element.translation_z = direction_z;
-
-        console.log(element)
+    
+        //console.log(element)
 
         // if (heading_title.toUpperCase().includes("BRAMA")) {
         //   console.log(element)
@@ -4148,7 +4178,14 @@ class Menu_control {
         //   element.set_position(direction_x, -main_house_outer.constructor_height / 2 + 1.0 + direction_y, direction_z)
         // }
         // else{
-          console.log(element.height)
+          //console.log(element.height)
+
+          // let modified_translations_simpler=new THREE.Vector3(div_elem.querySelector("[direction='left']").value, div_elem.querySelector("[direction='top']").value, 0)
+          // modified_translations_simpler.applyAxisAngle(rotation_axis, object_rotation)
+          // console.log(modified_translations_simpler)
+          // console.log("pay attention")
+          // element.set_position(modified_translations_simpler.x, -main_house_outer.constructor_height/2.0 + element.height/2.0 + modified_translations_simpler.y, modified_translations_simpler.z)
+
           element.set_position(direction_x, -main_house_outer.constructor_height/2.0 + element.height/2.0 + direction_y, direction_z)
           if (heading_title.toUpperCase().includes("DRZWI")){
             //Doors had a slight missalignment fix it
