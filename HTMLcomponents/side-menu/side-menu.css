@@ -255,3 +255,9 @@ div#roof-material {
     font-size: 14px;
     color: gray;width: 0em;
 }
+
+.check-selector-gutter {
+    display: grid !important;
+    grid-template-columns: 1fr 8em 30px !important;
+    align-content: center;
+    align-items: center;}

@@ -462,6 +462,33 @@ class Displacement_object {
           handle1.visible = true;
           console.log(this.mesh)
 
+
+          var material222 = new THREE.MeshBasicMaterial( {color:0x44322d,  side: THREE.DoubleSide} );
+
+          //Color change gutter
+          //let color_set_gutter=new THREE.Color( 0x88645b )
+          let color_set_gutter=new THREE.Color( 0xab928c )
+          color_set_gutter=new THREE.Color( 0xffffff )
+          
+          if(document.querySelector("[name='gutter-color']").value=='#FFFFFF')
+          {material222 = new THREE.MeshBasicMaterial( {color:0xeeeeee,  side: THREE.DoubleSide} );}
+
+          function recursive_change(parent_object){
+            parent_object.material = material222;
+            //try{
+            //parent_object.material.color=color_set_gutter;
+            //parent_object.material.needsUpdate = true;}
+            //catch(error){}
+            for (let elem of parent_object.children){
+              console.log("I am a child")
+              console.log(elem)
+              recursive_change(elem)
+              
+            }
+
+          }
+          recursive_change(handle1)
+
         });
 
 
@@ -559,6 +586,36 @@ class Displacement_object {
           handle1.translateX(new_translation.x)
           handle1.translateY(new_translation.y)
           handle1.translateZ(new_translation.z)
+         
+
+          //Color change gutter
+          var material222 = new THREE.MeshBasicMaterial( {color:0x44322d,  side: THREE.DoubleSide} );
+
+          
+          //let color_set_gutter=new THREE.Color( 0x88645b )
+          let color_set_gutter=new THREE.Color( 0xab928c )
+          color_set_gutter=new THREE.Color( 0xffffff )
+          
+          if(document.querySelector("[name='gutter-color']").value=='#FFFFFF')
+          {material222 = new THREE.MeshBasicMaterial( {color:0xeeeeee,  side: THREE.DoubleSide} );}
+
+          function recursive_change(parent_object){
+            parent_object.material = material222;
+            //try{
+            //parent_object.material.color=color_set_gutter;
+            //parent_object.material.needsUpdate = true;}
+            //catch(error){}
+            for (let elem of parent_object.children){
+              console.log("I am a child")
+              console.log(elem)
+              recursive_change(elem)
+              
+            }
+
+          }
+          recursive_change(handle1)
+          console.log(handle1.children)
+ 
         });
       }
 
@@ -2749,8 +2806,8 @@ function main() {
   //scene.add(lightHelper, gridHelper)
 
   //PRESENTATION-CODE
-  const gridHelper = new THREE.GridHelper(200, 200, 200);
-  scene.add(gridHelper)
+  // const gridHelper = new THREE.GridHelper(200, 200, 200);
+  // scene.add(gridHelper)
   //ENDOF PRESENTATION-CODE
   const controls = new OrbitControls(camera, renderer.domElement);
 
@@ -4497,12 +4554,22 @@ class Menu_control {
             div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("max", 3)
             div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("min", 2.0)
 
-            div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
+            let custom_logic_value=(document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value)
+            let custom_logic=(custom_logic_value <2.14)
+
+            div_elem.querySelector(".num-selector input[direction='top']").value = 0.1199
             div_elem.querySelector('input.dimension[dimension="height"]').value = 2.00
+            div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
+            
+        
             div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
             div_elem.querySelector(".num-selector input[direction='top']").value = 0.1199
             div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
-
+            
+            if(custom_logic){
+              document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value=custom_logic_value
+              document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').dispatchEvent(new Event('change'))
+            }
 
           } else {
             div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("max", 3.6)
@@ -7245,7 +7312,13 @@ gutter_checkbox.addEventListener("change", () => {
 
 
 })
+let gutter_select_color=document.querySelector('[name="gutter-color"]')
+gutter_select_color.addEventListener("change", ()=>{
+  
+  //alert("calling_change")
+  gutter_checkbox.dispatchEvent(new Event("change"))
 
+})
 //main_house_outer.release();
 //menu_controller.release_all_objects()
 //menu_controller.clear_menu()
@@ -7316,59 +7389,59 @@ menu_controller.change_wall()
 
 
 //PRESENTATION CODE
-// const skyGeo2 = new THREE.SphereGeometry( 100, 32, 15 );
-// const skyMat2=new THREE.MeshBasicMaterial({
-//   //map: wall.texture,
-//   color: 0x87ceeb,
-//   side: THREE.DoubleSide
-// })
+const skyGeo2 = new THREE.SphereGeometry( 100, 32, 15 );
+const skyMat2=new THREE.MeshBasicMaterial({
+  //map: wall.texture,
+  color: 0x87ceeb,
+  side: THREE.DoubleSide
+})
 
-// let sky2= new THREE.Mesh( skyGeo2, skyMat2 );
-// scene_outer.add( sky2 );
-
-
-
-// let grass_texture = loader.load('grass2.jpg');
-// grass_texture.repeat.set(20, 20);
-
-// grass_texture.wrapS = THREE.RepeatWrapping;
-// grass_texture.wrapT = THREE.RepeatWrapping;
-// grass_texture.wrapT = THREE.RepeatWrapping
-// grass_texture.wrapS = THREE.RepeatWrapping;
-
-// grass_texture.repeat.set(125.0, 125.0);
-
-// let dp_map = loader.load('displacement.jpg');
-// dp_map.repeat.set(50.0, 50.0);
-
-// const planeGeo = new THREE.PlaneGeometry( 250, 250 );
-// planeGeo.rotateX(Math.PI / 2);
-
-// let planeMat=new THREE.MeshPhysicalMaterial({
-
-// })
-//  dp_map = loader.load('dpmap.png');
-//     const normalMap4 =  new THREE.TextureLoader().load( './textures/golfball2.jpg' );
-//         const clearcoatNormaMap =  new THREE.TextureLoader().load( './textures/scratched.png' );
-//          planeMat = new THREE.MeshBasicMaterial( {
-
-//           //roughness: 0.5,
-
-//           side: THREE.DoubleSide,
-//           //normalMap: dp_map,
-//           //bumpMap:dp_map,
-//           map:grass_texture
-//           //clearcoatNormalMap: clearcoatNormaMap,
-//           // y scale is negated to compensate for normal map handedness.
-//           //clearcoatNormalScale: new THREE.Vector2( 2.0, - 2.0 )
-//         } );
+let sky2= new THREE.Mesh( skyGeo2, skyMat2 );
+scene_outer.add( sky2 );
 
 
-// let plane= new THREE.Mesh( planeGeo, planeMat );
-// plane.position.y=-0.01
-////console.log(plane)
-////console.log("heyy")
-// scene_outer.add( plane );
+
+let grass_texture = loader.load('grass2.jpg');
+grass_texture.repeat.set(20, 20);
+
+grass_texture.wrapS = THREE.RepeatWrapping;
+grass_texture.wrapT = THREE.RepeatWrapping;
+grass_texture.wrapT = THREE.RepeatWrapping
+grass_texture.wrapS = THREE.RepeatWrapping;
+
+grass_texture.repeat.set(125.0, 125.0);
+
+let dp_map = loader.load('displacement.jpg');
+dp_map.repeat.set(50.0, 50.0);
+
+const planeGeo = new THREE.PlaneGeometry( 250, 250 );
+planeGeo.rotateX(Math.PI / 2);
+
+let planeMat=new THREE.MeshPhysicalMaterial({
+
+})
+ dp_map = loader.load('dpmap.png');
+    const normalMap4 =  new THREE.TextureLoader().load( './textures/golfball2.jpg' );
+        const clearcoatNormaMap =  new THREE.TextureLoader().load( './textures/scratched.png' );
+         planeMat = new THREE.MeshBasicMaterial( {
+
+          //roughness: 0.5,
+
+          side: THREE.DoubleSide,
+          //normalMap: dp_map,
+          //bumpMap:dp_map,
+          map:grass_texture
+          //clearcoatNormalMap: clearcoatNormaMap,
+          // y scale is negated to compensate for normal map handedness.
+          //clearcoatNormalScale: new THREE.Vector2( 2.0, - 2.0 )
+        } );
+
+
+let plane= new THREE.Mesh( planeGeo, planeMat );
+plane.position.y=-0.01
+//console.log(plane)
+//console.log("heyy")
+scene_outer.add( plane );
 //ENDOF PRESENTATION CODE
 
 //let big_box_of_friends=menu_controller.hold_all_the_children()
@@ -7548,6 +7621,7 @@ document.querySelector("#send-message").addEventListener('click', () => {
     additional_info += checkbox.name + '\n'
 
   }
+  let gutter_color=document.querySelector('[name="gutter-color"] option:checked').innerText
 
   let foundation = document.querySelector('[name="foundation-type"]:checked').nextElementSibling.nextElementSibling.innerText
 
@@ -7570,7 +7644,7 @@ document.querySelector("#send-message").addEventListener('click', () => {
   Wiatach:${dynamic_canopy}
   oraz następujących (${all_checkboxes.length}) dodatkowych elementach:
   ${additional_info}
-
+  Kolor rynien jeżeli są: ${gutter_color}
   `
 
   console.log(static_msg)
