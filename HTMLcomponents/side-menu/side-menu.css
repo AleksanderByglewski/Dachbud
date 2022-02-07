@@ -241,3 +241,17 @@ div#roof-material {
     margin-top:4px !important;
     
 }
+
+
+.unit-addon{
+    display:grid;
+    grid-template-columns:1fr 0px;
+}
+
+.white-box{
+    margin-left: -3em;
+    display: grid;
+    align-items: center;
+    font-size: 14px;
+    color: gray;width: 0em;
+}

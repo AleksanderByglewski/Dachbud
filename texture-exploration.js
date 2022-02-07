@@ -362,6 +362,7 @@ class Displacement_object {
       //insert_material= new THREE.MeshBasicMaterial( { emissive:0xffffff,emissiventensity:0.6,map: clearcoatNormaMap, side: THREE.DoubleSide} );
       let insert_geometry = new THREE.BoxGeometry(0.95, 0.55, 0.070);
       //insert_geometry.translate(final_displacement.x, final_displacement.y, final_displacement.z);
+      
       let insert_mesh = new THREE.Mesh(insert_geometry, insert_material);
       this.mesh.add(insert_mesh);
     }
@@ -430,21 +431,21 @@ class Displacement_object {
           let eigen = new THREE.Vector3(-main_house_outer.wall_left.width / 2, 0, 0.05)
 
           if (this.name_type.toUpperCase().includes("RIGHT")) {
-            eigen = new THREE.Vector3(-main_house_outer.wall_left.width / 2, 0, 0.05)
+            eigen = new THREE.Vector3(-main_house_outer.wall_left.width/2-canopy_container.front_size, 0, 0.05+canopy_container.right_size)
 
           }
 
           if (this.name_type.toUpperCase().includes("LEFT")) {
-            eigen = new THREE.Vector3(+main_house_outer.wall_left.width / 2, 0, 0.05)
+            eigen = new THREE.Vector3(+main_house_outer.wall_left.width/2+canopy_container.front_size, 0, 0.05+canopy_container.left_size)
 
           }
 
           if (this.name_type.toUpperCase().includes("FRONT")) {
-            eigen = new THREE.Vector3(-main_house_outer.wall_front.width / 2, 0, 0.05)
+            eigen = new THREE.Vector3(-main_house_outer.wall_front.width/2-canopy_container.left_size, 0, 0.05+canopy_container.front_size)
           }
 
           if (this.name_type.toUpperCase().includes("BACK")) {
-            eigen = new THREE.Vector3(+main_house_outer.wall_front.width / 2, 0, 0.05)
+            eigen = new THREE.Vector3(+main_house_outer.wall_front.width/2+canopy_container.left_size, 0, 0.05+canopy_container.back_size)
 
           }
           let rotation_axis = new THREE.Vector3(0, 1, 0)
@@ -515,37 +516,39 @@ class Displacement_object {
 
           if (this.name_type.toUpperCase().includes("FRONT")) {
 
-            handle1.scale.x = main_house_outer.wall_front.width / (1.5)
+            handle1.scale.x = (main_house_outer.wall_front.width+canopy_container.left_size+canopy_container.right_size )/ (1.5)
             handle1.scale.y = 1.0
             handle1.scale.z = 1.0
 
 
-            handle1.translateZ(-0.25)
+            handle1.translateZ(-0.25+canopy_container.front_size-(main_house_outer.wall_right.width-3)*0.11)
             handle1.translateX(-0.20)
 
-            handle1.translateX((main_house_outer.wall_front.width - 3) * (-0.05))
+            handle1.translateX((main_house_outer.wall_front.width - 3) * (-0.05)+0.5*(-canopy_container.left_size+canopy_container.right_size)*1.10-canopy_container.right_size*0.1)
           }
 
           if (this.name_type.toUpperCase().includes("BACK")) {
 
-
-            handle1.translateZ(-0.35)
-            handle1.translateX(+0.205)
-            handle1.scale.x = main_house_outer.wall_front.width / (1.5)
-            handle1.translateX((main_house_outer.wall_front.width - 3) * (+0.05))
+            handle1.scale.x =  (main_house_outer.wall_front.width+canopy_container.left_size+canopy_container.right_size ) / (1.5)
+            handle1.translateZ(-0.35-canopy_container.back_size-(main_house_outer.wall_right.width-3)*0.11)
+            handle1.translateX(+0.20)
+            
+            handle1.translateX((main_house_outer.wall_front.width - 3) * (+0.05)+0.5*(-canopy_container.left_size+canopy_container.right_size)*1.10+(canopy_container.left_size)*0.1)
 
           }
 
 
           if (this.name_type.toUpperCase().includes("RIGHT")) {
-            handle1.scale.z = main_house_outer.wall_left.width / (1.5)
-            handle1.translateX(0.045)
+            handle1.scale.z = (main_house_outer.wall_left.width+canopy_container.front_size+canopy_container.back_size) / (1.5)
+            handle1.translateZ(0.6*(canopy_container.front_size-canopy_container.back_size*0.625))
+            handle1.translateX(0.045+canopy_container.right_size)
           }
           if (this.name_type.toUpperCase().includes("LEFT")) {
-            handle1.scale.z = main_house_outer.wall_left.width / (1.5)
+            handle1.scale.z = (main_house_outer.wall_left.width+canopy_container.front_size+canopy_container.back_size) / (1.5)
             handle1.translateZ(-0.40 - 0.11 * (main_house_outer.wall_left.width - 3))
-            handle1.translateX(-0.045)
-
+            handle1.translateZ(0.5*(canopy_container.front_size-canopy_container.back_size))
+            handle1.translateX(-0.045-canopy_container.left_size)
+            
           }
           //handle1.translateX(eigen.x)
           //handle1.translateY(eigen.y)
@@ -575,6 +578,7 @@ class Displacement_object {
       let insert_mesh = new THREE.Mesh(insert_geometry, insert_material);
       insert_mesh.name = "door_decoration"
       this.mesh.add(insert_mesh);
+      
 
 
       // let diff_insert_material = new THREE.MeshBasicMaterial( { color: 0x272727, side: THREE.DoubleSide} );
@@ -814,7 +818,7 @@ class Displacement_object {
           handle1.translateZ(0.025)
           handle1.translateX(-0.028)
 
-          handle1.translateY(- 0.80)
+          handle1.translateY(-0.80)
 
           //console.log("Standard displacement")
           //console.log(main_house_outer.wall_front.geometry)
@@ -1190,14 +1194,14 @@ class Displacement_object {
         side: THREE.DoubleSide
       });
       let insert_geometry = new THREE.BoxGeometry(this.width + 0.03, this.height + 0.02, this.depth - 0.01);
-      insert_geometry.translate(0, -main_house_outer.constructor_height / 2 + 0.95, 0);
+      //insert_geometry.translate(0, -main_house_outer.constructor_height / 2 + 0.95, 0);
       let insert_mesh = new THREE.Mesh(insert_geometry, insert_material);
       insert_mesh.name = "insert_mesh"
       //insergeometry.translateY(-0.225)
       //insert_mesh.name="door_decoration"
       this.mesh.add(insert_mesh);
       //console.log(this.mesh)
-
+      
 
 
       function dumpObject(obj, lines = [], isLast = true, prefix = '') {
@@ -1573,7 +1577,7 @@ class Displacement_object {
 
     //console.log(this.geometry)
 
-    //REWIZJA 3
+
     this.geometry = new THREE.BoxGeometry(width, height, this.depth);
     //this.geometry=this.mesh.geometry.clone()
     this.geometry.rotateY(object_rotation)
@@ -1586,14 +1590,28 @@ class Displacement_object {
     //this.geometry.translate(final_displacement.x, final_displacement.y, final_displacement.z);
 
     if (object_type.toUpperCase().includes("DRZWI")) {
-      //REWIZJA 3
-      //modify the insert mesh
+     
+   
+      //change the width of the insert mesh do it!!!
       place_at_the_bottom(global_container_of_doors, 1.00)
+      console.log(this.mesh.getObjectByName('insert_mesh'))
+      let inserted_mesh_rebuild=this.mesh.getObjectByName('insert_mesh')
+      inserted_mesh_rebuild=new THREE.BoxGeometry(width+0.03,height+ 0.02, this.depth- 0.01)
+      inserted_mesh_rebuild.rotateY(object_rotation)
+      this.mesh.getObjectByName('insert_mesh').geometry=inserted_mesh_rebuild
+      console.log(this.mesh.getObjectByName('insert_mesh'))
 
-      alert("good")
-      //console.log(this.geometry.getObjectByName("insert_mesh")
+      try{
+      console.log(this.mesh.getObjectByName("drhandle1"))
+      this.mesh.getObjectByName("drhandle1").position.z=+width / 2 - 0.1;
+      this.mesh.getObjectByName("drhandle2").position.z=-width / 2 + 0.1;
+    }
+      catch(error){
+        console.log("it is fine move on the second iteration")
+      }
+      //this.mesh.getObjectByName("drhandle2").translateX(-width)
+      //alert("good")
 
-      //decoration part
     }
 
   }
@@ -2702,22 +2720,22 @@ function main() {
     scene.add(light);
     scene.add(light.target);
 
-    const cameraHelper = new THREE.CameraHelper(light.shadow.camera);
-    scene.add(cameraHelper);
+    // const cameraHelper = new THREE.CameraHelper(light.shadow.camera);
+    //scene.add(cameraHelper);
 
-    const helper = new THREE.DirectionalLightHelper(light);
-    scene.add(helper);
+    // const helper = new THREE.DirectionalLightHelper(light);
+    //scene.add(helper);
 
-    function updateCamera() {
-      // update the light target's matrixWorld because it's needed by the helper
-      light.target.updateMatrixWorld();
-      helper.update();
-      // update the light's shadow camera's projection matrix
-      light.shadow.camera.updateProjectionMatrix();
-      // and now update the camera helper we're using to show the light's shadow camera
-      cameraHelper.update();
-    }
-    updateCamera();
+    // function updateCamera() {
+    //   // update the light target's matrixWorld because it's needed by the helper
+    //   light.target.updateMatrixWorld();
+    //   helper.update();
+    //   // update the light's shadow camera's projection matrix
+    //   light.shadow.camera.updateProjectionMatrix();
+    //   // and now update the camera helper we're using to show the light's shadow camera
+    //   cameraHelper.update();
+    // }
+    // updateCamera();
   }
   //const pointLight = new THREE.PointLight(0xffffff);
   //pointLight.position.set(10, 10, 10);
@@ -2729,8 +2747,11 @@ function main() {
 
   //const lightHelper = new THREE.PointLightHelper(pointLight)
   //scene.add(lightHelper, gridHelper)
+
+  //PRESENTATION-CODE
   const gridHelper = new THREE.GridHelper(200, 200, 200);
   scene.add(gridHelper)
+  //ENDOF PRESENTATION-CODE
   const controls = new OrbitControls(camera, renderer.domElement);
 
 
@@ -3340,7 +3361,7 @@ class Menu_control {
     let metal_tilling_vertical_thin = 'style="visibility:hidden"'
     let metal_tilling_vertical = 'style="visibility:hidden !important"'
 
-
+    
 
     let visibility_color_menu = 'style="display:none"'
 
@@ -3378,7 +3399,7 @@ class Menu_control {
 
       visibility_position_menu = ''
       visibility_position_menu_x = ''
-      visibility_position_menu_y = 'style="display:none"'
+      visibility_position_menu_y = 'style="display:none !important"'
 
       visibility_sizing_menu = ''
       visibility_sizing_menu_x = ''
@@ -3392,7 +3413,7 @@ class Menu_control {
 
       width_element_label = "Szerokość wjazdu bramy"
       height_element_label = "Wysokość wjazdu bramy"
-      height_element_disable = "disabled"
+      height_element_disable = '' //disabled
     }
 
     if (heading_title.toUpperCase().includes("DRZWI")) {
@@ -3416,7 +3437,7 @@ class Menu_control {
 
     if (heading_title.toUpperCase().includes("OKNO")) {
       div_elem.classList.add("dynamic_window");
-      visibility_color_menu = 'style="display:none"'
+      visibility_color_menu = ''
 
       visibility_position_menu = ''
       visibility_position_menu_x = ''
@@ -3441,31 +3462,23 @@ class Menu_control {
 
     //Move the display logic to the front and just omit the problem with dom.createElement basically
 
-
-
-
-
     let div_heading = document.createElement('div')
     div_heading.classList.add("menu-elem-heading")
     div_heading.innerHTML = `<div class="menu-elem-heading-title">${heading_title}</div>
     <div class="menu-elem-heading-button"><img width="16" height="16" src="/HTMLcomponents/side-menu/favicons/plus.svg" alt="minus-icon"></div>
     `
     let base_menu = `<div ${visibility_position_menu}>` +
-      `<div ${visibility_position_menu_x} class="num-selector"><label>Odchylenie od środka ściany (poziom)</label><input class="direction" direction="left" type="number" step="0.1">  </input> </div>` +
+      `<div ${visibility_position_menu_x} class="num-selector"><label>Przesunięcie od środka ściany (poziom)</label><div class="unit-addon"><input class="direction" direction="left" type="number" step="0.1">  </input><span class="white-box">m</span></div> </div>` +
       `<!--<div  class="num-selector"><label>displacement value right</label><input class="direction" direction="right" type="number" step="0.1">  </input> </div>-->` +
-      `<div ${visibility_position_menu_y} class="num-selector"><label>Odchylenie od środka ściany (pion)</label><input class="direction" direction="top" type="number" step="0.1">  </input> </div>` +
+      `<div ${visibility_position_menu_y} class="num-selector"><label>Przesunięcie od środka ściany (pion)</label><div class="unit-addon"><input class="direction" direction="top" type="number" step="0.1">  </input><span class="white-box">m</span></div> </div>` +
       `<!--<div  class="num-selector"><label>displacement value bottom</label><input class="direction" direction="bottom" type="number" step="0.1">  </input> </div>-->` +
       `</div>`
 
 
     let sizing_menu = `<div ${visibility_sizing_menu}>` +
-      `<div ${visibility_sizing_menu_x} class="num-selector"><label>${width_element_label}</label><input class="dimension" value="2" dimension="width" type="number" step="0.1">  </input> </div>` +
-      `<div ${visibility_sizing_menu_y} class="num-selector"><label>${height_element_label}</label><input class="dimension" value="2" dimension="height" type="number" step="0.1" ${height_element_disable}>  </input> </div>` +
+      `<div ${visibility_sizing_menu_x} class="num-selector"><label>${width_element_label}</label><div class="unit-addon"><input class="dimension" value="2" dimension="width" type="number" step="0.1">  </input><span class="white-box">m</span></div> </div>` +
+      `<div ${visibility_sizing_menu_y} class="num-selector"><label>${height_element_label}</label><div class="unit-addon"><input class="dimension" value="2" dimension="height" type="number" step="0.1" ${height_element_disable}>  </input><span class="white-box">m</span></div> </div>` +
       `</div>`
-
-
-
-
 
     let color_menu = `<div ${visibility_color_menu}>` +
       `<div class="image-based-selection grid-6-columns grid-elem color-inner unmargined-sides">
@@ -3548,17 +3561,13 @@ class Menu_control {
   </div>` +
       `</div>`
 
-
     let tiling_type_menu =
-      `<div ${visibility_tiling_menu} class="image-based-selection grid-elem  tiling-inner unmargined-sides">` +
-      `
-  <label class="padded-element">
+      `<div ${visibility_tiling_menu} class="image-based-selection grid-elem  tiling-inner unmargined-sides">` +    
+  `<label class="padded-element">
   <input type="radio" name="wall-type${custom_counter_closure}" value="rotated-dense" >
   <img src="./resources/colors/Alternatywa/TEXTURE-METAL-PION-THIN-DENSE.jpg">
   <div class="image-description">Przetłoczenia pionowe wąskie</div>
 </label>
-
-
   <label  class="padded-element">
   <input type="radio" name="wall-type${custom_counter_closure}" value="standard-dense">
   <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN-DENSE.jpg">
@@ -3573,11 +3582,7 @@ class Menu_control {
 <input type="radio" name="wall-type${custom_counter_closure}" value="standard" checked >
 <img src="./resources/colors/Alternatywa/TEXTURE-METAL-POZIOM-THIN.jpg">
 <div class="image-description">Przetłoczenia poziome</div>
-</label>
-` +
-      `</div>`
-
-
+</label>` +`</div>`
 
     let visual_type_menu =
       `<div ${visibility_visual_menu} class="image-based-selection grid-elem gate-type-inner unmargined-sides">` +
@@ -3656,8 +3661,6 @@ class Menu_control {
       remove_from_global(global_container_of_windows)
       remove_from_global(global_container_of_gates)
     })
-
-    //Presentation
     div_elem.querySelector('.erase-button').addEventListener('click', () => {
       try {
         //console.log("what happened")
@@ -3754,7 +3757,19 @@ class Menu_control {
 
     let color_input_arr = div_elem.querySelectorAll('.color-inner input')
     for (let colored_thing of color_input_arr) {
+
+      if(heading_title.toUpperCase().includes("OKNO")){
+        console.log("quick check")
+        console.log(colored_thing.value)
+        if(colored_thing.value!="#FFFFFF" && colored_thing.value!="#44322D")
+        {colored_thing.parentElement.style.display="none"}
+        else{
+        colored_thing.addEventListener('change', inner_change_wall)}
+        console.log("quick check end")
+      }
+      else{
       colored_thing.addEventListener('change', inner_change_wall)
+      }
     }
 
   
@@ -3829,6 +3844,9 @@ class Menu_control {
           //alert("hii")
         }
 
+        if(heading_title.toUpperCase().includes("OKNO")){
+          wall.texture=null;
+        }
 
         wall.mesh.material = [
           new THREE.MeshBasicMaterial({
@@ -3955,7 +3973,7 @@ class Menu_control {
 
     //Position of elements control
     function position_change_handler(evt) {
-
+      
       let translation_value = evt.currentTarget.value
 
       let direction = evt.currentTarget.getAttribute('direction')
@@ -3971,13 +3989,16 @@ class Menu_control {
       //console.log(element)
       function check_correctness_of_translation(allowable_margin = 0.011) {
         wall_being_targeted = menu_controller.convert_side_to_rotation(wall_being_targeted_name)["wall_targeted"]
+        
         if (!(-parseFloat(wall_being_targeted.width) / 2 + parseFloat(allowable_margin) < parseFloat(direction_x) - parseFloat(element.geometry.parameters.width) / 2 && parseFloat(direction_x) + parseFloat(element.geometry.parameters.width) / 2 < parseFloat(wall_being_targeted.width) / 2 - parseFloat(allowable_margin))) {
-
+         
           //console.log("Scream stop")
           return false;
         }
         allowable_margin = -0.01
-        if (!(0 <= parseFloat(direction_y) && parseFloat(direction_y) + parseFloat(element.geometry.parameters.height) < parseFloat(main_house_outer.constructor_height) - parseFloat(allowable_margin))) {
+       
+        if (!(0 <= parseFloat(direction_y) && parseFloat(direction_y) + parseFloat(element.height) < parseFloat(main_house_outer.constructor_height) - parseFloat(allowable_margin))) {
+         
 
           //PENDING6
           //JUSTFINISH
@@ -4002,7 +4023,10 @@ class Menu_control {
 
               div_elem.querySelector("[direction='top']").value = 0
               menu_controller.rebuild_garage_dimensions_hold_the_children()
-              element.set_position(direction_x, -document.querySelector([type = "wall-height"]).value / 2 + 1.0 + direction_y, direction_z)
+
+              console.log(element.height)
+
+              //element.set_position(direction_x, -document.querySelector([type = "wall-height"]).value / 2 + element.height/2 + direction_y, direction_z)
               //div_elem.querySelector('.erase-button').click()
               //div_elem.querySelector('.erase-button').dispatchEvent(new Event('click'))
               //document.querySelector('#add-gates').click()
@@ -4069,6 +4093,10 @@ class Menu_control {
         // else{
           console.log(element.height)
           element.set_position(direction_x, -main_house_outer.constructor_height/2.0 + element.height/2.0 + direction_y, direction_z)
+          if (heading_title.toUpperCase().includes("DRZWI")){
+            //Doors had a slight missalignment fix it
+            element.set_position(direction_x, -main_house_outer.constructor_height/2.0 +0.042+ element.height/2.0 + direction_y, direction_z)
+          }
         // }
       } 
          else {
@@ -4123,6 +4151,17 @@ class Menu_control {
 
         input.addEventListener('change', (evt) => {
           //alert("Hi I am canopy")
+          //GUTTER DISABLING
+          if(document.querySelector("#gutter").checked){
+            document.querySelector("#gutter").checked=false;
+            document.querySelector("#gutter").dispatchEvent(new Event('change'))}
+          // document.querySelector("#gutter").checked=!document.querySelector("#gutter").checked;
+          // document.querySelector("#gutter").dispatchEvent(new Event('change'))
+          // document.querySelector("#gutter").checked=!document.querySelector("#gutter").checked;
+          // document.querySelector("#gutter").dispatchEvent(new Event('change'))
+          // document.querySelector("#gutter").checked=!document.querySelector("#gutter").checked;
+          // document.querySelector("#gutter").dispatchEvent(new Event('change'))
+
 
           //console.log(evt.currentTarget.value)
           let translation_value = evt.currentTarget.value
@@ -4188,9 +4227,10 @@ class Menu_control {
 
       for (let input of input_dim_arr) {
 
-
+        
 
         input.addEventListener('change', (evt) => {
+          
           //console.log("nyan")
           //console.log(evt.currentTarget.value)
           let translation_value = evt.currentTarget.value
@@ -4214,6 +4254,8 @@ class Menu_control {
             //console.log(parseFloat(wall_being_targeted.depth) - parseFloat(allowable_margin))
             if (!(0 <= parseFloat(direction_y) && 2 * parseFloat(direction_y) + 2 * parseFloat(element.geometry.parameters.height) / 2 < parseFloat(wall_being_targeted.depth) - parseFloat(allowable_margin))) {
 
+
+              
               //console.log("Scream stop")
               return false;
             }
@@ -4224,7 +4266,7 @@ class Menu_control {
 
           }
 
-
+          
 
 
           //function remodel_a_box(targeted_element=element,new_width=1, new_height=1 ){
@@ -4272,11 +4314,21 @@ class Menu_control {
               //direction_x=10-translation_value;
               break;
             case 'height':
+              //THIS WAS THE FIX
+  
 
               element.remodel_self(set_width, set_height, element.geometry.depth, object_rotation)
               element.remodel_a_stupid_piece_of_gate(set_width, set_height, element.geometry.depth, object_rotation)
               element.texture.repeat.set(1, element.geometry.parameters.height * 1);
-
+              if (heading_title.toUpperCase().includes("BRAMA")) {
+                //if(document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value<3.01){
+                element.height= div_elem.querySelector('input.dimension[dimension="height"]').value
+                
+                element.mesh.position.y= -main_house_outer.constructor_height/2.0 + element.height/2.0 
+                div_elem.querySelector("[direction='top']").dispatchEvent(new Event('change'))
+                //}
+                }
+     
               //inner_change_wall()
               //direction_y=10-translation_value;
               break;
@@ -4287,9 +4339,10 @@ class Menu_control {
 
 
           if (check_correctness_of_translation()) {
+            
             //If you pass the movement test movement test to be implemented
             //Probably should implement the custom logic that prevents the changes to the sizing of the elements anyhow
-
+          
             //element.translation_x=direction_x;
             //element.translation_y=direction_y;
             //element.translation_z=direction_z;
@@ -4300,7 +4353,7 @@ class Menu_control {
             switch (direction) {
 
               case 'width':
-                div_elem.querySelector('input.dimension[dimension="width"]').value = div_elem.querySelector('input.dimension[dimension="width"]').value - 0.1
+                div_elem.querySelector('input.dimension[dimension="width"]').value = (div_elem.querySelector('input.dimension[dimension="width"]').value - 0.1+0.001).toFixed(1)
                 set_width = parseFloat(div_elem.querySelector('input.dimension[dimension="width"]').value)
                 set_height = parseFloat(div_elem.querySelector('input.dimension[dimension="height"]').value)
                 element.remodel_self(set_width, set_height, element.geometry.depth, object_rotation)
@@ -4314,13 +4367,48 @@ class Menu_control {
                 //direction_x=translation_value;
                 break;
               case 'height':
+                //THIS WAS THE FIX
+
+                if (heading_title.toUpperCase().includes("BRAMA")) {
+                  //div_elem.querySelector("[direction='top']").value = 0.3
+                  div_elem.querySelector("[direction='top']").dispatchEvent(new Event('change'))
+                      //MOVE_UP
+                      
+                  if(document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value<3.04 && div_elem.querySelector('input.dimension[dimension="height"]').value+0.0>document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value){
+                    element.height= div_elem.querySelector('input.dimension[dimension="height"]').value
+                    document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value = (
+                    parseFloat(document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value) + 0.1001).toFixed(2)
+//element.set_position(10, -document.querySelector([type = "wall-height"]).value / 2 + parseFloat(div_elem.querySelector('input.dimension[dimension="height"]').value), direction_z)
+
+                  
+                  menu_controller.rebuild_garage_dimensions_hold_the_children();
+                  
+                 // global_container_of_gates[0].child.mesh.position.y=0.3
+                  //element.set_position(10, -document.querySelector('[name= "wall-height"]').value / 2+10, 0)
+                 // global_container_of_gates[0].child.position.y=2;
+                 //  console.log( global_container_of_gates[0].child)
+                 
+                  //parseFloat(div_elem.querySelector('input.dimension[dimension="height"]').value)
+                  console.log(element.mesh)
+  
+                  //MOVE_UP
+                  element.mesh.position.y= -main_house_outer.constructor_height/2.0 + element.height/2.0 +0.5
+                  div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
+                  }
+                  //alert("ok")
+                  
+                }
+
+                else{
+              
                 div_elem.querySelector('input.dimension[dimension="height"]').value = div_elem.querySelector('input.dimension[dimension="height"]').value - 0.1
                 set_width = parseFloat(div_elem.querySelector('input.dimension[dimension="width"]').value)
                 set_height = parseFloat(div_elem.querySelector('input.dimension[dimension="height"]').value)
                 element.remodel_self(set_width, set_height, element.geometry.depth, object_rotation)
                 element.remodel_a_stupid_piece_of_gate(set_width, set_height, element.geometry.depth, object_rotation)
                 element.texture.repeat.set(1, element.geometry.parameters.height * 1);
-
+                
+                }
                 //evt.currentTarget.value=element.translation_x
 
 
@@ -4354,13 +4442,17 @@ class Menu_control {
     }
 
     }
-
+   
     //Initial values for the menus
     if (heading_title.toUpperCase().includes("DRZWI")) {
       
       //console.log(div_elem.querySelector(".num-selector input[direction='top']"))
       div_elem.querySelector(".num-selector input[direction='top']").value = 0.0
       div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
+      div_elem.querySelector('input.dimension[dimension="width"]').setAttribute('min', 0.8)
+      div_elem.querySelector('input.dimension[dimension="width"]').setAttribute('max', 1.5)
+      div_elem.querySelector('input.dimension[dimension="width"]').value = 1.20
+      div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
 
     }
 
@@ -4369,12 +4461,16 @@ class Menu_control {
       //console.log(div_elem.querySelector(".num-selector input[direction='top']"))
       div_elem.querySelector(".num-selector input[direction='top']").value = 1.2
       div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
+      
+      
 
     }
 
     if (heading_title.toUpperCase().includes("WIATA")) {
       div_elem.querySelector('input.dimension[dimension="width"]').setAttribute('min', 1)
-      div_elem.querySelector('input.dimension[dimension="width"]').setAttribute('max', 3)
+      div_elem.querySelector('input.dimension[dimension="width"]').setAttribute('max', 4)
+
+      
       div_elem.querySelector('input.dimension[dimension="width"]').value = 2.0
       div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
     }
@@ -4382,7 +4478,13 @@ class Menu_control {
     if (heading_title.toUpperCase().includes("BRAMA")) {
 
       div_elem.querySelector(`input[name="wall-color${custom_counter_closure}"]` + '[value*="13"]').checked = true;
-
+      div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("max", 4)
+      div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("min", 2.0)
+            
+      div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("max", 3)
+      div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("min", 2.0)
+      div_elem.querySelector(".num-selector input[direction='top']").value = 0.1
+      div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
       //Custom event listeners for sizing because of different dimensions of the gates
       for (let gate_type of gate_type_handle_arr) {
         gate_type.addEventListener('change', (evt) => {
@@ -4390,28 +4492,45 @@ class Menu_control {
           if (gate_choosen == "handle1") {
 
             div_elem.querySelector('input.dimension[dimension="width"]').value = 2.90
+            div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("max", 4)
+            div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("min", 2.0)
+            div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("max", 3)
+            div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("min", 2.0)
+
             div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
             div_elem.querySelector('input.dimension[dimension="height"]').value = 2.00
             div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
+            div_elem.querySelector(".num-selector input[direction='top']").value = 0.1199
+            div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
+
 
           } else {
+            div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("max", 3.6)
+            div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("min", 1.90)
+            div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("max", 2.6)
+            div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("min", 2.0)
 
             div_elem.querySelector('input.dimension[dimension="width"]').value = 2.80
             div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
             div_elem.querySelector('input.dimension[dimension="height"]').value = 1.90
             div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
 
+            div_elem.querySelector(".num-selector input[direction='top']").value = 0.2199
+            div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
           }
 
 
         })
       }
+      
       div_elem.querySelector('input.dimension[dimension="width"]').value = 2.90
       div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
-      div_elem.querySelector('input.dimension[dimension="height"]').value = 2.00
+      div_elem.querySelector('input.dimension[dimension="height"]').value = 2.0
       div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
-  
+
+      
     }
+    
     return div_elem
   }
 
@@ -4599,7 +4718,7 @@ class Menu_control {
 
     wall_targeted.place_a_box2(friendly_door);
     friendly_door.set_position(position.x, position.y, position.z)
-
+    
 
   }
 
@@ -4654,7 +4773,10 @@ class Menu_control {
     let new_elem = this.add_node(friendly_door.provide_identification(), friendly_door, wall_chosen, "Brama " + gate_number)
     this.side_menu.insertBefore(new_elem, document.querySelector("#windows-object"))
     menu_controller.force_a_placed_object_update(friendly_door)
-
+    
+   // setTimeout(function() {
+   //   new_elem.querySelector('.dynamic_gate input.direction[direction="top"]').dispatchEvent(new Event('change'));
+  //}, 1);
 
   }
 
@@ -4678,8 +4800,8 @@ class Menu_control {
     } = this.initial_window_logic(width_of_gate, height_of_gate)
     //console.log(message)
     //console.log(position)
-
-    let friendly_door = new Displacement_object(main_house_outer.wall_front, width_of_gate, height_of_gate, 0.0, 0, 0, 0, "okno")
+    
+    let friendly_door = new Displacement_object(main_house_outer.wall_front, width_of_gate, height_of_gate,  0.065, 0, 0, 0, "okno")
     friendly_door.name_type = "OKNO"
     //glass_update
     //let insert_geometry = new THREE.BoxGeometry(1,1,0.055);
@@ -4743,8 +4865,11 @@ class Menu_control {
     //Just force a click
 
 
-
-    new_elem.querySelector('input[name*="wall-color"][value*="0A"]').click()
+    try{
+    new_elem.querySelector('input[name*="wall-color"][value*="FF"]').click()
+    }
+    catch(error){console.log("Let it pass")}
+    
 
     global_container_of_doors.push(new Placed_object(wall_chosen, friendly_door.mesh))
 
@@ -4863,6 +4988,36 @@ class Menu_control {
     this.side_menu.insertBefore(new_elem, document.querySelector("#final-object"))
   }
 
+
+  initial_gutter_logic(width, height, array_of_objects) {
+
+    let message = "gate";
+    let position = new THREE.Vector3(0, 0, 0)
+
+    switch (array_of_objects.length) {
+      case 0:
+        message = "front " + message;
+        position = new THREE.Vector3(0, 0, 0)
+        break;
+      case 1:
+        message = "left" + message;
+        position = new THREE.Vector3(0, 0, 0)
+        break;
+      case 2:
+        message = "right" + message;
+        position = new THREE.Vector3(0, 0, 0)
+        break;
+    }
+
+    return {
+      message: message,
+      position: position
+    }
+
+
+  }
+
+
   add_gutter() {
 
     //This logic should be moved out of the add gutter
@@ -4904,7 +5059,7 @@ class Menu_control {
       const {
         message,
         position
-      } = menu_controller.initial_gate_logic(width_of_gate, height_of_gate, menu_controller.gate_array)
+      } = menu_controller.initial_gutter_logic(width_of_gate, height_of_gate, menu_controller.gate_array)
       //console.log(message)
       //console.log(position)
 
@@ -5680,6 +5835,9 @@ class Menu_control {
 
   change_roof() {
 
+
+  
+
     const loader = new THREE.TextureLoader();
     let texture_to_check = "#13447C"
     try {
@@ -5759,6 +5917,15 @@ class Menu_control {
       let three_color = new THREE.Color(color_value)
       menu_controller.change_roof_color(three_color.r * 255, three_color.g * 255, three_color.b * 255)
     }
+
+
+    setTimeout(function() {
+      let change_elems=document.querySelectorAll('[class*="dynamic"] input.direction[direction="top"]')
+      for(let elem of change_elems){
+        elem.dispatchEvent(new Event('change'));
+  
+      }
+  }, 1);
   }
 
   ohmawgawd() {
@@ -6839,6 +7006,8 @@ function roof_recalculation() { //CURRENT_REVISION
 
 document.querySelector("#add-gates").addEventListener('click', () => {
   menu_controller.add_gate()
+
+
 })
 document.querySelector("#add-windows").addEventListener('click', () => {
   menu_controller.add_window()
@@ -6868,9 +7037,12 @@ let roof_types = document.querySelectorAll('input[name="roof-type"]')
 for (let roof of roof_types) {
   roof.addEventListener('change', (evt) => {
     //Modify the sizes of the garages based on the selection of the roof type
+
+    
+
     let garage_width_options = document.querySelectorAll(".num-selector select[name='depth'] option")
 
-
+    let garage_height_options= document.querySelectorAll(".num-selector select[name='wall-height'] option")
     //document.querySelector(".num-selector select[name='total-height']").value = "7"
 
 
@@ -6891,15 +7063,26 @@ for (let roof of roof_types) {
         garage_width_options[j - i].removeAttribute("hidden")
       }
     }
-
-
-
+    
+    if (evt.target.value == "3"){
+      //garage_height_options[0].removeAttribute("hidden")
+      garage_height_options[1].removeAttribute("hidden")
+    }
+    else {
+      garage_height_options[0].setAttribute("hidden", "")
+      garage_height_options[1].setAttribute("hidden", "")
+      document.querySelector(".num-selector select[name='wall-height']").value="2.13"
+      document.querySelector(".num-selector select[name='wall-height']").dispatchEvent(new Event('change'));
+    }
   })
 }
 for (let roof of roof_types) {
+  //GUTTER DISABLING
+  if(document.querySelector("#gutter").checked){
+  document.querySelector("#gutter").checked=false;
+  document.querySelector("#gutter").dispatchEvent(new Event('change'))}
+
   roof.addEventListener('change', roof_recalculation)
-
-
   roof.addEventListener('change', menu_controller.rebuild_garage_dimensions_hold_the_children)
 }
 
@@ -6908,6 +7091,9 @@ let roof_types_orientation = document.querySelectorAll('input[name="roof-type-or
 let roof_colors = document.querySelectorAll('input[name="roof-color"]')
 for (let roof_type_orientation of roof_types_orientation) {
   roof_type_orientation.addEventListener('change', menu_controller.change_roof)
+
+
+
 
   //CAUTION
   //document.querySelector("#reinforcements").checked=false
@@ -6958,14 +7144,20 @@ for (let garage_dimension of garage_dimension_changers) {
 
   garage_dimension.addEventListener('change', () => {
     menu_controller.rebuild_garage_dimensions()
-    //TODO build a proper init
+    
 
     let erasers = document.querySelectorAll('.erase-button')
     for (let erase of erasers) {
       //erase.dispatchEvent(new Event('click'));
       //erase.click()
     }
+    setTimeout(function() {
+      let change_elems=document.querySelectorAll('[class*="dynamic"] input.direction[direction="top"]')
+      for(let elem of change_elems){
+        elem.dispatchEvent(new Event('change'));
 
+      }
+  }, 1);
 
 
     // menu_controller.gate_array=[]
@@ -7019,6 +7211,7 @@ for (let wall_color of wall_colors) {
 let gutter_checkbox = document.querySelector("#gutter[name='gutter']")
 gutter_checkbox.addEventListener("change", () => {
   //Gutter is not controlled by the person but by the previous setup pass the walls to which to add the gutter  
+  function inner_func(){
   let obiekt = scene_outer.getObjectByName("rynna_container")
   if (obiekt) {
     obiekt.removeFromParent()
@@ -7031,8 +7224,24 @@ gutter_checkbox.addEventListener("change", () => {
   if (gutter_checkbox.checked) {
     menu_controller.add_gutter()
   }
+  }
+  inner_func()
+  inner_func()
+  inner_func()
+  inner_func()
+  // let obiekt = scene_outer.getObjectByName("rynna_container")
+  // if (obiekt) {
+  //   obiekt.removeFromParent()
+  // }
+  // obiekt = scene_outer.getObjectByName("rynna_container")
+  // if (obiekt) {
+  //   obiekt.removeFromParent()
+  // }
 
-  //Gutter is not controlled by the person but by the previous setup pass the walls to which to add the gutter  
+  // if (gutter_checkbox.checked) {
+  //   menu_controller.add_gutter()
+  // }
+  // //Gutter is not controlled by the person but by the previous setup pass the walls to which to add the gutter  
 
 
 })
@@ -7160,7 +7369,7 @@ menu_controller.change_wall()
 ////console.log(plane)
 ////console.log("heyy")
 // scene_outer.add( plane );
-
+//ENDOF PRESENTATION CODE
 
 //let big_box_of_friends=menu_controller.hold_all_the_children()
 //console.log(big_box_of_friends)
@@ -7315,7 +7524,7 @@ document.querySelector("#send-message").addEventListener('click', () => {
 
       }
 
-      //let selected_color=content.querySelector("[name*='wall-color']:checked").nextElementSibling.nextElementSibling.innerHTML
+      let selected_color=content.querySelector("[name*='wall-color']:checked").nextElementSibling.nextElementSibling.innerHTML
       //let selected_wall_type=content.querySelector("[name*='wall-type']:checked").nextElementSibling.nextElementSibling.innerHTML
       //let selected_visual_type=content.querySelector("[name*='visual-type']:checked").nextElementSibling.nextElementSibling.innerHTML
 
@@ -7323,7 +7532,7 @@ document.querySelector("#send-message").addEventListener('click', () => {
       //console.log(selected_wall_type)
       //console.log(selected_visual_type)
 
-      //dynamic_msg+=selected_color+'\n'
+      dynamic_msg+=selected_color+'\n'
       //dynamic_msg+=selected_wall_type+'\n'
       //dynamic_msg+=selected_visual_type+'\n'
 
@@ -7375,3 +7584,4 @@ document.querySelector("#send-message").addEventListener('click', () => {
 //obiekt.removeFromParent()
 //obiekt=scene_outer.getObjectByName("rynna_container")
 //obiekt.removeFromParent()
+
