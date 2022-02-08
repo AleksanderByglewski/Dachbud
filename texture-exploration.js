@@ -475,10 +475,10 @@ class Displacement_object {
          //color_set_gutter=new THREE.Color( 0xffffff )
          //color_set_gutter=new THREE.Color( 0xff0000 )
 
-         if(document.querySelector("[name='gutter-color']").value=='#FFFFFF')
-         {material222 = new THREE.MeshBasicMaterial( {color:0xeeeeee,  side: THREE.DoubleSide} );
+         if(document.querySelector("[name='gutter-color']").value=='#383E42')
+         {material222 = new THREE.MeshBasicMaterial( {color:0x383e42,  side: THREE.DoubleSide} );
         
-         color_set_gutter=new THREE.Color( 0xffffff)}
+         color_set_gutter=new THREE.Color( 0x383e42)}
 
          function recursive_change(parent_object){
            try{
@@ -615,10 +615,12 @@ class Displacement_object {
           //color_set_gutter=new THREE.Color( 0xffffff )
           //color_set_gutter=new THREE.Color( 0xff0000 )
 
-          if(document.querySelector("[name='gutter-color']").value=='#FFFFFF')
-          {material222 = new THREE.MeshBasicMaterial( {color:0xeeeeee,  side: THREE.DoubleSide} );
-          color_set_gutter=new THREE.Color( 0xffffff)
-        }
+     
+
+          if(document.querySelector("[name='gutter-color']").value=='#383E42')
+          {material222 = new THREE.MeshBasicMaterial( {color:0x383e42,  side: THREE.DoubleSide} );
+         
+          color_set_gutter=new THREE.Color( 0x383e42)}
 
           function recursive_change(parent_object){
             try{
@@ -4580,7 +4582,7 @@ class Menu_control {
             
       div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("max", 3)
       div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("min", 2.0)
-      div_elem.querySelector(".num-selector input[direction='top']").value = 0.1
+      div_elem.querySelector(".num-selector input[direction='top']").value = 0.0001//Earlier
       div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
       //Custom event listeners for sizing because of different dimensions of the gates
       for (let gate_type of gate_type_handle_arr) {
@@ -4597,13 +4599,13 @@ class Menu_control {
             let custom_logic_value=(document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value)
             let custom_logic=(custom_logic_value <2.14)
 
-            div_elem.querySelector(".num-selector input[direction='top']").value = 0.1199
+            div_elem.querySelector(".num-selector input[direction='top']").value = 0.00199//Earlier
             div_elem.querySelector('input.dimension[dimension="height"]').value = 2.00
             div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
             
         
             div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
-            div_elem.querySelector(".num-selector input[direction='top']").value = 0.1199
+            div_elem.querySelector(".num-selector input[direction='top']").value = 0.0199//Earlier 0.199
             div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
             
             if(custom_logic){
@@ -4622,7 +4624,7 @@ class Menu_control {
             div_elem.querySelector('input.dimension[dimension="height"]').value = 1.90
             div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
 
-            div_elem.querySelector(".num-selector input[direction='top']").value = 0.2199
+            div_elem.querySelector(".num-selector input[direction='top']").value = 0.00199//Earlier 
             div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
           }
 
@@ -5465,6 +5467,10 @@ class Menu_control {
       main_house_outer.roof_right2.object.removeFromParent()
 
 
+
+
+     
+
       //main_house_outer.wall_back=main_house_canopy.wall_back
       //main_house_outer.wall_front=main_house_canopy.wall_front
       //main_house_outer.wall_left=main_house_canopy.wall_left
@@ -5797,6 +5803,8 @@ class Menu_control {
       main_house_outer.roof = main_house_canopy.roof
       main_house_outer.roof2 = main_house_canopy.roof2
 
+
+
       //That is pretty bad, but let it pass for now
       menu_controller.change_roof()
 
@@ -5804,6 +5812,55 @@ class Menu_control {
       document.querySelector('input[name="wall-type"]').dispatchEvent(new Event('change'));
       //external_arr=new Reinforcements_boys()
 
+
+      
+      if(document.querySelector('input[name="roof-type"]:checked').value==3){
+        console.log("Roof front")
+        console.log(main_house_outer.roof_front)
+        main_house_outer.roof_front.object.translateY(-0.23)
+        main_house_outer.roof_back.object.translateY(-0.23)
+        main_house_outer.roof_right.object.translateY(-0.23)
+  
+        main_house_outer.roof_front2.object.translateY(-0.23)
+        main_house_outer.roof_right2.object.translateY(-0.23)
+        main_house_outer.roof_back2.object.translateY(-0.23)
+  
+        main_house_outer.roof.object.translateY(-0.23)
+        main_house_outer.roof2.object.translateY(-0.23)
+        
+        //main_house_outer.wall_back.object.translateY(-0.23)
+        main_house_outer.wall_left.object.translateY(-1.23)
+        //main_house_outer.wall_right.object.translateY(-1.23)
+        
+        console.log(main_house_outer.wall_front.object)
+        main_house_outer.wall_front.object.visible=false;
+        //main_house_outer.wall_left.object.visible=false;
+
+
+
+        console.log("Wall back")
+        console.log(main_house_outer.wall_back)
+        console.log(main_house_outer.wall_back.object)
+        console.log("--Wall back")
+        
+
+        console.log("Wall front")
+        console.log(main_house_outer.wall_front)
+        console.log(main_house_outer.wall_front.object)
+        console.log("--Wall front")
+        
+        
+        console.log("Wall right")
+        console.log(main_house_outer.wall_front)
+        console.log(main_house_outer.wall_front.object)
+        console.log("--Wall right")
+        
+
+        main_house_outer.wall_front.object.translateZ(-0.01)
+
+      }
+      
+      
     }
 
   }
@@ -6178,74 +6235,38 @@ class Reinforcements_boys {
       side: THREE.DoubleSide
     });
 
+    
+    this.insert_material_roof = new THREE.MeshBasicMaterial({
+      color: 0xff0000,
+      //color:three_color,
+      side: THREE.DoubleSide
+    });
 
-    this.change_wall_color()
-
-    // console.log(insert_material.color)
-    // insert_material.color=new THREE.Color(insert_material.color.r*0.75,insert_material.color.g*0.75,insert_material.color.b*0.75)
-    // insert_material.needsUpdate=true;
-    // console.log(insert_material.color)
-    //insert_material.color=color_value
-    //insert_material.needsUpdate = true;
-    //REVISION3
-
-    // let texture_to_check = document.querySelector('input[name="wall-color"]:checked').value
-    // let color_value = document.querySelector('input[name="wall-color"]:checked').value
-    // let three_color = new THREE.Color(color_value)
-    // insert_material.color=color_value
-
-    // if (texture_to_check == '0' || texture_to_check == '1' || texture_to_check == '2') {
-
-    //   //console.log("special_case")
-    //  } else {
-    //    let color_value = document.querySelector('input[name="wall-color"]:checked').value
-    //    let three_color = new THREE.Color(color_value)
-    //    menu_controller.change_wall_color(three_color.r * 255, three_color.g * 255, three_color.b * 255)
-    //  }
+    this.change_roof_color()
 
     this.container = new Array(8)
 
-
+    this.change_wall_color()
+  
     this.container[0] = new THREE.Mesh(insert_geometry, this.insert_material);
     this.container[1] = new THREE.Mesh(insert_geometry_left, this.insert_material);
     this.container[2] = new THREE.Mesh(insert_geometry_right, this.insert_material);
     this.container[3] = new THREE.Mesh(insert_geometry_back, this.insert_material);
 
+
+    
     this.container[0].geometry.translate(0, base_beam_height_modifier[0] * 0.5, 0)
     this.container[1].geometry.translate(0, base_beam_height_modifier[1] * 0.5, 0)
     this.container[2].geometry.translate(0, base_beam_height_modifier[2] * 0.5, 0)
     this.container[3].geometry.translate(0, base_beam_height_modifier[3] * 0.5, 0)
 
-
+    //this.change_roof_color()
     //console.log("Okay now i know:")
     //console.log(main_house_canopy.roof_front)
 
 
 
 
-    if (index_roof == 4 || index_roof == 5) {
-      // let geometry_up=new THREE.Vector3(0,0.05,0)
-      // let geometry_front=new THREE.Vector3(main_house_outer.wall_front.width/2, 0, 0.05)
-      // let geometry_box=new THREE.Vector3(0,0,0).add(geometry_up).add(geometry_front)
-
-      // let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y,  geometry_box.z);
-      // let wow=new THREE.Mesh(insert_geometry_roof_back, insert_material);
-      // main_house_outer.wall_front.object.add(wow)
-      // wow.geometry.rotateZ(-0.2006)
-      // //console.log(parseFloat(document.querySelector(".num-selector [name='total-height']").value))
-
-      // let translation_up=new THREE.Vector3(0,main_house_outer.wall_front.depth/2+0.30,0)
-      // let translation_front=new THREE.Vector3(0, 0, 0)
-      // let translation_side=new THREE.Vector3(0, 0, 0)
-      // //IN this case unncessary
-      // translation_side.x=0
-
-
-      // let translation_total=new THREE.Vector3(0,0,0).add(translation_front).add(translation_side).add(translation_up)
-      // //console.log(translation_total)
-      // wow.geometry.translate(translation_total.x,translation_total.y,translation_total.z)
-      // //wow.geometry.rotateZ(1.57-0.0717)
-    }
     if (index_roof == 2) {
       let box_width = canopy_container.left_size + canopy_container.right_size + main_house_outer.wall_front.width
 
@@ -6254,8 +6275,8 @@ class Reinforcements_boys {
       let geometry_box = new THREE.Vector3(0, 0, 0).add(geometry_up).add(geometry_front)
 
       let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y, geometry_box.z);
-      let wow = new THREE.Mesh(insert_geometry_roof_back, this.insert_material);
-      let wow2 = new THREE.Mesh(insert_geometry_roof_back.clone(), this.insert_material);
+      let wow = new THREE.Mesh(insert_geometry_roof_back, this.insert_material_roof);
+      let wow2 = new THREE.Mesh(insert_geometry_roof_back.clone(), this.insert_material_roof);
 
 
       wow.name = "BAD-CHILD"
@@ -6288,8 +6309,8 @@ class Reinforcements_boys {
 
       let insert_geometry_roof_back2 = new THREE.BoxGeometry(geometry_box.x, geometry_box.y, geometry_box.z);
 
-      let wow3 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material);
-      let wow4 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material);
+      let wow3 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material_roof);
+      let wow4 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material_roof);
       wow3.name = "BAD-CHILD"
       wow4.name = "BAD-CHILD"
 
@@ -6342,8 +6363,8 @@ class Reinforcements_boys {
       let geometry_box = new THREE.Vector3(0, 0, 0).add(geometry_up).add(geometry_front)
 
       let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y, geometry_box.z);
-      let wow = new THREE.Mesh(insert_geometry_roof_back, this.insert_material);
-      let wow2 = new THREE.Mesh(insert_geometry_roof_back.clone(), this.insert_material);
+      let wow = new THREE.Mesh(insert_geometry_roof_back, this.insert_material_roof);
+      let wow2 = new THREE.Mesh(insert_geometry_roof_back.clone(), this.insert_material_roof);
 
 
       wow.name = "BAD-CHILD"
@@ -6376,8 +6397,8 @@ class Reinforcements_boys {
 
       let insert_geometry_roof_back2 = new THREE.BoxGeometry(geometry_box.x, geometry_box.y, geometry_box.z);
 
-      let wow3 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material);
-      let wow4 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material);
+      let wow3 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material_roof);
+      let wow4 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material_roof);
       wow3.name = "BAD-CHILD"
       wow4.name = "BAD-CHILD"
 
@@ -6418,8 +6439,8 @@ class Reinforcements_boys {
       let geometry_box = new THREE.Vector3(0, 0, 0).add(geometry_up).add(geometry_front)
 
       let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y, geometry_box.z);
-      let wow = new THREE.Mesh(insert_geometry_roof_back, this.insert_material);
-      let wow2 = new THREE.Mesh(insert_geometry_roof_back.clone(), this.insert_material);
+      let wow = new THREE.Mesh(insert_geometry_roof_back, this.insert_material_roof);
+      let wow2 = new THREE.Mesh(insert_geometry_roof_back.clone(), this.insert_material_roof);
 
 
       wow.name = "BAD-CHILD"
@@ -6461,8 +6482,8 @@ class Reinforcements_boys {
 
       let insert_geometry_roof_back2 = new THREE.BoxGeometry(geometry_box.x, geometry_box.y, geometry_box.z);
 
-      let wow3 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material);
-      let wow4 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material);
+      let wow3 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material_roof);
+      let wow4 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material_roof);
       wow3.name = "BAD-CHILD"
       wow4.name = "BAD-CHILD"
 
@@ -6512,8 +6533,8 @@ class Reinforcements_boys {
       let geometry_box = new THREE.Vector3(0, 0, 0).add(geometry_up).add(geometry_front)
 
       let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y, geometry_box.z);
-      let wow = new THREE.Mesh(insert_geometry_roof_back, this.insert_material);
-      let wow2 = new THREE.Mesh(insert_geometry_roof_back.clone(), this.insert_material);
+      let wow = new THREE.Mesh(insert_geometry_roof_back, this.insert_material_roof);
+      let wow2 = new THREE.Mesh(insert_geometry_roof_back.clone(), this.insert_material_roof);
 
 
       wow.name = "BAD-CHILD"
@@ -6553,8 +6574,8 @@ class Reinforcements_boys {
 
       let insert_geometry_roof_back2 = new THREE.BoxGeometry(geometry_box.x, geometry_box.y, geometry_box.z);
 
-      let wow3 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material);
-      let wow4 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material);
+      let wow3 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material_roof);
+      let wow4 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material_roof);
       wow3.name = "BAD-CHILD"
       wow4.name = "BAD-CHILD"
 
@@ -6605,8 +6626,8 @@ class Reinforcements_boys {
       let geometry_box = new THREE.Vector3(0, 0, 0).add(geometry_up).add(geometry_front)
 
       let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y, geometry_box.z);
-      let wow = new THREE.Mesh(insert_geometry_roof_back, this.insert_material);
-      let wow2 = new THREE.Mesh(insert_geometry_roof_back.clone(), this.insert_material);
+      let wow = new THREE.Mesh(insert_geometry_roof_back, this.insert_material_roof);
+      let wow2 = new THREE.Mesh(insert_geometry_roof_back.clone(), this.insert_material_roof);
 
 
       wow.name = "BAD-CHILD"
@@ -6650,8 +6671,8 @@ class Reinforcements_boys {
 
       let insert_geometry_roof_back2 = new THREE.BoxGeometry(geometry_box.x, geometry_box.y, geometry_box.z);
 
-      let wow3 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material);
-      let wow4 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material);
+      let wow3 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material_roof);
+      let wow4 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material_roof);
       wow3.name = "BAD-CHILD"
       wow4.name = "BAD-CHILD"
 
@@ -6690,8 +6711,8 @@ class Reinforcements_boys {
       wow3.visible = true
       wow4.visible = true
 
-      let wow5 = new THREE.Mesh(wow3.geometry.clone(), this.insert_material);
-      let wow6 = new THREE.Mesh(wow4.geometry.clone(), this.insert_material);
+      let wow5 = new THREE.Mesh(wow3.geometry.clone(), this.insert_material_roof);
+      let wow6 = new THREE.Mesh(wow4.geometry.clone(), this.insert_material_roof);
 
       wow5.name = "BAD-CHILD"
       wow6.name = "BAD-CHILD"
@@ -6729,8 +6750,8 @@ class Reinforcements_boys {
       let geometry_box = new THREE.Vector3(0, 0, 0).add(geometry_up).add(geometry_front)
 
       let insert_geometry_roof_back = new THREE.BoxGeometry(geometry_box.x, geometry_box.y, geometry_box.z);
-      let wow = new THREE.Mesh(insert_geometry_roof_back, this.insert_material);
-      let wow2 = new THREE.Mesh(insert_geometry_roof_back.clone(), this.insert_material);
+      let wow = new THREE.Mesh(insert_geometry_roof_back, this.insert_material_roof);
+      let wow2 = new THREE.Mesh(insert_geometry_roof_back.clone(), this.insert_material_roof);
 
 
       wow.name = "BAD-CHILD"
@@ -6774,8 +6795,8 @@ class Reinforcements_boys {
 
       let insert_geometry_roof_back2 = new THREE.BoxGeometry(geometry_box.x, geometry_box.y, geometry_box.z);
 
-      let wow3 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material);
-      let wow4 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material);
+      let wow3 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material_roof);
+      let wow4 = new THREE.Mesh(insert_geometry_roof_back2.clone(), this.insert_material_roof);
       wow3.name = "BAD-CHILD"
       wow4.name = "BAD-CHILD"
 
@@ -6813,8 +6834,8 @@ class Reinforcements_boys {
       wow3.visible = true
       wow4.visible = true
 
-      let wow5 = new THREE.Mesh(wow3.geometry.clone(), this.insert_material);
-      let wow6 = new THREE.Mesh(wow4.geometry.clone(), this.insert_material);
+      let wow5 = new THREE.Mesh(wow3.geometry.clone(), this.insert_material_roof);
+      let wow6 = new THREE.Mesh(wow4.geometry.clone(), this.insert_material_roof);
 
       wow5.name = "BAD-CHILD"
       wow6.name = "BAD-CHILD"
@@ -6864,6 +6885,20 @@ class Reinforcements_boys {
     this.container[1].name = "BAD-CHILD"
     this.container[2].name = "BAD-CHILD"
     this.container[3].name = "BAD-CHILD"
+
+
+
+    // this.change_roof_color()
+    // this.container[0].material=this.insert_material
+    // this.container[1].material=this.insert_material
+    // this.container[2].material=this.insert_material
+    // this.container[3].material=this.insert_material
+
+
+
+
+
+    
 
 
     //reinforcements_container.container[2].name="reinforcement-wall3"
@@ -6929,6 +6964,37 @@ class Reinforcements_boys {
     this.insert_material.color.setRGB(r / 255, g / 255, b / 255);
     this.insert_material.color.setRGB(r / 255, g / 255, b / 255);
 
+  }
+  change_roof_color(){
+
+    let color_value = document.querySelector('input[name="roof-color"]:checked').value
+    if (color_value == 0 || color_value == 1 || color_value == 2) {
+      let color_arr = ["#969796", "#5D3E28", "#9C6329"]
+      color_value = color_arr[parseInt(color_value)]
+    }
+
+    let three_color = new THREE.Color(color_value)
+    let r = three_color.r * 255 * 0.915;
+    let g = three_color.g * 255 * 0.915;
+    let b = three_color.b * 255 * 0.915;
+
+
+
+
+    this.insert_material_roof.color.setRGB(r / 255, g / 255, b / 255);
+    this.insert_material_roof.color.setRGB(r / 255, g / 255, b / 255);
+    this.insert_material_roof.color.setRGB(r / 255, g / 255, b / 255);
+    this.insert_material_roof.color.setRGB(r / 255, g / 255, b / 255);
+
+
+    this.insert_material_roof.color.setRGB(r / 255, g / 255, b / 255);
+    this.insert_material_roof.color.setRGB(r / 255, g / 255, b / 255);
+    this.insert_material_roof.color.setRGB(r / 255, g / 255, b / 255);
+
+
+    this.insert_material_roof.color.setRGB(r / 255, g / 255, b / 255);
+    this.insert_material_roof.color.setRGB(r / 255, g / 255, b / 255);
+    this.insert_material_roof.color.setRGB(r / 255, g / 255, b / 255);
 
 
 
