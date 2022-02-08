@@ -258,6 +258,6 @@ div#roof-material {
 
 .check-selector-gutter {
     display: grid !important;
-    grid-template-columns: 1fr 8em 30px !important;
+    grid-template-columns: 1fr 6em 6em 30px !important;
     align-content: center;
     align-items: center;}

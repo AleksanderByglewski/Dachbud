@@ -2392,6 +2392,8 @@ function main() {
   const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#bg'),
   });
+
+
   class Creation_controller {
     constructor(constructor_width, constructor_depth, constructor_height, roof_width, roof_depth, roof_height, scene, roof_type = 4) {
 
@@ -2762,8 +2764,8 @@ function main() {
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.position.setZ(30);
-  camera.position.setY(20);
+  camera.position.setZ(7.5);
+  camera.position.setY(5);
   camera.rotateX(0.75)
 
   renderer.render(scene, camera);
@@ -3797,7 +3799,7 @@ class Menu_control {
 
 
         let handle_state = div_elem.querySelector("[name*='wall-type']:checked").value
-        let gate_chosen = document.querySelector("[name*='visual-type']:checked").value
+        let gate_chosen = div_elem.querySelector("[name*='visual-type']:checked").value
         //console.log('running a test:')
         //console.log('gate_chosen == "handle1" && handle_state!="rotated-dense" :' + String(gate_chosen == "handle1" && handle_state!="rotated-dense"))
         //console.log('gate_chosen == "handle1" && handle_state=="rotated-dense" :' + String(gate_chosen == "handle1" && handle_state=="rotated-dense"))
@@ -4198,17 +4200,18 @@ class Menu_control {
         switch (direction) {
 
           case 'left':
-            evt.currentTarget.value = element.translation_x
+            evt.currentTarget.value = parseFloat(element.translation_x+0.0001).toFixed(2)
             direction_x = translation_value;
+            
             break;
           case 'right':
-            evt.currentTarget.value = element.translation_x
+            evt.currentTarget.value = parseFloat(element.translation_x+0.0001).toFixed(2)
             break;
           case 'top':
-            evt.currentTarget.value = element.translation_y;
+            evt.currentTarget.value = parseFloat(element.translation_y+0.0001).toFixed(2);
             break;
           case 'bottom':
-            evt.currentTarget.value = element.translation_y;
+            evt.currentTarget.value = parseFloat(element.translation_y+0.0001).toFixed(2);
             //direction_y=10-translation_value;
             break;
 
@@ -7520,9 +7523,9 @@ document.querySelector("#send-message").addEventListener('click', () => {
 
       for (let j = 0; j < numbers.length; j++) {
         //console.log(numbers[j].firstChild.innerText)
-        //console.log(numbers[j].firstChild.nextSibling.value)
+        //console.log(numbers[j].firstChild.nextSibling.firstChild.value)
         dynamic_msg += numbers[j].firstChild.innerText + '\n'
-        dynamic_msg += numbers[j].firstChild.nextSibling.value + '\n'
+        dynamic_msg += numbers[j].firstChild.nextSibling.firstChild.value + '\n'
 
       }
 
@@ -7555,9 +7558,9 @@ document.querySelector("#send-message").addEventListener('click', () => {
 
       for (let j = 0; j < numbers.length; j++) {
         //console.log(numbers[j].firstChild.innerText)
-        //console.log(numbers[j].firstChild.nextSibling.value)
+        //console.log(numbers[j].firstChild.nextSibling.firstChild.value)
         dynamic_msg += numbers[j].firstChild.innerText + '\n'
-        dynamic_msg += numbers[j].firstChild.nextSibling.value + '\n'
+        dynamic_msg += numbers[j].firstChild.nextSibling.firstChild.value + '\n'
 
       }
 
@@ -7592,9 +7595,9 @@ document.querySelector("#send-message").addEventListener('click', () => {
 
       for (let j = 0; j < numbers.length; j++) {
         //console.log(numbers[j].firstChild.innerText)
-        //console.log(numbers[j].firstChild.nextSibling.value)
+        //console.log(numbers[j].firstChild.nextSibling.firstChild.value)
         dynamic_msg += numbers[j].firstChild.innerText + '\n'
-        dynamic_msg += numbers[j].firstChild.nextSibling.value + '\n'
+        dynamic_msg += numbers[j].firstChild.nextSibling.firstChild.value + '\n'
 
       }
 
@@ -7628,9 +7631,9 @@ document.querySelector("#send-message").addEventListener('click', () => {
 
       for (let j = 0; j < numbers.length; j++) {
         //console.log(numbers[j].firstChild.innerText)
-        //console.log(numbers[j].firstChild.nextSibling.value)
+        //console.log(numbers[j].firstChild.nextSibling.firstChild.value)
         dynamic_msg += numbers[j].firstChild.innerText + '\n'
-        dynamic_msg += numbers[j].firstChild.nextSibling.value + '\n'
+        dynamic_msg += numbers[j].firstChild.nextSibling.firstChild.value + '\n'
 
       }
 
@@ -7658,7 +7661,9 @@ document.querySelector("#send-message").addEventListener('click', () => {
     additional_info += checkbox.name + '\n'
 
   }
+  let gutter_type=document.querySelector('[name="gutter-type"] option:checked').innerText
   let gutter_color=document.querySelector('[name="gutter-color"] option:checked').innerText
+  
 
   let foundation = document.querySelector('[name="foundation-type"]:checked').nextElementSibling.nextElementSibling.innerText
 
@@ -7681,7 +7686,7 @@ document.querySelector("#send-message").addEventListener('click', () => {
   Wiatach:${dynamic_canopy}
   oraz następujących (${all_checkboxes.length}) dodatkowych elementach:
   ${additional_info}
-  Kolor rynien jeżeli są: ${gutter_color}
+  Kolor rynien jeżeli są: ${gutter_color} ze spustem ${gutter_type}
   `
 
   console.log(static_msg)
