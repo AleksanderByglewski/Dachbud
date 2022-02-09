@@ -4639,7 +4639,10 @@ class Menu_control {
 
       
     }
-    
+    if (2.03<document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value<2.10){
+      document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value=2.03
+      //document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value.toFixed(2)
+    }
     return div_elem
   }
 
@@ -5815,48 +5818,48 @@ class Menu_control {
 
       
       if(document.querySelector('input[name="roof-type"]:checked').value==3){
-        console.log("Roof front")
-        console.log(main_house_outer.roof_front)
-        main_house_outer.roof_front.object.translateY(-0.23)
-        main_house_outer.roof_back.object.translateY(-0.23)
-        main_house_outer.roof_right.object.translateY(-0.23)
+        // console.log("Roof front")
+        // console.log(main_house_outer.roof_front)
+        // main_house_outer.roof_front.object.translateY(-0.23)
+        // main_house_outer.roof_back.object.translateY(-0.23)
+        // main_house_outer.roof_right.object.translateY(-0.23)
   
-        main_house_outer.roof_front2.object.translateY(-0.23)
-        main_house_outer.roof_right2.object.translateY(-0.23)
-        main_house_outer.roof_back2.object.translateY(-0.23)
+        // main_house_outer.roof_front2.object.translateY(-0.23)
+        // main_house_outer.roof_right2.object.translateY(-0.23)
+        // main_house_outer.roof_back2.object.translateY(-0.23)
   
-        main_house_outer.roof.object.translateY(-0.23)
-        main_house_outer.roof2.object.translateY(-0.23)
+        // main_house_outer.roof.object.translateY(-0.23)
+        // main_house_outer.roof2.object.translateY(-0.23)
         
-        //main_house_outer.wall_back.object.translateY(-0.23)
-        main_house_outer.wall_left.object.translateY(-1.23)
-        //main_house_outer.wall_right.object.translateY(-1.23)
+        // //main_house_outer.wall_back.object.translateY(-0.23)
+        // main_house_outer.wall_left.object.translateY(-1.23)
+        // //main_house_outer.wall_right.object.translateY(-1.23)
         
-        console.log(main_house_outer.wall_front.object)
-        main_house_outer.wall_front.object.visible=false;
-        //main_house_outer.wall_left.object.visible=false;
+        // console.log(main_house_outer.wall_front.object)
+        // main_house_outer.wall_front.object.visible=false;
+        // //main_house_outer.wall_left.object.visible=false;
 
 
 
-        console.log("Wall back")
-        console.log(main_house_outer.wall_back)
-        console.log(main_house_outer.wall_back.object)
-        console.log("--Wall back")
+        // console.log("Wall back")
+        // console.log(main_house_outer.wall_back)
+        // console.log(main_house_outer.wall_back.object)
+        // console.log("--Wall back")
         
 
-        console.log("Wall front")
-        console.log(main_house_outer.wall_front)
-        console.log(main_house_outer.wall_front.object)
-        console.log("--Wall front")
+        // console.log("Wall front")
+        // console.log(main_house_outer.wall_front)
+        // console.log(main_house_outer.wall_front.object)
+        // console.log("--Wall front")
         
         
-        console.log("Wall right")
-        console.log(main_house_outer.wall_front)
-        console.log(main_house_outer.wall_front.object)
-        console.log("--Wall right")
+        // console.log("Wall right")
+        // console.log(main_house_outer.wall_front)
+        // console.log(main_house_outer.wall_front.object)
+        // console.log("--Wall right")
         
 
-        main_house_outer.wall_front.object.translateZ(-0.01)
+        // main_house_outer.wall_front.object.translateZ(-0.01)
 
       }
       
@@ -7238,7 +7241,7 @@ for (let roof of roof_types) {
     }
     
     if (evt.target.value == "3"){
-      //garage_height_options[0].removeAttribute("hidden")
+      garage_height_options[0].removeAttribute("hidden")
       garage_height_options[1].removeAttribute("hidden")
     }
     else {
