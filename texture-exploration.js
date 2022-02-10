@@ -4639,9 +4639,9 @@ class Menu_control {
 
       
     }
-    if (2.03<document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value<2.10){
+    if (2.05<document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value &&document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value<2.10){
       document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value=2.03
-      //document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value.toFixed(2)
+      (document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value).toFixed(2)
     }
     return div_elem
   }
