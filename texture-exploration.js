@@ -7770,3 +7770,4 @@ document.querySelector("#send-message").addEventListener('click', () => {
 //obiekt=scene_outer.getObjectByName("rynna_container")
 //obiekt.removeFromParent()
 
+//Really important
