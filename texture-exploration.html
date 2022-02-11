@@ -718,11 +718,17 @@
 
             <div class="container" style="display:none !important">
               
-              <form id="mail-messenger" target="_blank" action="https://formsubmit.co/abyglewski@lukanovaconstruction.com" method="POST">
+              <form id="mail-messenger" target="_blank" action="https://formsubmit.co/abyglewski@lukanovaconstruction.com" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                   <textarea id="textarea-send" placeholder="Your Message" class="form-control" name="message" rows="10"></textarea>
-                </div>
+                  <input id="file_input1" type="file" name="attachment" accept="image/png, image/jpeg">
+                  <input id="file_input2" type="file" name="attachment2" accept="image/png, image/jpeg">
+                  <input id="file_input3" type="file" name="attachment3" accept="image/png, image/jpeg">
+                  <input id="file_input4" type="file" name="attachment4" accept="image/png, image/jpeg">    
+                
                 <button type="submit" class="btn btn-lg btn-dark btn-block">Submit Form</button>
+                  </div>
+  
               </form>
             </div>
 
@@ -751,11 +757,25 @@
       </div>
   </div>
   
-    <canvas id="bg"></canvas>   
+
+  
+  <button id="final_screenshot"> Screenshot finally</button>
+    
+  <canvas id="canva1" width="500" height="300"> 
+  </canvas>
+  <canvas id="canva2" width="500" height="300">
+  </canvas>
+  <canvas id="canva3" width="500" height="300">
+  </canvas>
+  <canvas id="canva4" width="500" height="300">
+  </canvas>
+
+  <canvas id="bg"></canvas>   
+
 
   <script type="module" src="/texture-exploration.js"></script> 
 
-  
+
 
       
 

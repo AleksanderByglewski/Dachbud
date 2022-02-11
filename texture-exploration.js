@@ -1361,7 +1361,7 @@ class Displacement_object {
           handle1.scale.y = 0.01
           handle1.scale.z = 0.01
           handle1.rotateY(3 * object_rotation)
-
+          
 
           handle1.translateY(-0.225)
           handle1.translateZ(0.025)
@@ -4617,11 +4617,11 @@ class Menu_control {
             div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("max", 3.6)
             div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("min", 1.90)
             div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("max", 2.6)
-            div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("min", 2.0)
+            div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("min", 1.9)
 
             div_elem.querySelector('input.dimension[dimension="width"]').value = 2.80
             div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
-            div_elem.querySelector('input.dimension[dimension="height"]').value = 1.90
+            div_elem.querySelector('input.dimension[dimension="height"]').value = 2.00
             div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
 
             div_elem.querySelector(".num-selector input[direction='top']").value = 0.00199//Earlier 
@@ -7574,6 +7574,16 @@ document.querySelector("#add-gates").click()
 document.querySelector('input[name="roof-type"][value="5"]').click()
 //document.querySelector("#reinforcements").click()
 document.querySelector("#send-message").addEventListener('click', () => {
+  
+  //console.log("Beginning async test")
+  main_handler()
+  //console.log("I fall")
+  
+  setTimeout(message_sender,3000)})
+
+
+function message_sender(){
+  
 
   let arr = ["jednospadowy prawy", "jednospadowy przód", "jednospadowy lewy", "jednospadowy tył", "dwuspadowy przód", "dwuspadowy bok"]
   let selected_roof_type = arr[parseInt(document.querySelector("[name='roof-type']:checked").value)]
@@ -7762,7 +7772,7 @@ document.querySelector("#send-message").addEventListener('click', () => {
   document.querySelector("#textarea-send").value = static_msg
   document.querySelector("#mail-messenger").submit()
 
-})
+}
 //Removal of gutters
 //gutter_checkbox.click()
 //let obiekt=scene_outer.getObjectByName("rynna_container")
@@ -7771,3 +7781,122 @@ document.querySelector("#send-message").addEventListener('click', () => {
 //obiekt.removeFromParent()
 
 //Really important
+
+const outer_scene=scene_outer
+
+async function canvas_image_upload() {
+  
+  let canvas1=document.getElementById('canva1');
+  let canvas2=document.getElementById('canva2');
+  let canvas3=document.getElementById('canva3');
+  let canvas4=document.getElementById('canva4');
+
+
+  let file1
+  let file2
+  let file3
+  let file4
+  let blob 
+  blob = await new Promise(resolve => canvas1.toBlob(resolve));
+  file1 = new File([blob], "filefront.jpg", { type: "image/jpeg" })
+  
+
+  blob = await new Promise(resolve => canvas2.toBlob(resolve));
+  file2 = new File([blob], "fileleft.jpg", { type: "image/jpeg" })
+  
+
+  blob = await new Promise(resolve => canvas3.toBlob(resolve));
+  file3 = new File([blob], "fileback.jpg", { type: "image/jpeg" })
+  
+
+  blob = await new Promise(resolve => canvas4.toBlob(resolve));
+  file4 = new File([blob], "fileright.jpg", { type: "image/jpeg" })
+  
+
+
+
+
+  fill_elem('#file_input1', file1)
+  fill_elem('#file_input2', file2)
+  fill_elem('#file_input3', file3)
+  fill_elem('#file_input4', file4)
+ 
+
+
+  function fill_elem(selector,sent_file){
+  let container=new DataTransfer();
+  let fileInputElement = document.querySelector(selector)
+  container.items.add(sent_file);
+  fileInputElement.files=container.files
+  }
+  
+}
+
+function main_variant(selector){
+  let canvas = document.querySelector(selector);
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    preserveDrawingBuffer: true,
+    alpha: true,
+  });
+  renderer.autoClearColor = false;
+
+  const fov = 90;
+  const aspect = 2;  // the canvas default
+  const near = 0.1;
+  const far = 20;
+  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+
+  camera.position.z=0;
+  camera.position.y=0;
+  camera.position.x=0;
+  
+  switch(selector) {
+    case '#canva1':
+        camera.position.z=-canopy_container.front_size-main_house_outer.constructor_depth-2;
+        break;
+    case '#canva2':
+      camera.position.x=-canopy_container.left_size-main_house_outer.constructor_width-2;
+      break;
+    case '#canva3':
+      camera.position.z=+canopy_container.back_size+main_house_outer.constructor_depth+2;
+      break;
+    case '#canva4':
+      camera.position.x=+canopy_container.left_size+main_house_outer.constructor_width+2;
+      break;
+  }
+  camera.position.y=main_house_outer.constructor_height/2
+  camera.lookAt(0,main_house_outer.constructor_height/2,0)
+
+  const scene2 = outer_scene.clone()
+  renderer.render(scene2, camera);
+
+
+}
+
+function main_handler(){
+//main()
+main_variant("#canva1")
+main_variant("#canva2")
+main_variant("#canva3")
+main_variant("#canva4")
+canvas_image_upload()
+}
+
+document.querySelector("#final_screenshot").addEventListener("click", ()=>{
+console.log("les go")
+document.querySelector("#bg").style.display="none"
+for(let elem of document.querySelectorAll("canvas")){
+elem.style.position="unset"
+}
+console.log(document.querySelector("#file_input1").files[0])
+console.log(document.querySelector("#file_input2").files[0])
+main_handler()
+
+console.log(document.querySelector("#file_input1").files[0])
+console.log(document.querySelector("#file_input2").files[0])
+
+console.log("I win if i go before i fall")
+  
+})
