@@ -3444,8 +3444,8 @@ class Menu_control {
 
     //Label elements values
     let width_element_label = "szerokość elementu"
+    let height_element_label_frontend = "wysokość elementu"
     let height_element_label = "wysokość elementu"
-
     let height_element_disable = "";
 
     //Display flags based on the type of the added object
@@ -3463,10 +3463,13 @@ class Menu_control {
     let visibility_sizing_menu = 'style="display:none"'
     let visibility_sizing_menu_x = 'style="display:none"'
     let visibility_sizing_menu_y = 'style="display:none"'
+    let visibility_sizing_menu_y_helper='style="display:none"'
 
     let visibility_tiling_menu = 'style="display:none"'
     let visibility_visual_menu = 'style="display:none"'
     let visibility_handle_menu = 'style="display:none"'
+
+
     if (heading_title.toUpperCase().includes("WIATA")) {
       div_elem.classList.add("dynamic_canopy");
       visibility_color_menu = 'style="display:none"'
@@ -3494,7 +3497,8 @@ class Menu_control {
 
       visibility_sizing_menu = ''
       visibility_sizing_menu_x = ''
-      visibility_sizing_menu_y = ' '
+      visibility_sizing_menu_y = 'style="display:none !important"'
+      visibility_sizing_menu_y_helper=''
 
       visibility_tiling_menu = ''
       visibility_visual_menu = ''
@@ -3503,7 +3507,8 @@ class Menu_control {
       metal_tilling_vertical_thin = ''
 
       width_element_label = "Szerokość wjazdu bramy"
-      height_element_label = "Wysokość wjazdu bramy"
+      height_element_label = "Wysokość wjazdu bramy;element_pomocniczy"
+      height_element_label_frontend = "Wysokość wjazdu bramy"
       height_element_disable = '' //disabled
     }
 
@@ -3563,12 +3568,14 @@ class Menu_control {
       `<!--<div  class="num-selector"><label>displacement value right</label><input class="direction" direction="right" type="number" step="0.1">  </input> </div>-->` +
       `<div ${visibility_position_menu_y} class="num-selector"><label>Przesunięcie od środka ściany (pion)</label><div class="unit-addon"><input class="direction" direction="top" type="number" step="0.1">  </input><span class="white-box">m</span></div> </div>` +
       `<!--<div  class="num-selector"><label>displacement value bottom</label><input class="direction" direction="bottom" type="number" step="0.1">  </input> </div>-->` +
+      
       `</div>`
 
 
     let sizing_menu = `<div ${visibility_sizing_menu}>` +
       `<div ${visibility_sizing_menu_x} class="num-selector"><label>${width_element_label}</label><div class="unit-addon"><input class="dimension" value="2" dimension="width" type="number" step="0.1">  </input><span class="white-box">m</span></div> </div>` +
       `<div ${visibility_sizing_menu_y} class="num-selector"><label>${height_element_label}</label><div class="unit-addon"><input class="dimension" value="2" dimension="height" type="number" step="0.1" ${height_element_disable}>  </input><span class="white-box">m</span></div> </div>` +
+      `<div ${visibility_sizing_menu_y_helper} class="num-selector"><label>${height_element_label_frontend}</label><div class="unit-addon"><input class="dimension-controller" value="2" dimension="height-controller" type="number" step="0.1" ${height_element_disable}>  </input><span class="white-box">m</span></div> </div>` +
       `</div>`
 
     let color_menu = `<div ${visibility_color_menu}>` +
@@ -3844,7 +3851,6 @@ class Menu_control {
 
       })
     }
-
 
     let color_input_arr = div_elem.querySelectorAll('.color-inner input')
     for (let colored_thing of color_input_arr) {
@@ -4542,6 +4548,25 @@ class Menu_control {
 
     }
    
+    let dimension_input_controller = div_elem.querySelector('.dimension-controller')
+    
+    dimension_input_controller.addEventListener("change",()=>{
+      
+
+      let offset=0.2
+      let gate_chosen= div_elem.querySelector("[name*='visual-type']:checked").value
+      if (gate_chosen == "handle1")
+        {offset=0.2}
+
+      let new_height=div_elem.querySelector('.dimension-controller[dimension="height-controller"]').value
+      div_elem.querySelector('input.dimension[dimension="height"]').value=parseFloat(parseFloat(new_height)+parseFloat(offset)).toFixed(2)
+      div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
+      //alert("hi")
+      // div_elem.querySelector('input.dimension[dimension="height"]').value = 2.0
+      //div_elem.querySelector('input.dimension[dimension="height"]').addEventListener('change',)
+      //div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
+    })
+
     //Initial values for the menus
     if (heading_title.toUpperCase().includes("DRZWI")) {
       
@@ -4594,7 +4619,13 @@ class Menu_control {
             div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("max", 4)
             div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("min", 2.0)
             div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("max", 3)
-            div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("min", 2.0)
+            div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("min", 1.90)
+
+            div_elem.querySelector('.dimension-controller[dimension="height-controller"]').setAttribute("max", 3.00)
+            div_elem.querySelector('.dimension-controller[dimension="height-controller"]').setAttribute("min", 2.00)
+
+            div_elem.querySelector('.dimension-controller[dimension="height-controller"]').setAttribute("max", 3.00)
+            div_elem.querySelector('.dimension-controller[dimension="height-controller"]').setAttribute("min", 2.0)
 
             let custom_logic_value=(document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value)
             let custom_logic=(custom_logic_value <2.14)
@@ -4612,20 +4643,30 @@ class Menu_control {
               document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').value=custom_logic_value
               document.querySelector('.num-selector.garage-rebuild select[name="wall-height"]').dispatchEvent(new Event('change'))
             }
+            div_elem.querySelector('.dimension-controller[dimension="height-controller"]').value=2.0;
+            div_elem.querySelector('.dimension-controller[dimension="height-controller"]').dispatchEvent(new Event('change'))
 
           } else {
             div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("max", 3.6)
             div_elem.querySelector('input.dimension[dimension="width"]').setAttribute("min", 1.90)
             div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("max", 2.6)
             div_elem.querySelector('input.dimension[dimension="height"]').setAttribute("min", 1.9)
+            //alert("hi")
+
+            
+            div_elem.querySelector('.dimension-controller[dimension="height-controller"]').setAttribute("max", 2.60)
+            div_elem.querySelector('.dimension-controller[dimension="height-controller"]').setAttribute("min", 1.90)
 
             div_elem.querySelector('input.dimension[dimension="width"]').value = 2.80
             div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
-            div_elem.querySelector('input.dimension[dimension="height"]').value = 2.00
+            div_elem.querySelector('input.dimension[dimension="height"]').value = 1.90
             div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
 
             div_elem.querySelector(".num-selector input[direction='top']").value = 0.00199//Earlier 
             div_elem.querySelector(".num-selector input[direction='top']").dispatchEvent(new Event('change'));
+
+            div_elem.querySelector('.dimension-controller[dimension="height-controller"]').value=1.9;
+            div_elem.querySelector('.dimension-controller[dimension="height-controller"]').dispatchEvent(new Event('change'))
           }
 
 
@@ -4636,6 +4677,11 @@ class Menu_control {
       div_elem.querySelector('input.dimension[dimension="width"]').dispatchEvent(new Event('change'));
       div_elem.querySelector('input.dimension[dimension="height"]').value = 2.0
       div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
+
+      div_elem.querySelector('.dimension-controller[dimension="height-controller"]').setAttribute("max", 3.00)
+      div_elem.querySelector('.dimension-controller[dimension="height-controller"]').setAttribute("min", 2.0)
+
+      div_elem.querySelector('.dimension-controller[dimension="height-controller"]').dispatchEvent(new Event('change'));
 
       
     }
