@@ -1680,74 +1680,24 @@ class Displacement_object {
 
     if (object_type.toUpperCase().includes("DRZWI")) {
      
-      console.log(object_type)
+   
       //change the width of the insert mesh do it!!!
       place_at_the_bottom(global_container_of_doors, 1.00)
       console.log(this.mesh.getObjectByName('insert_mesh'))
       let inserted_mesh_rebuild=this.mesh.getObjectByName('insert_mesh')
       inserted_mesh_rebuild=new THREE.BoxGeometry(width+0.03,height+ 0.02, this.depth- 0.01)
       inserted_mesh_rebuild.rotateY(object_rotation)
-
-      
-
       this.mesh.getObjectByName('insert_mesh').geometry=inserted_mesh_rebuild
       console.log(this.mesh.getObjectByName('insert_mesh'))
 
-
-      if(object_type.toUpperCase().includes("PRAWE")){
       try{
-        console.log(this.mesh.getObjectByName("drhandle1"))
-        this.mesh.getObjectByName("drhandle1").position.z=+width / 2 - 0.1;
-        this.mesh.getObjectByName("drhandle2").position.z=-width / 2 + 0.1;
+      console.log(this.mesh.getObjectByName("drhandle1"))
+      this.mesh.getObjectByName("drhandle1").position.z=+width / 2 - 0.1;
+      this.mesh.getObjectByName("drhandle2").position.z=-width / 2 + 0.1;
+    }
+      catch(error){
+        console.log("it is fine move on the second iteration")
       }
-        catch(error){
-          console.log("it is fine move on the second iteration")
-        }
-      }
-      
-
-      if(object_type.toUpperCase().includes("LEWE")){
-        try{
-          console.log(this.mesh.getObjectByName("drhandle1"))
-          this.mesh.getObjectByName("drhandle1").position.z=-width / 2 + 0.1;
-          this.mesh.getObjectByName("drhandle2").position.z=+width / 2 - 0.1;
-        }
-          catch(error){
-            console.log("it is fine move on the second iteration")
-          }
-        }
-
-        if(object_type.toUpperCase().includes("TYLNIE")){
-          try{
-            console.log(this.mesh.getObjectByName("drhandle1"))
-            this.mesh.getObjectByName("drhandle1").position.x=+width / 2 - 0.1;
-            this.mesh.getObjectByName("drhandle2").position.x=-width / 2 + 0.1;
-          }
-            catch(error){
-              console.log("it is fine move on the second iteration")
-            }
-          }
-
-          
-        if(object_type.toUpperCase().includes("FRONTOWE")){
-          try{
-            console.log(this.mesh.getObjectByName("drhandle1"))
-            this.mesh.getObjectByName("drhandle1").position.x=-width / 2 + 0.1;
-            this.mesh.getObjectByName("drhandle2").position.x=+width / 2 - 0.1;
-          }
-            catch(error){
-              console.log("it is fine move on the second iteration")
-            }
-          }
-
-    //   try{
-    //   console.log(this.mesh.getObjectByName("drhandle1"))
-    //   this.mesh.getObjectByName("drhandle1").position.z=+width / 2 - 0.1;
-    //   this.mesh.getObjectByName("drhandle2").position.z=-width / 2 + 0.1;
-    // }
-    //   catch(error){
-    //     console.log("it is fine move on the second iteration")
-    //   }
       //this.mesh.getObjectByName("drhandle2").translateX(-width)
       //alert("good")
 
@@ -4601,7 +4551,7 @@ class Menu_control {
     let dimension_input_controller = div_elem.querySelector('.dimension-controller')
     
     dimension_input_controller.addEventListener("change",()=>{
-      //alert("hi")
+      
 
       let offset=0.2
       let gate_chosen= div_elem.querySelector("[name*='visual-type']:checked").value
@@ -4611,10 +4561,7 @@ class Menu_control {
       let new_height=div_elem.querySelector('.dimension-controller[dimension="height-controller"]').value
       div_elem.querySelector('input.dimension[dimension="height"]').value=parseFloat(parseFloat(new_height)+parseFloat(offset)).toFixed(2)
       div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
-
-
-
-    
+      //alert("hi")
       // div_elem.querySelector('input.dimension[dimension="height"]').value = 2.0
       //div_elem.querySelector('input.dimension[dimension="height"]').addEventListener('change',)
       //div_elem.querySelector('input.dimension[dimension="height"]').dispatchEvent(new Event('change'));
@@ -7674,27 +7621,11 @@ document.querySelector('input[name="roof-type"][value="5"]').click()
 //document.querySelector("#reinforcements").click()
 document.querySelector("#send-message").addEventListener('click', () => {
   
-  if(document.querySelector("#email").value || document.querySelector("#phone").value )
-  {
   //console.log("Beginning async test")
   main_handler()
   //console.log("I fall")
-  setTimeout(message_sender,3000)
   
-
-  }
-  
-  else{
-    let message=document.createElement('div')
-    message.style.maxWidth="19.8em"
-    
-    message.innerText="Potrzebujemy przynajmniej twojego adresu e-mail lub telefonu do kontaktu w ramach realizacji zamówienia"
-    document.querySelector("#send-message").parentElement.append(message)
-    document.querySelector("#send-message").parentElement.previousElementSibling.click()
-    document.querySelector("#send-message").parentElement.previousElementSibling.click()  }
-  
-  }
-  )
+  setTimeout(message_sender,3000)})
 
 
 function message_sender(){
@@ -7870,9 +7801,9 @@ function message_sender(){
   Szerokość:${parseFloat(document.querySelector(".num-selector [name='width']").value)}
   Głębokość:${parseFloat(document.querySelector(".num-selector [name='depth']").value)}
   Wysokości ścian:${parseFloat(document.querySelector(".num-selector [name='wall-height']").value)};
-  Kolorze ścian:${document.querySelector("[name='wall-color']:checked").nextElementSibling.nextElementSibling.innerText}
+  Kolorze ścian:${document.querySelector("[name='wall-color']:checked").nextElementSibling.src}
   Typie dachu: ${selected_roof_type} 
-  Kolorze dachu:${document.querySelector("[name='roof-color']:checked").nextElementSibling.nextElementSibling.innerText}
+  Kolorze dachu:${document.querySelector("[name='roof-color']:checked").nextElementSibling.src}
   Podłożu:${foundation}
   Bramach:${dynamic_gate}
   Drzwiach:${dynamic_door}
